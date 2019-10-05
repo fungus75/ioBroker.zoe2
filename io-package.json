@@ -1,0 +1,32 @@
+{
+	"common": {
+		"name": "zoe",
+		"version": "0.0.1",
+		"title": "Renault ZOE",
+		"desc": {
+			"en": "Renault ZOE for ioBroker",
+			"de": "Renault ZOE für ioBroker"
+		},
+		"platform": "Javascript/Node.js",
+        "main": "main.js",
+		"mode": "schedule",
+		"schedule": "*/15 * * * *",
+		"enabled": true,
+		"license": "MIT",
+		"loglevel": "info",
+		"readme": "https://github.com/fungus75/ioBroker.zoe/blob/master/README.md",
+		"icon": "zoe.png",
+		"extIcon": "https://raw.githubusercontent.com/fungus75/ioBroker.zoe/master/admin/zoe.png",
+       		"authors": ["Rene Pilz <rene@pilz.cc>"],
+		"keywords": ["ioBroker","mobile-alerts","Smart Home","Mobile Alerts","home automation"],
+		"type": "iot-systems"
+	},
+	"native": {
+		"username": "",
+		"password": "",
+		"vid": ""
+	},
+	"objects": [],
+	"instanceObjects": []
+
+}

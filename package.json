@@ -1,0 +1,42 @@
+{
+  "name": "iobroker.zoe",
+  "version": "0.0.1",
+  "description": "Renault ZOE for ioBroker",
+  "author": {
+    "name": "Rene Pilz",
+    "email": "rene@pilz.cc"
+  },
+  "homepage": "https://github.com/fungus75/ioBroker.zoe.git",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "Renault ZOE",
+    "Smart Home",
+    "home automation",
+    "mobility",
+    "eCar",
+    "electicity"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fungus75/ioBroker.zoe.git"
+  },
+  "dependencies": {
+    "request": "~2.85.0",
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-replace": "^0.9.3",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-jscs": "^2.0.0",
+    "grunt-http": "^1.6.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-compress": "^0.13.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-exec": "^0.4.6"
+  },
+  "bugs": {
+    "url": "https://github.com/fungus75/ioBroker.zoe/issues"
+  },
+  "readmeFilename": "README.md"
+}

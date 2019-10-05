@@ -22,7 +22,7 @@
     "url": "https://github.com/fungus75/ioBroker.zoe.git"
   },
   "dependencies": {
-    "request": "~2.85.0",
+    "request": "~2.85.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

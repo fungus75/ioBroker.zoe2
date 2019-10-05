@@ -18,13 +18,13 @@
 		"icon": "zoe.png",
 		"extIcon": "https://raw.githubusercontent.com/fungus75/ioBroker.zoe/master/admin/zoe.png",
        		"authors": ["Rene Pilz <rene@pilz.cc>"],
-		"keywords": ["ioBroker","mobile-alerts","Smart Home","Mobile Alerts","home automation"],
-		"type": "iot-systems"
+		"keywords": ["ioBroker", "Renault ZOE", "Smart Home", "home automation", "mobility", "eCar", "electicity"],
+		"type": "energy"
 	},
 	"native": {
 		"username": "",
 		"password": "",
-		"vid": ""
+		"vin": ""
 	},
 	"objects": [],
 	"instanceObjects": []

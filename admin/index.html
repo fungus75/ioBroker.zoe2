@@ -45,26 +45,20 @@
   // the function loadSettings has to exist ...
   function load(settings, onChange) {
     console.log("***** load");
-	  $('#phoneId').val(settings.phoneId).change(function() {
-      changed = true;
-      $('#save').button("enable");
-    }).keyup(onChange);
+	$('#username').val(settings.username).change(function() {
+		changed = true;
+		$('#save').button("enable");
+	}).keyup(onChange);
     
-	  $('#hostname').val(settings.hostname).change(function() {
-      changed = true;
-      $('#save').button("enable");  
-    }).keyup(onChange);
+	$('#password').val(settings.password).change(function() {
+		changed = true;
+		$('#save').button("enable");  
+	}).keyup(onChange);
     
-	  $('#path').val(settings.path).change(function() {
-      changed = true;
-      $('#save').button("enable");
-    }).keyup(onChange);
-    
-	  $('#extractNumbers').prop('checked', settings.extractNumbers).change(function() {
-      changed = true;
-      $('#save').button("enable");
-    });
-    
+	$('#vin').val(settings.vin).change(function() {
+		changed = true;
+		$('#save').button("enable");
+	}).keyup(onChange);
     onChange(false);
   }
 
@@ -73,10 +67,9 @@
   function save(callback) {
     console.log("***** save");
 	  callback({
-	    phoneId : $('#phoneId').val(),
-	    hostname : $('#hostname').val(),
-	    path : $('#path').val(),
-	    extractNumbers : $('#extractNumbers').prop('checked')
+	    username : $('#username').val(),
+	    password : $('#password').val(),
+	    vin : $('#vin').val(),
 	  });
   }
 </script>

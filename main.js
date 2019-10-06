@@ -74,30 +74,109 @@ function main() {
 	var zoe_password = adapter.config.password;
 	var zoe_vin      = adapter.config.vin;
 
-	adapter.log.debug("Username:"+zoe_username);
-	adapter.log.debug("Password:"+zoe_password);
-	adapter.log.debug("VIN:"     +zoe_vin     );
+	adapter.log.info("Username:"+zoe_username);
+	//adapter.log.info("Password:"+zoe_password);
+	adapter.log.info("VIN:"     +zoe_vin     );
 	
-	/*	
-	request(ma_url, function (error, response, body) {
+	var params={
+		url:"https://www.services.renault-ze.com/api/user/login",
+		method:"post",
+		json: { username: zoe_username, password: zoe_password }
+		
+	};
+	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from Renault server');
   		} else {
 			adapter.log.debug('Data received from Renault server');
-			var data = body.toString().match(/(<h[45]>.*<\/h[45]>|<\/?body>|<a .*deviceid=.*<\/a>)/gim);
-			parseData(data.toString());
+			var data = body;
+			var token = data.token;
+			adapter.log.info("token: "+token);
+			fetchCarDetails(token,zoe_username,zoe_password,zoe_vin);
 		}
 	});
-	*/
 
 	// Force terminate
 	setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout!');
+		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
 
 	adapter.log.debug("out: " + methodName);
 }
+
+function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
+	var url="https://www.services.renault-ze.com/api/vehicle/"+zoe_vin+"/battery";
+	adapter.log.info("fetchCarDetails user:"+zoe_username);
+	adapter.log.info("fetchCarDetails url:"+url);
+
+	var params={
+		url:url,
+		json:"",
+		method:"get",
+		auth:{bearer:token}
+	};
+
+	request(params, function (error, response, body) {
+		if (error || response.statusCode != 200) {
+			adapter.log.error('fetchCarDetails: No valid response from Renault server');
+		} else {
+			adapter.log.debug('Data received from Renault server');
+			var data=body;
+			if (typeof body == "string") data=JSON.parse(body); 
+
+			var charge_level   =data.charge_level;
+			var plugged        =data.plugged;
+			var charging       =data.charging;
+			var remaining_range=data.remaining_range;
+			var remaining_time =data.remaining_time;
+
+			adapter.log.info("Data from Server: "+charge_level+";"+plugged+";"+charging+";"+remaining_range+";"+remaining_time);
+			adapter.log.info("FullBody:"+body.toString());
+
+	                adapter.setObjectNotExists(zoe_vin, {
+				type : 'device',
+				common : {
+					name : zoe_vin,
+					type : 'string',
+					role : 'sensor',
+					ack : true
+				},
+				native : {}
+			});
+			setValue(zoe_vin,"charge_level","float",charge_level);
+			setValue(zoe_vin,"plugged","boolean",plugged);
+			setValue(zoe_vin,"charging","boolean",charging);
+			setValue(zoe_vin,"remaining_range","float",remaining_range);
+			setValue(zoe_vin,"remaining_time","float",remaining_time);
+
+		        setTimeout(function() {
+                		process.exit(0);
+        		}, 10000);
+		}
+	});
+}
+
+function setValue(baseId,name,type,value) {
+	var id=baseId+"."+name;
+	adapter.setObjectNotExists(id, {
+		type : 'state',
+		common : {
+			name : name,
+			type : type,
+			role : 'data',
+			ack : true
+		},
+		native : {}
+	});
+
+
+	adapter.setState(id, {
+		val : value,
+		ack : true
+	});
+}
+
 
 function parseData(xml) {
 	var methodName = "parseData";

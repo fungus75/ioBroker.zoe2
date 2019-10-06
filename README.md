@@ -36,10 +36,17 @@ Konfiguration im ioBroker
 - Nach dem Speichern sollten nach ca. 15 Minuten die entsprechenden 
   Objekte erzeugt werden. Siehe in der ioBroker-Gui unter Objekte >> "zoe.0"
   
+
+Dank:
+```https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-ins-smarthome-integrieren```
+
+ohne dieser Anleitung haette ich es nicht geschafft. Danke.
   
 Hinweis:
 
 - Es können mehrere Instanzen für verschiedene Zoes erzeugt werden.
 
-  Stand: 2019-10-05
+  Stand: 2019-10-06
+
+
 

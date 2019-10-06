@@ -2,6 +2,7 @@
 /* jslint node: true */
 "use strict";
 
+var utils = require(__dirname + '/lib/utils'); // Get common adapter utils
 var request = require('request');
 
 // you have to call the adapter function and pass a options object

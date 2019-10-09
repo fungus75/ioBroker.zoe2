@@ -130,6 +130,7 @@ function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
 			var charging       =data.charging;
 			var remaining_range=data.remaining_range;
 			var remaining_time =data.remaining_time;
+			if (remaining_time === undefined) remaining_time = 0;
 
 			adapter.log.info("Data from Server: "+charge_level+";"+plugged+";"+charging+";"+remaining_range+";"+remaining_time);
 			adapter.log.info("FullBody:"+body.toString());

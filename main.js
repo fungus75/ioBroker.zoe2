@@ -146,10 +146,10 @@ function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
 				native : {}
 			});
 			setValue(zoe_vin,"charge_level","float",charge_level);
-			setValue(zoe_vin,"plugged","boolean",plugged);
-			setValue(zoe_vin,"charging","boolean",charging);
 			setValue(zoe_vin,"remaining_range","float",remaining_range);
 			setValue(zoe_vin,"remaining_time","float",remaining_time);
+			setValue(zoe_vin,"plugged","boolean",plugged);
+			setValue(zoe_vin,"charging","boolean",charging);
 
 		        setTimeout(function() {
                 		process.exit(0);

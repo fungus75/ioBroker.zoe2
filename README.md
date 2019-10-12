@@ -1,52 +1,53 @@
 ![Logo](admin/zoe.png)
 # iobroker.zoe
+=================
 
-Einfacher Adapter, um grundlegende Werte vom Renault ZOE ueber iobroker auszulesen.
+Simple ioBroker-Adapter to get some basic values from Renault ZOE and use it in ioBroker.
 
+If this adapter is not available on the ioBroker-Admin-View, please use the following command to install it (from command-line on your ioBroker-Server):
 
-Manuelle Installation
+```npm install https://github.com/fungus75/ioBroker.zoe/tarball/master/```
 
-- Kopiere alle Dateien in das Verzeichnis /opt/iobroker/iobroker.zoe
+### Configuration
 
-- Berechtigungen, User und Group anpasssen:
-	sudo chmod -R 775  /opt/iobroker/iobroker.zoe
-	sudo chown -R iobroker.iobroker  /opt/iobroker/iobroker.zoe
+- You have to set username, password and VIN as you have done in https://www.services.renault-ze.com/
+- Maybe you need a My-Z.E.Connect or similar services from Renault to use this
+- After saving it took around 15 minutes to create the objects (zoe.0 and so on)
 
-- Abhaengingkeiten installieren:
-	cd /opt/iobroker/iobroker.zoe ; sudo npm install .
+### Thanks  
 
-- ioBroker starten: sudo ioBroker start
-  oder iobroker neu starten: sudo iobroker restart
-
-
-Halbautomatische Installation
-
-- aus dem Linux-Terminal heraus:
-
-```npm install https://github.com/fungus75/ioBroker.zoe```
-
-Konfiguration im ioBroker
-
-- In der WebGui von ioBroker unter "Adapter" eine Instanz von "Zoe" erzeugen.
-
-- In der Adapterkonfiguration muss Benutzername und Passwort von https://www.services.renault-ze.com/ eingetragen sein,
-  dafür braucht man einen entsprechenden Service von Renault (MY Z.E.Connect oder Ähnliches)
-  Zusätzlich muss noch die Fahrgestellnummer (VIN) eingetragen werden.
-
-- Nach dem Speichern sollten nach ca. 15 Minuten die entsprechenden 
-  Objekte erzeugt werden. Siehe in der ioBroker-Gui unter Objekte >> "zoe.0"
-  
-
-Dank:
 ```https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-ins-smarthome-integrieren```
+and ```https://github.com/edent/Renault-Zoe-API``` for your great documentation.
 
-ohne dieser Anleitung haette ich es nicht geschafft. Danke.
-  
-Hinweis:
 
-- Es können mehrere Instanzen für verschiedene Zoes erzeugt werden.
 
-  Stand: 2019-10-06
+## Changelog
 
+### 0.0.1 (2019.10.06)
+- first "version" that goes to github for testing
+- works "productive" on my own system
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2018 RenePilz <rene@pilz.cc>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 

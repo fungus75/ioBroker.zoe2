@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe",
-		"version": "0.0.1",
+		"version": "0.0.2",
 		"title": "Renault ZOE",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",

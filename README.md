@@ -22,6 +22,7 @@ If this adapter is not available on the ioBroker-Admin-View, please use the foll
    - plugged on as boolean
    - remaining range in kilometer
    - remaining time of charging
+   - calculated endPoint of charing (charging_finished_at)
 
 ### Thanks  
 
@@ -32,7 +33,10 @@ and ```https://github.com/edent/Renault-Zoe-API``` for your great documentation.
 
 ## Changelog
 
-### 0.0.1 (2019.10.06)
+### 0.0.2 (2019-10-13)
+- added: calculation of endtime for charging (charging_finished_at)
+
+### 0.0.1 (2019-10-06)
 - first "version" that goes to github for testing
 - works "productive" on my own system
 

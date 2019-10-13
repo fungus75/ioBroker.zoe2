@@ -1,6 +1,6 @@
 {
   "name": "iobroker.zoe",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Renault ZOE for ioBroker",
   "author": {
     "name": "Rene Pilz",

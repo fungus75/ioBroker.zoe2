@@ -131,6 +131,8 @@ function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
 			var remaining_range=data.remaining_range;
 			var remaining_time =data.remaining_time;
 			if (remaining_time === undefined) remaining_time = 0;
+			var chargingFinishedAt=new Date(Date.now() + remaining_time * 60000);
+			if (remaining_time == 0) chargingFinishedAt=null;
 
 			adapter.log.info("Data from Server: "+charge_level+";"+plugged+";"+charging+";"+remaining_range+";"+remaining_time);
 			adapter.log.info("FullBody:"+body.toString());
@@ -145,11 +147,12 @@ function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
 				},
 				native : {}
 			});
-			setValue(zoe_vin,"charge_level","float",charge_level);
-			setValue(zoe_vin,"remaining_range","float",remaining_range);
-			setValue(zoe_vin,"remaining_time","float",remaining_time);
-			setValue(zoe_vin,"plugged","boolean",plugged);
-			setValue(zoe_vin,"charging","boolean",charging);
+                        setValue(zoe_vin,"charge_level","float",charge_level,"data");
+                        setValue(zoe_vin,"remaining_range","float",remaining_range,"data");
+                        setValue(zoe_vin,"remaining_time","float",remaining_time),"data";
+                        setValue(zoe_vin,"charging_finished_at","string",chargingFinishedAt,"date");
+                        setValue(zoe_vin,"plugged","boolean",plugged,"data");
+                        setValue(zoe_vin,"charging","boolean",charging,"data");
 
 		        setTimeout(function() {
                 		process.exit(0);
@@ -158,14 +161,14 @@ function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
 	});
 }
 
-function setValue(baseId,name,type,value) {
+function setValue(baseId,name,type,value,role) {
 	var id=baseId+"."+name;
 	adapter.setObjectNotExists(id, {
 		type : 'state',
 		common : {
 			name : name,
 			type : type,
-			role : 'data',
+			role : role,
 			ack : true
 		},
 		native : {}

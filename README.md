@@ -14,6 +14,15 @@ If this adapter is not available on the ioBroker-Admin-View, please use the foll
 - Maybe you need a My-Z.E.Connect or similar services from Renault to use this
 - After saving it took around 15 minutes to create the objects (zoe.0 and so on)
 
+### Features
+
+- Read this parameters from Zoe:
+   - charge_level in percent
+   - charging as boolean
+   - plugged on as boolean
+   - remaining range in kilometer
+   - remaining time of charging
+
 ### Thanks  
 
 ```https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-ins-smarthome-integrieren```

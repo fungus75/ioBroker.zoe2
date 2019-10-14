@@ -7,6 +7,16 @@
 			"en": "Renault ZOE for ioBroker",
 			"de": "Renault ZOE für ioBroker"
 		},
+        	"news": {
+			"0.0.2": {
+				"en": "Calculation of end of charging timepoint",
+				"de": "Berechnung des Endzeitpunkts der Ladung"
+			},
+            		"0.0.1": {
+                		"en": "Basic Readonly Features",
+                		"de": "Grundlegende, nur lesende, Fnktionen"
+	    		}
+        	},
 		"platform": "Javascript/Node.js",
         "main": "main.js",
 		"mode": "schedule",

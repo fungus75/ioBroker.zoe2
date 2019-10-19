@@ -7,8 +7,9 @@
 			"en": "Renault ZOE for ioBroker",
 			"de": "Renault ZOE für ioBroker"
 		},
+		"materialize": true,
 		"platform": "Javascript/Node.js",
-        "main": "main.js",
+	        "main": "main.js",
 		"mode": "schedule",
 		"schedule": "*/15 * * * *",
 		"enabled": true,

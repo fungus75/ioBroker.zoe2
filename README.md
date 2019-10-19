@@ -43,7 +43,7 @@ and ```https://github.com/edent/Renault-Zoe-API``` for your great documentation.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 RenePilz <rene@pilz.cc>
+Copyright (c) 2019 RenePilz <rene@pilz.cc>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

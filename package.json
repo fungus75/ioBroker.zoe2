@@ -29,6 +29,7 @@
     "mocha": "^4.1.0",
     "chai": "^4.1.2"
   },
+  "main": "main.js",
   "bugs": {
     "url": "https://github.com/fungus75/ioBroker.zoe/issues"
   },

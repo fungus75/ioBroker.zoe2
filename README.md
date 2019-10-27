@@ -23,6 +23,12 @@ If this adapter is not available on the ioBroker-Admin-View, please use the foll
    - remaining range in kilometer
    - remaining time of charging
    - calculated endPoint of charing (charging_finished_at)
+   - Status of last precon (date, type and result)
+- Write to Zoe:
+   - Precon Now
+   - Charge Now
+
+
 
 ### Thanks  
 

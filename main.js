@@ -232,7 +232,7 @@ function fetchPrecon(token,zoe_vin) {
 
 			// read status of button precon and charge
 			adapter.getState(zoe_vin+".preconNow", function (err, state) {
-				if (state.val) {
+				if (state!=null && state.val) {
 					adapter.log.info("preconNow pressed!!!");
 					adapter.setState(zoe_vin+".preconNow",false,true); // set back to false
 					
@@ -250,7 +250,7 @@ function fetchPrecon(token,zoe_vin) {
 			});
 
 			adapter.getState(zoe_vin+".chargeNow", function (err, state) {
-				if (state.val) {
+				if (state!=null && state.val) {
 					adapter.log.info("chargeNow pressed!!!");
 					adapter.setState(zoe_vin+".chargeNow",false,true); // set back to false
 		

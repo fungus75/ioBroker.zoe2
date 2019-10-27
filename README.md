@@ -33,6 +33,10 @@ and ```https://github.com/edent/Renault-Zoe-API``` for your great documentation.
 
 ## Changelog
 
+### 0.0.3 (2019-10-27)
+- added: precon and charging-buttons
+- added: read and display last status of precon
+
 ### 0.0.2 (2019-10-13)
 - added: calculation of endtime for charging (charging_finished_at)
 

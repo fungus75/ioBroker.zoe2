@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe",
-		"version": "0.0.2",
+		"version": "0.0.3",
 		"title": "Renault ZOE",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+			"0.0.3": {
+				"en": "Added precon and charging-buttons",
+				"de": "Precon - Vorheizen - und Charging - Laden - Buttons hinzugefuegt"
+			},
 			"0.0.2": {
 				"en": "Calculation of end of charging timepoint",
 				"de": "Berechnung des Endzeitpunkts der Ladung"

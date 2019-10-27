@@ -45,6 +45,7 @@ adapter.on('stateChange', function(id, state) {
 // Some message was sent to adapter instance over message box. Used by email,
 // pushover, text2speech, ...
 adapter.on('message', function(obj) {
+	adapter.log.info('message');
 	if (typeof obj == 'object' && obj.message) {
 		if (obj.command == 'send') {
 			// e.g. send email or pushover or whatever
@@ -91,7 +92,7 @@ function main() {
 			adapter.log.debug('Data received from Renault server');
 			var data = body;
 			var token = data.token;
-			adapter.log.info("token: "+token);
+			adapter.log.info("token: "+token.substring(0,10)+"...");
 			fetchCarDetails(token,zoe_username,zoe_password,zoe_vin);
 		}
 	});
@@ -154,11 +155,125 @@ function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
                         setValue(zoe_vin,"plugged","boolean",plugged,"data");
                         setValue(zoe_vin,"charging","boolean",charging,"data");
 
-		        setTimeout(function() {
-                		process.exit(0);
-        		}, 10000);
+			fetchPrecon(token,zoe_vin);
 		}
 	});
+}
+
+function fetchPrecon(token,zoe_vin) {
+        var url="https://www.services.renault-ze.com/api/vehicle/"+zoe_vin+"/air-conditioning/last";
+        adapter.log.info("fetchPreconLast url:"+url);
+
+        var params={
+                url:url,
+                json:"",
+                method:"get",
+                auth:{bearer:token}
+        };
+
+        request(params, function (error, response, body) {
+		adapter.log.info("Response-Code from Server: "+response.statusCode);
+
+                if (error || (response.statusCode != 200 && response.statusCode != 204)) {
+                        adapter.log.error('fetchPrecon: No valid response from Renault server');
+			adapter.log.error('error: '+error);
+			adapter.log.error('response-code: '+response.statusCode);
+                } else {
+                        adapter.log.debug('fetchPrecon data received from Renault server');
+			adapter.setObjectNotExists(zoe_vin+".preconLast", {
+                                type : 'device',
+                                common : {
+                                        name : 'preconLast',
+                                        type : 'string',
+                                        role : 'sensor',
+                                        ack : true
+                                },
+                                native : {}
+                        });
+
+			adapter.setObjectNotExists(zoe_vin+".preconNow", {
+				type : 'state',
+				common: {
+					name : 'preconNow',
+					type : 'boolean',
+					role : 'button',
+					ack : true
+				},
+				native : {}
+			});
+
+                        adapter.setObjectNotExists(zoe_vin+".chargeNow", {
+                                type : 'state',
+                                common: {
+                                        name : 'chargeNow',
+                                        type : 'boolean',
+                                        role : 'button',
+                                        ack : true
+                                },
+                                native : {}
+                        });
+
+
+			if (response.statusCode==200) {
+
+                        	var data=body;
+                        	if (typeof body == "string") data=JSON.parse(body);
+
+                        	var date   =new Date(data.date);
+                        	var type   =data.type;
+                        	var result =data.result;
+
+                        	adapter.log.info("Data from Server: "+date+";"+type+";"+result);
+                        	adapter.log.info("FullBody:"+body.toString());
+				setValue(zoe_vin+".preconLast","date","string",date,"date");
+                        	setValue(zoe_vin+".preconLast","type","string",type,"data");
+				setValue(zoe_vin+".preconLast","result","string",result,"data");
+			}
+
+			// read status of button precon and charge
+			adapter.getState(zoe_vin+".preconNow", function (err, state) {
+				if (state.val) {
+					adapter.log.info("preconNow pressed!!!");
+					adapter.setState(zoe_vin+".preconNow",false,true); // set back to false
+					
+					url="https://www.services.renault-ze.com/api/vehicle/"+zoe_vin+"/air-conditioning";
+					adapter.log.info("precon-url: "+url);
+					var params={
+                				url:url,
+                				json:"",
+                				method:"post",
+                				auth:{bearer:token}
+        				};
+					
+					request(params);	// tell api to precon
+				 }
+			});
+
+			adapter.getState(zoe_vin+".chargeNow", function (err, state) {
+				if (state.val) {
+					adapter.log.info("chargeNow pressed!!!");
+					adapter.setState(zoe_vin+".chargeNow",false,true); // set back to false
+		
+					url="https://www.services.renault-ze.com/api/vehicle/"+zoe_vin+"/charge";
+					adapter.log.info("charge-url: "+url);
+					var params={
+						url:url,
+						json:"",
+						method:"post",
+						auth:{bearer:token}
+					};
+
+					request(params);        // tell api to charge
+				}
+			});					
+	
+
+                        setTimeout(function() {
+                                process.exit(0);
+                        }, 10000);
+                }
+        });
+
 }
 
 function setValue(baseId,name,type,value,role) {

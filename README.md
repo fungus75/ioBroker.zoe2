@@ -28,7 +28,11 @@ If this adapter is not available on the ioBroker-Admin-View, please use the foll
    - Precon Now
    - Charge Now
 
+### Please Note!!
 
+Communication with ZOE or Renault-Services is done only during the interval-times with is 10 Minutes.
+So if you press preconNow or chargeNow, it will take up to the next interval to send it to ZOE and it will take up to the
+very next interval to get the status back.
 
 ### Thanks  
 

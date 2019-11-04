@@ -25,7 +25,7 @@
 		"platform": "Javascript/Node.js",
 	        "main": "main.js",
 		"mode": "schedule",
-		"schedule": "*/15 * * * *",
+		"schedule": "*/10 * * * *",
 		"enabled": true,
 		"license": "MIT",
 		"loglevel": "info",

@@ -8,6 +8,8 @@ If this adapter is not available on the ioBroker-Admin-View, please use the foll
 
 ```npm install https://github.com/fungus75/ioBroker.zoe/tarball/master/```
 
+After that the adapter should show up in the ioBroker-Admin-View.
+
 ### Configuration
 
 - You have to set username, password and VIN as you have done in https://www.services.renault-ze.com/

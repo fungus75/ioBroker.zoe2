@@ -10,7 +10,7 @@ var request = require('request');
 // name excluding extension
 // adapter will be restarted automatically every time as the configuration
 // changed, e.g system.adapter.mobile-alerts.0
-var adapter = utils.adapter('zoe');
+var adapter = utils.adapter('zoe2');
 
 // is called when adapter shuts down - callback has to be called under any
 // circumstances!
@@ -66,34 +66,59 @@ adapter.on('ready', function() {
 
 function main() {
 	var methodName = "main";
-	adapter.log.debug("in:  " + methodName + " v1.00");
+	adapter.log.debug("in:  " + methodName + " v0.01");
 
 	// All states changes inside the adapter's namespace are subscribed
 	adapter.subscribeStates('*');
 
 	var zoe_username = adapter.config.username;
 	var zoe_password = adapter.config.password;
+	var zoe_locale   = adapter.config.locale;
 	var zoe_vin      = adapter.config.vin;
 
 	adapter.log.info("Username:"+zoe_username);
 	//adapter.log.info("Password:"+zoe_password);
+	adapter.log.info("Locale:"  +zoe_locale  );
 	adapter.log.info("VIN:"     +zoe_vin     );
 	
 	var params={
-		url:"https://www.services.renault-ze.com/api/user/login",
-		method:"post",
-		json: { username: zoe_username, password: zoe_password }
-		
+		url:"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_"+zoe_locale+".json",
+		method:"get"
 	};
+	adapter.log.info("URL: "+params.url);
+
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from Renault server');
   		} else {
 			adapter.log.debug('Data received from Renault server');
 			var data = body;
-			var token = data.token;
-			adapter.log.info("token: "+token.substring(0,10)+"...");
-			fetchCarDetails(token,zoe_username,zoe_password,zoe_vin);
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("FullBody:"+body.toString());
+
+			var gigyarooturl = data.servers.gigyaProd.target;
+			var gigyaapikey  = data.servers.gigyaProd.apikey;
+
+			var kamereonrooturl = data.servers.wiredProd.target;
+			var kamereonapikey  = data.servers.wiredProd.apikey;
+ 
+			adapter.log.info("gigyarooturl:"+gigyarooturl);
+			adapter.log.info("gigyaapikey:"+gigyaapikey);
+			adapter.log.info("kamereonrooturl:"+kamereonrooturl);
+			adapter.log.info("kamereonapikey:"+kamereonapikey);
+
+			var globalParams = {
+				zoe_username:zoe_username,
+				zoe_password:zoe_password,
+				zoe_locale:zoe_locale,
+				zoe_vin:zoe_vin,
+				gigyarooturl:gigyarooturl,
+				gigyaapikey:gigyaapikey,
+				kamereonrooturl:kamereonrooturl,
+				kamereonapikey:kamereonapikey
+			};
+
+			loginToGigya(globalParams);
 		}
 	});
 
@@ -103,6 +128,38 @@ function main() {
 		process.exit(1);
 	}, 3 * 60 * 1000);
 
+	adapter.log.debug("out: " + methodName);
+}
+
+function loginToGigya(globalParams) {
+	var methodName = "main";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var payload = {loginID: globalParams.zoe_username, password: globalParams.zoe_password, ApiKey: globalParams.gigyaapikey};
+	var params={
+		url:globalParams.gigyarooturl + '/accounts.login',
+		method:"post",
+		json:payload
+	};
+	adapter.log.info("url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from gigyarooturl server');
+  		} else {
+			adapter.log.debug('Data received from gigyarooturl server');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("FullBody:"+JSON.stringify(data));
+
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
 

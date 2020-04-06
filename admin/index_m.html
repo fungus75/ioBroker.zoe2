@@ -37,6 +37,7 @@
     },
     "Username" : { "de" : "Benutzername"},
     "Password" : { "de" : "Kennwort"},
+    "Locale"   : { "de" : "Laenderversion, z.B. de_DE"},
     "VIN" : { "de" : "Fahrgestellnummer"}
   };
 
@@ -52,6 +53,12 @@
 		changed = true;
 		$('#save').button("enable");  
 	}).keyup(onChange);
+
+        $('#locale').val(settings.locale).change(function() {
+                changed = true;
+                $('#save').button("enable");
+        }).keyup(onChange);
+
     
 	$('#vin').val(settings.vin).change(function() {
 		changed = true;
@@ -68,6 +75,7 @@
 	    username : $('#username').val(),
 	    password : $('#password').val(),
 	    vin : $('#vin').val(),
+            locale : $('#locale').val(),
 	  });
   }
 </script>
@@ -91,6 +99,11 @@
     <tr>
       <td><label for="password" class="translate">Password</label></td>
       <td><input class="value" type="password" id="password" size="30" /></td>
+    </tr>
+
+    <tr>
+     <td><label for="locale" class="translate">Locale</label></td>
+      <td><input class="value" type="text" id="locale" size="10" /></td>
     </tr>
 
     <tr>

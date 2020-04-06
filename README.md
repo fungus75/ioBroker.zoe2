@@ -17,6 +17,7 @@ After that the adapter should show up in the ioBroker-Admin-View.
 ### Configuration
 
 - You have to set username, password and VIN as you have done in my renault app
+- This locales ("Laenderversionen") currently do work: de_DE
 - Maybe you need a My-Z.E.Connect or similar services from Renault to use this
 - After saving it took around 15 minutes to create the objects (zoe.0 and so on)
 

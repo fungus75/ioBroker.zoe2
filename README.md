@@ -4,17 +4,19 @@
 
 Simple ioBroker-Adapter to get some basic values from Renault ZOE and use it in ioBroker. 
 
-PLEASE NOTE: THIS ADAPTER USES THE OLD API (www.services.renault-ze.com); if you want to use the current Renault-Api please try https://github.com/fungus75/ioBroker.zoe2 instead.
+PLEASE NOTE: THIS ADAPTER USES THE SAME API AS THE MY RENAULT APP. BUT YOU MUST HAVE TO SET UP MY RENAULT APP TO WORK BEFORE USING THIS ADAPTER. i.e. on Android: https://play.google.com/store/apps/developer?id=RENAULT+SAS
+
+PLEASE NOTE: THIS IS A VERY EARLY STATE OF DEVELOPMENT, USE OF YOUR OWN RISK
 
 If this adapter is not available on the ioBroker-Admin-View, please use the following command to install it (from command-line on your ioBroker-Server):
 
-```npm install https://github.com/fungus75/ioBroker.zoe/tarball/master/```
+```npm install https://github.com/fungus75/ioBroker.zoe2/tarball/master/```
 
 After that the adapter should show up in the ioBroker-Admin-View.
 
 ### Configuration
 
-- You have to set username, password and VIN as you have done in https://www.services.renault-ze.com/
+- You have to set username, password and VIN as you have done in my renault app
 - Maybe you need a My-Z.E.Connect or similar services from Renault to use this
 - After saving it took around 15 minutes to create the objects (zoe.0 and so on)
 
@@ -47,21 +49,14 @@ and ```https://github.com/edent/Renault-Zoe-API``` for your great documentation.
 
 ## Changelog
 
-### 0.0.3 (2019-10-27)
-- added: precon and charging-buttons
-- added: read and display last status of precon
-
-### 0.0.2 (2019-10-13)
-- added: calculation of endtime for charging (charging_finished_at)
-
-### 0.0.1 (2019-10-06)
-- first "version" that goes to github for testing
-- works "productive" on my own system
+### 0.0.1 (2020-04-06)
+- nonworking version, just to create initial repo on github
+- code taken 1:1 from iobroker.zoe
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 RenePilz <rene@pilz.cc>
+Copyright (c) 2020 RenePilz <rene@pilz.cc>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

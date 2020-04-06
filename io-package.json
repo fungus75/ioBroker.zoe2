@@ -1,22 +1,14 @@
 {
 	"common": {
-		"name": "zoe",
-		"version": "0.0.3",
-		"title": "Renault ZOE",
+		"name": "zoe2",
+		"version": "0.0.1",
+		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
 			"de": "Renault ZOE für ioBroker"
 		},
 		"materialize": true,
         	"news": {
-			"0.0.3": {
-				"en": "Added precon and charging-buttons",
-				"de": "Precon - Vorheizen - und Charging - Laden - Buttons hinzugefuegt"
-			},
-			"0.0.2": {
-				"en": "Calculation of end of charging timepoint",
-				"de": "Berechnung des Endzeitpunkts der Ladung"
-			},
             		"0.0.1": {
                 		"en": "Basic Readonly Features",
                 		"de": "Grundlegende, nur lesende, Fnktionen"
@@ -29,9 +21,9 @@
 		"enabled": true,
 		"license": "MIT",
 		"loglevel": "info",
-		"readme": "https://github.com/fungus75/ioBroker.zoe/blob/master/README.md",
+		"readme": "https://github.com/fungus75/ioBroker.zoe2/blob/master/README.md",
 		"icon": "zoe.png",
-		"extIcon": "https://raw.githubusercontent.com/fungus75/ioBroker.zoe/master/admin/zoe.png",
+		"extIcon": "https://raw.githubusercontent.com/fungus75/ioBroker.zoe2/master/admin/zoe.png",
        		"authors": ["Rene Pilz <rene@pilz.cc>"],
 		"keywords": ["ioBroker", "Renault ZOE", "Smart Home", "home automation", "mobility", "eCar", "electicity"],
 		"type": "energy"

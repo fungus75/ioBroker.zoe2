@@ -42,8 +42,8 @@ very next interval to get the status back.
 
 ### Thanks  
 
-```https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-ins-smarthome-integrieren```
-and ```https://github.com/edent/Renault-Zoe-API``` for your great documentation.
+https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-ins-smarthome-integrieren, https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-im-smarthome-neue-api-2020
+and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 
 

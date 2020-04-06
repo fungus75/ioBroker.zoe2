@@ -1,12 +1,12 @@
 {
-  "name": "iobroker.zoe",
-  "version": "0.0.3",
-  "description": "Renault ZOE for ioBroker",
+  "name": "iobroker.zoe2",
+  "version": "0.0.1",
+  "description": "Renault ZOE for ioBroker using API v2",
   "author": {
     "name": "Rene Pilz",
     "email": "rene@pilz.cc"
   },
-  "homepage": "https://github.com/fungus75/ioBroker.zoe.git",
+  "homepage": "https://github.com/fungus75/ioBroker.zoe2.git",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/fungus75/ioBroker.zoe.git"
+    "url": "https://github.com/fungus75/ioBroker.zoe2.git"
   },
   "dependencies": {
     "request": "~2.85.0"
@@ -31,7 +31,7 @@
   },
   "main": "main.js",
   "bugs": {
-    "url": "https://github.com/fungus75/ioBroker.zoe/issues"
+    "url": "https://github.com/fungus75/ioBroker.zoe2/issues"
   },
   "readmeFilename": "README.md"
 }

@@ -4,7 +4,7 @@
 
 Simple ioBroker-Adapter to get some basic values from Renault ZOE and use it in ioBroker. 
 
-PLEASE NOTE: THIS ADAPTER USES THE OLD API (www.services.renault-ze.com); if you want to use the current Renault-Api please try https://github.com/fungus75/ioBroker.zoe instead.
+PLEASE NOTE: THIS ADAPTER USES THE OLD API (www.services.renault-ze.com); if you want to use the current Renault-Api please try https://github.com/fungus75/ioBroker.zoe2 instead.
 
 If this adapter is not available on the ioBroker-Admin-View, please use the following command to install it (from command-line on your ioBroker-Server):
 

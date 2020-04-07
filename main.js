@@ -266,6 +266,8 @@ function getKamereonAccount(globalParams) {
 			adapter.log.info("getKamereonAccount:"+JSON.stringify(data));
 			var accounts=data.accounts;
 			adapter.log.info("accounts:"+JSON.stringify(accounts));
+			globalParams.kamereonaccountid=accounts[0].accountId;
+			adapter.log.info("kamereonaccountid:"+JSON.stringify(globalParams.kamereonaccountid));
 
 		}
 	});

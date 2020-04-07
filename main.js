@@ -132,16 +132,18 @@ function main() {
 }
 
 function loginToGigya(globalParams) {
-	var methodName = "main";
+	var methodName = "loginToGigya";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
 	var payload = {loginID: globalParams.zoe_username, password: globalParams.zoe_password, ApiKey: globalParams.gigyaapikey};
 	var params={
-		url:globalParams.gigyarooturl + '/accounts.login',
-		method:"post",
-		json:payload
+		url:globalParams.gigyarooturl + 
+			'/accounts.login?apiKey=' + encodeURIComponent(globalParams.gigyaapikey) + 
+			'&loginID=' + encodeURIComponent(globalParams.zoe_username) + 
+			'&password=' + encodeURIComponent(globalParams.zoe_password),
+		method:"get"
 	};
-	adapter.log.info("url:"+params.url);
+	//adapter.log.info("url:"+params.url);
 
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
@@ -151,6 +153,119 @@ function loginToGigya(globalParams) {
 			var data = body;
 			if (typeof body == "string") data=JSON.parse(body); 
 			adapter.log.info("FullBody:"+JSON.stringify(data));
+
+			var sessionInfo=data.sessionInfo;
+			adapter.log.info("sessionInfo:"+JSON.stringify(sessionInfo));
+
+			globalParams.gigyatoken=sessionInfo.cookieValue;
+			
+			gigyaGetJWT(globalParams);
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function gigyaGetJWT(globalParams) {
+	var methodName = "gigyaGetJWT";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.gigyarooturl + 
+			'/accounts.getJWT?oauth_token=' + encodeURIComponent(globalParams.gigyatoken) + 
+			'&fields=' + encodeURIComponent('data.personId,data.gigyaDataCenter') + 
+			'&expiration=' + encodeURIComponent('900'),
+		method:"get"
+	};
+	//adapter.log.info("url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from gigyaGetJWT service');
+  		} else {
+			adapter.log.debug('Data received from gigyaGetJWT service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getJWTFullbody:"+JSON.stringify(data));
+			globalParams.gigya_jwttoken=data.id_token;
+			adapter.log.info("gigya_jwttoken:"+globalParams.gigya_jwttoken);
+			gigyaGetAccount(globalParams);
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function gigyaGetAccount(globalParams) {
+	var methodName = "gigyaGetAccount";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.gigyarooturl + 
+			'/accounts.getAccountInfo?oauth_token=' + encodeURIComponent(globalParams.gigyatoken),
+		method:"get"
+	};
+	//adapter.log.info("url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from gigyagetAccountInfo service');
+  		} else {
+			adapter.log.debug('Data received from gigyagetAccountInfo service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getgetAccountInfo:"+JSON.stringify(data));
+			globalParams.kamereonpersonid=data.data.personId;
+			adapter.log.info("kamereonpersonid:"+globalParams.kamereonpersonid);
+
+			getKamereonAccount(globalParams);																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function getKamereonAccount(globalParams) {
+	var methodName = "getKamereonAccount";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/persons/' + globalParams.kamereonpersonid+
+			'?country='+ encodeURIComponent('FR'),
+		method:"get",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey
+		}
+	};
+	//adapter.log.info("url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getKamereonAccount service');
+  		} else {
+			adapter.log.debug('Data received from getKamereonAccount service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getKamereonAccount:"+JSON.stringify(data));
+			var accounts=data.accounts;
+			adapter.log.info("accounts:"+JSON.stringify(accounts));
 
 		}
 	});
@@ -162,6 +277,8 @@ function loginToGigya(globalParams) {
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
+
+
 
 function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
 	var url="https://www.services.renault-ze.com/api/vehicle/"+zoe_vin+"/battery";

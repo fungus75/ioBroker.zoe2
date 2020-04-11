@@ -76,10 +76,18 @@ function main() {
 	var zoe_locale   = adapter.config.locale;
 	var zoe_vin      = adapter.config.vin;
 
+
 	adapter.log.info("Username:"+zoe_username);
 	//adapter.log.info("Password:"+zoe_password);
 	adapter.log.info("Locale:"  +zoe_locale  );
 	adapter.log.info("VIN:"     +zoe_vin     );
+
+
+	adapter.log.info("Cached Parameters: ");
+
+	adapter.log.info(" kamereonrooturl:"+adapter.config.kamereonrooturl);
+	adapter.log.info(" kamereonapikey:" +adapter.config.kamereonapikey);
+
 	
 	var params={
 		url:"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_"+zoe_locale+".json",
@@ -101,9 +109,12 @@ function main() {
 
 			var kamereonrooturl = data.servers.wiredProd.target;
 			var kamereonapikey  = data.servers.wiredProd.apikey;
- 
-			adapter.log.info("gigyarooturl:"+gigyarooturl);
-			adapter.log.info("gigyaapikey:"+gigyaapikey);
+
+			adapter.config.gigyarooturl=gigyarooturl;
+			adapter.config.gigyaapikey=gigyaapikey;
+			adapter.config.kamereonrooturl=kamereonrooturl;
+			adapter.config.kamereonapikey=kamereonapikey;
+
 			adapter.log.info("kamereonrooturl:"+kamereonrooturl);
 			adapter.log.info("kamereonapikey:"+kamereonapikey);
 
@@ -269,6 +280,8 @@ function getKamereonAccount(globalParams) {
 			globalParams.kamereonaccountid=accounts[0].accountId;
 			adapter.log.info("kamereonaccountid:"+JSON.stringify(globalParams.kamereonaccountid));
 
+			getKamereonAccessToken(globalParams);
+
 		}
 	});
 
@@ -280,6 +293,81 @@ function getKamereonAccount(globalParams) {
 	adapter.log.debug("out: " + methodName);
 }
 
+function getKamereonAccessToken(globalParams) {
+	var methodName = "getKamereonAccessToken";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/' + globalParams.kamereonaccountid+'/kamereon/token'+
+			'?country='+ encodeURIComponent('FR'),
+		method:"get",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey
+		}
+	};
+	//adapter.log.info("url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getKamereonAccessToken service');
+  		} else {
+			adapter.log.debug('Data received from getKamereonAccessToken service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getKamereonAccessToken:"+JSON.stringify(data));
+			globalParams.kamereonaccesstoken=data.accessToken;
+			adapter.log.info("kamereonaccountid:"+JSON.stringify(globalParams.kamereonaccesstoken));
+
+			getBatteryStatus(globalParams);
+
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function getBatteryStatus(globalParams) {
+	var methodName = "getBatteryStatus";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/kmr/remote-services/car-adapter/v1/cars/' + globalParams.zoe_vin + '/battery-status',
+		method:"get",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken
+		}
+	};
+	//adapter.log.info("url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getBatteryStatus service');
+  		} else {
+			adapter.log.debug('Data received from getBatteryStatus service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getBatteryStatus:"+JSON.stringify(data));
+
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
 
 
 function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {

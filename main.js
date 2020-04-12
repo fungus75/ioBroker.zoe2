@@ -82,13 +82,6 @@ function main() {
 	adapter.log.info("Locale:"  +zoe_locale  );
 	adapter.log.info("VIN:"     +zoe_vin     );
 
-
-	adapter.log.info("Cached Parameters: ");
-
-	adapter.log.info(" kamereonrooturl:"+adapter.config.kamereonrooturl);
-	adapter.log.info(" kamereonapikey:" +adapter.config.kamereonapikey);
-
-	
 	var params={
 		url:"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_"+zoe_locale+".json",
 		method:"get"
@@ -106,15 +99,11 @@ function main() {
 
 			var gigyarooturl = data.servers.gigyaProd.target;
 			var gigyaapikey  = data.servers.gigyaProd.apikey;
-
 			var kamereonrooturl = data.servers.wiredProd.target;
 			var kamereonapikey  = data.servers.wiredProd.apikey;
 
-			adapter.config.gigyarooturl=gigyarooturl;
-			adapter.config.gigyaapikey=gigyaapikey;
-			adapter.config.kamereonrooturl=kamereonrooturl;
-			adapter.config.kamereonapikey=kamereonapikey;
-
+			adapter.log.info("gigyarooturl:"+gigyarooturl);
+			adapter.log.info("gigyaapikey:"+gigyaapikey);
 			adapter.log.info("kamereonrooturl:"+kamereonrooturl);
 			adapter.log.info("kamereonapikey:"+kamereonapikey);
 
@@ -128,6 +117,18 @@ function main() {
 				kamereonrooturl:kamereonrooturl,
 				kamereonapikey:kamereonapikey
 			};
+
+			// create root config element
+	                adapter.setObjectNotExists(zoe_vin, {
+				type : 'device',
+				common : {
+					name : zoe_vin,
+					type : 'string',
+					role : 'sensor',
+					ack : true
+				},
+				native : {}
+			});
 
 			loginToGigya(globalParams);
 		}
@@ -278,7 +279,7 @@ function getKamereonAccount(globalParams) {
 			var accounts=data.accounts;
 			adapter.log.info("accounts:"+JSON.stringify(accounts));
 			globalParams.kamereonaccountid=accounts[0].accountId;
-			adapter.log.info("kamereonaccountid:"+JSON.stringify(globalParams.kamereonaccountid));
+			adapter.log.info("kamereonaccountid:"+globalParams.kamereonaccountid);
 
 			getKamereonAccessToken(globalParams);
 
@@ -318,7 +319,55 @@ function getKamereonAccessToken(globalParams) {
 			if (typeof body == "string") data=JSON.parse(body); 
 			adapter.log.info("getKamereonAccessToken:"+JSON.stringify(data));
 			globalParams.kamereonaccesstoken=data.accessToken;
-			adapter.log.info("kamereonaccountid:"+JSON.stringify(globalParams.kamereonaccesstoken));
+			adapter.log.info("kamereonaccesstoken:"+globalParams.kamereonaccesstoken);
+
+			getKamereonCars(globalParams);
+
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function getKamereonCars(globalParams) {
+	var methodName = "getKamereonCars";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/' + globalParams.kamereonaccountid+'/vehicles'+
+			'?country='+ encodeURIComponent('FR'),
+		method:"get",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken
+		}
+	};
+	//adapter.log.info("url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getKamereonCars service');
+  		} else {
+			adapter.log.debug('Data received from getKamereonCars service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getKamereonCars:"+JSON.stringify(data));
+
+		/*
+			var vehicleLinks=data.vehicleLinks;
+			for (var i=0;i<vehicleLinks.length;i++) {
+				if (vehicleLinks[i].vin==globalParams.zoe_vin) {
+					setValue(globalParams.zoe_vin,"mileage","float",vehicleLinks[i].mileage,"data");
+				}
+			}
+		*/
 
 			getBatteryStatus(globalParams);
 
@@ -333,31 +382,57 @@ function getKamereonAccessToken(globalParams) {
 	adapter.log.debug("out: " + methodName);
 }
 
+
+
 function getBatteryStatus(globalParams) {
 	var methodName = "getBatteryStatus";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
 	var params={
 		url:globalParams.kamereonrooturl + 
-			'/commerce/v1/accounts/kmr/remote-services/car-adapter/v1/cars/' + globalParams.zoe_vin + '/battery-status',
+			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/battery-status'+
+			'?country='+ encodeURIComponent('FR'),
 		method:"get",
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
     			'apikey': globalParams.kamereonapikey,
-			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
+			'Content-Type':'application/vnd.api+json'
 		}
 	};
-	//adapter.log.info("url:"+params.url);
+	adapter.log.info("getBatteryStatus-url:"+params.url);
 
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from getBatteryStatus service');
+			adapter.log.info('error:'+error);
+			adapter.log.info('response:'+JSON.stringify(response));
   		} else {
 			adapter.log.debug('Data received from getBatteryStatus service');
 			var data = body;
 			if (typeof body == "string") data=JSON.parse(body); 
 			adapter.log.info("getBatteryStatus:"+JSON.stringify(data));
+			var attributes=data.data.attributes;
 
+			var charge_level   =attributes.batteryLevel;
+			var plugged        =attributes.plugStatus!=0;
+			var charging       =attributes.chargeStatus!=-1;
+			var remaining_range=attributes.rangeHvacOff;
+			var remaining_time =attributes.remaining_time;
+			var batteryTemperature=attributes.batteryTemperature;
+			if (remaining_time === undefined) remaining_time = 0;
+			var chargingFinishedAt=new Date(Date.now() + remaining_time * 60000);
+			if (remaining_time == 0) chargingFinishedAt=null;
+
+                        setValue(globalParams.zoe_vin,"charge_level","float",charge_level,"data");
+                        setValue(globalParams.zoe_vin,"remaining_range","float",remaining_range,"data");
+                        setValue(globalParams.zoe_vin,"remaining_time","float",remaining_time),"data";
+                        setValue(globalParams.zoe_vin,"charging_finished_at","string",chargingFinishedAt,"date");
+                        setValue(globalParams.zoe_vin,"plugged","boolean",plugged,"data");
+                        setValue(globalParams.zoe_vin,"charging","boolean",charging,"data");
+                        setValue(globalParams.zoe_vin,"batteryTemperature","float",batteryTemperature,"data");
+			
 		}
 	});
 

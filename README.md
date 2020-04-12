@@ -53,6 +53,7 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 ### 0.0.1 (2020-04-06)
 - nonworking version, just to create initial repo on github
 - code taken 1:1 from iobroker.zoe
+- small adjustments, first access to the new renault api
 
 ## License
 The MIT License (MIT)

@@ -95,7 +95,7 @@ function main() {
 			adapter.log.debug('Data received from Renault server');
 			var data = body;
 			if (typeof body == "string") data=JSON.parse(body); 
-			adapter.log.info("FullBody:"+body.toString());
+			//adapter.log.info("FullBody:"+body.toString());
 
 			var gigyarooturl = data.servers.gigyaProd.target;
 			var gigyaapikey  = data.servers.gigyaProd.apikey;
@@ -416,10 +416,10 @@ function getBatteryStatus(globalParams) {
 			var attributes=data.data.attributes;
 
 			var charge_level   =attributes.batteryLevel;
-			var plugged        =attributes.plugStatus!=0;
-			var charging       =attributes.chargeStatus!=-1;
+			var plugged        =attributes.plugStatus==1;
+			var charging       =attributes.chargeStatus==1;
 			var remaining_range=attributes.rangeHvacOff;
-			var remaining_time =attributes.remaining_time;
+			var remaining_time =attributes.timeRequiredToFullSlow;
 			var batteryTemperature=attributes.batteryTemperature;
 			if (remaining_time === undefined) remaining_time = 0;
 			var chargingFinishedAt=new Date(Date.now() + remaining_time * 60000);
@@ -432,7 +432,8 @@ function getBatteryStatus(globalParams) {
                         setValue(globalParams.zoe_vin,"plugged","boolean",plugged,"data");
                         setValue(globalParams.zoe_vin,"charging","boolean",charging,"data");
                         setValue(globalParams.zoe_vin,"batteryTemperature","float",batteryTemperature,"data");
-			
+
+			getCockpit(globalParams);			
 		}
 	});
 
@@ -444,59 +445,93 @@ function getBatteryStatus(globalParams) {
 	adapter.log.debug("out: " + methodName);
 }
 
-
-function fetchCarDetails(token,zoe_username,zoe_password,zoe_vin) {
-	var url="https://www.services.renault-ze.com/api/vehicle/"+zoe_vin+"/battery";
-	adapter.log.info("fetchCarDetails user:"+zoe_username);
-	adapter.log.info("fetchCarDetails url:"+url);
+function getCockpit(globalParams) {
+	var methodName = "getCockpit";
+	adapter.log.debug("in:  " + methodName + " v0.01");
 
 	var params={
-		url:url,
-		json:"",
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/cockpit'+
+			'?country='+ encodeURIComponent('FR'),
 		method:"get",
-		auth:{bearer:token}
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
+			'Content-Type':'application/vnd.api+json'
+		}
 	};
+	adapter.log.info("getCockpit-url:"+params.url);
 
 	request(params, function (error, response, body) {
-		if (error || response.statusCode != 200) {
-			adapter.log.error('fetchCarDetails: No valid response from Renault server');
-		} else {
-			adapter.log.debug('Data received from Renault server');
-			var data=body;
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getCockpit service');
+			adapter.log.info('error:'+error);
+			adapter.log.info('response:'+JSON.stringify(response));
+  		} else {
+			adapter.log.debug('Data received from getCockpit service');
+			var data = body;
 			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getCockpit:"+JSON.stringify(data));
 
-			var charge_level   =data.charge_level;
-			var plugged        =data.plugged;
-			var charging       =data.charging;
-			var remaining_range=data.remaining_range;
-			var remaining_time =data.remaining_time;
-			if (remaining_time === undefined) remaining_time = 0;
-			var chargingFinishedAt=new Date(Date.now() + remaining_time * 60000);
-			if (remaining_time == 0) chargingFinishedAt=null;
-
-			adapter.log.info("Data from Server: "+charge_level+";"+plugged+";"+charging+";"+remaining_range+";"+remaining_time);
-			adapter.log.info("FullBody:"+body.toString());
-
-	                adapter.setObjectNotExists(zoe_vin, {
-				type : 'device',
-				common : {
-					name : zoe_vin,
-					type : 'string',
-					role : 'sensor',
-					ack : true
-				},
-				native : {}
-			});
-                        setValue(zoe_vin,"charge_level","float",charge_level,"data");
-                        setValue(zoe_vin,"remaining_range","float",remaining_range,"data");
-                        setValue(zoe_vin,"remaining_time","float",remaining_time),"data";
-                        setValue(zoe_vin,"charging_finished_at","string",chargingFinishedAt,"date");
-                        setValue(zoe_vin,"plugged","boolean",plugged,"data");
-                        setValue(zoe_vin,"charging","boolean",charging,"data");
-
-			fetchPrecon(token,zoe_vin);
+			getHVACStatus(globalParams);
 		}
 	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function getHVACStatus(globalParams) {
+	var methodName = "getHVACStatus";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/hvac-status'+
+			'?country='+ encodeURIComponent('FR'),
+		method:"get",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
+			'Content-Type':'application/vnd.api+json'
+		}
+	};
+	adapter.log.info("getHVACStatus-url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getHVACStatus service');
+			adapter.log.info('error:'+error);
+			adapter.log.info('response:'+JSON.stringify(response));
+  		} else {
+			adapter.log.debug('Data received from getHVACStatus service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getHVACStatus:"+JSON.stringify(data));
+
+			var attributes=data.data.attributes;
+			var hvacOn=attributes.hvacStatus!="off";
+
+			setValue(globalParams.zoe_vin,"externalTemperature","float",attributes.externalTemperature,"data");
+                        setValue(globalParams.zoe_vin,"hvacOn","boolean",hvacOn,"data");
+			
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
 }
 
 function fetchPrecon(token,zoe_vin) {

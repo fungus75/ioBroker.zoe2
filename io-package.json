@@ -16,6 +16,7 @@
 			"0.0.1": {
 				"en": "Initial commit on github, not realy working",
 				"de": "Erster commit auf github, nicht wirklich funktionstuechtig"
+			}
         	},
 		"platform": "Javascript/Node.js",
 	        "main": "main.js",

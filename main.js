@@ -523,6 +523,13 @@ function getHVACStatus(globalParams) {
 			setValue(globalParams.zoe_vin,"externalTemperature","float",attributes.externalTemperature,"data");
                         setValue(globalParams.zoe_vin,"hvacOn","boolean",hvacOn,"data");
 			
+
+		        setTimeout(function() {
+                		process.exit(0);
+        		}, 10000);
+
+
+
 		}
 	});
 

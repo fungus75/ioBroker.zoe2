@@ -452,7 +452,7 @@ function getCockpit(globalParams) {
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/cockpit'+
+			'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/cockpit'+
 			'?country='+ encodeURIComponent('FR'),
 		method:"get",
 		headers: {

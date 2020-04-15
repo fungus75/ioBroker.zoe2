@@ -4,7 +4,7 @@
 
 Simple ioBroker-Adapter to get some basic values from Renault ZOE and use it in ioBroker. 
 
-PLEASE NOTE: THIS ADAPTER USES THE SAME API AS THE MY RENAULT APP. BUT YOU MUST HAVE TO SET UP MY RENAULT APP TO WORK BEFORE USING THIS ADAPTER. i.e. on Android: https://play.google.com/store/apps/developer?id=RENAULT+SAS
+PLEASE NOTE: THIS ADAPTER USES THE SAME API AS THE MY RENAULT APP. BUT YOU MUST HAVE TO SET UP MY RENAULT APP TO WORK BEFORE USING THIS ADAPTER. i.e. on Android: https://play.google.com/store/apps/developer?id=RENAULT+SAS - if you want to use the old api, please use https://github.com/fungus75/ioBroker.zoe instead.
 
 PLEASE NOTE: THIS IS A VERY EARLY STATE OF DEVELOPMENT, USE OF YOUR OWN RISK
 
@@ -17,6 +17,7 @@ After that the adapter should show up in the ioBroker-Admin-View.
 ### Configuration
 
 - You have to set username, password and VIN as you have done in my renault app
+- This locales ("Laenderversionen") currently do work: de_DE
 - Maybe you need a My-Z.E.Connect or similar services from Renault to use this
 - After saving it took around 15 minutes to create the objects (zoe.0 and so on)
 
@@ -41,7 +42,9 @@ very next interval to get the status back.
 
 ### Thanks  
 
-https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-ins-smarthome-integrieren, https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-im-smarthome-neue-api-2020
+https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-ins-smarthome-integrieren, 
+https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-im-smarthome-neue-api-2020,
+https://muscatoxblog.blogspot.com/2019/07/delving-into-renaults-new-api.html
 and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 
@@ -55,6 +58,7 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 ### 0.0.1 (2020-04-06)
 - nonworking version, just to create initial repo on github
 - code taken 1:1 from iobroker.zoe
+- small adjustments, first access to the new renault api
 
 ## License
 The MIT License (MIT)

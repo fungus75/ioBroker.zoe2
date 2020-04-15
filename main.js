@@ -146,6 +146,7 @@ function main() {
 function loginToGigya(globalParams) {
 	var methodName = "loginToGigya";
 	adapter.log.debug("in:  " + methodName + " v0.01");
+<<<<<<< HEAD
 
 	var payload = {loginID: globalParams.zoe_username, password: globalParams.zoe_password, ApiKey: globalParams.gigyaapikey};
 	var params={
@@ -186,9 +187,54 @@ function loginToGigya(globalParams) {
 function gigyaGetJWT(globalParams) {
 	var methodName = "gigyaGetJWT";
 	adapter.log.debug("in:  " + methodName + " v0.01");
+=======
+>>>>>>> 69fadff948b7473e960f857decc0d8496669ba29
+
+	var payload = {loginID: globalParams.zoe_username, password: globalParams.zoe_password, ApiKey: globalParams.gigyaapikey};
+	var params={
+		url:globalParams.gigyarooturl + 
+<<<<<<< HEAD
+=======
+			'/accounts.login?apiKey=' + encodeURIComponent(globalParams.gigyaapikey) + 
+			'&loginID=' + encodeURIComponent(globalParams.zoe_username) + 
+			'&password=' + encodeURIComponent(globalParams.zoe_password),
+		method:"get"
+	};
+	//adapter.log.info("url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from gigyarooturl server');
+  		} else {
+			adapter.log.debug('Data received from gigyarooturl server');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("FullBody:"+JSON.stringify(data));
+
+			var sessionInfo=data.sessionInfo;
+			adapter.log.info("sessionInfo:"+JSON.stringify(sessionInfo));
+
+			globalParams.gigyatoken=sessionInfo.cookieValue;
+			
+			gigyaGetJWT(globalParams);
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function gigyaGetJWT(globalParams) {
+	var methodName = "gigyaGetJWT";
+	adapter.log.debug("in:  " + methodName + " v0.01");
 
 	var params={
 		url:globalParams.gigyarooturl + 
+>>>>>>> 69fadff948b7473e960f857decc0d8496669ba29
 			'/accounts.getJWT?oauth_token=' + encodeURIComponent(globalParams.gigyatoken) + 
 			'&fields=' + encodeURIComponent('data.personId,data.gigyaDataCenter') + 
 			'&expiration=' + encodeURIComponent('900'),
@@ -368,6 +414,7 @@ function getKamereonCars(globalParams) {
 				}
 			}
 		*/
+<<<<<<< HEAD
 
 			getBatteryStatus(globalParams);
 
@@ -388,6 +435,28 @@ function getBatteryStatus(globalParams) {
 	var methodName = "getBatteryStatus";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
+=======
+
+			getBatteryStatus(globalParams);
+
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+
+
+function getBatteryStatus(globalParams) {
+	var methodName = "getBatteryStatus";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+>>>>>>> 69fadff948b7473e960f857decc0d8496669ba29
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
@@ -434,6 +503,8 @@ function getBatteryStatus(globalParams) {
                         setValue(globalParams.zoe_vin,"batteryTemperature","float",batteryTemperature,"data");
 
 			getCockpit(globalParams);			
+<<<<<<< HEAD
+=======
 		}
 	});
 
@@ -443,6 +514,97 @@ function getBatteryStatus(globalParams) {
 		process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
+}
+
+function getCockpit(globalParams) {
+	var methodName = "getCockpit";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/cockpit'+
+			'?country='+ encodeURIComponent('FR'),
+		method:"get",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
+			'Content-Type':'application/vnd.api+json'
+		}
+	};
+	adapter.log.info("getCockpit-url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getCockpit service');
+			adapter.log.info('error:'+error);
+			adapter.log.info('response:'+JSON.stringify(response));
+  		} else {
+			adapter.log.debug('Data received from getCockpit service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getCockpit:"+JSON.stringify(data));
+
+			getHVACStatus(globalParams);
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function getHVACStatus(globalParams) {
+	var methodName = "getHVACStatus";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/hvac-status'+
+			'?country='+ encodeURIComponent('FR'),
+		method:"get",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
+			'Content-Type':'application/vnd.api+json'
+		}
+	};
+	adapter.log.info("getHVACStatus-url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getHVACStatus service');
+			adapter.log.info('error:'+error);
+			adapter.log.info('response:'+JSON.stringify(response));
+  		} else {
+			adapter.log.debug('Data received from getHVACStatus service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getHVACStatus:"+JSON.stringify(data));
+
+			var attributes=data.data.attributes;
+			var hvacOn=attributes.hvacStatus!="off";
+
+			setValue(globalParams.zoe_vin,"externalTemperature","float",attributes.externalTemperature,"data");
+                        setValue(globalParams.zoe_vin,"hvacOn","boolean",hvacOn,"data");
+			
+>>>>>>> 69fadff948b7473e960f857decc0d8496669ba29
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+<<<<<<< HEAD
 }
 
 function getCockpit(globalParams) {
@@ -539,6 +701,8 @@ function getHVACStatus(globalParams) {
 		process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
+=======
+>>>>>>> 69fadff948b7473e960f857decc0d8496669ba29
 }
 
 function fetchPrecon(token,zoe_vin) {

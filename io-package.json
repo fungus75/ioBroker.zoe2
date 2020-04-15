@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.0.1",
+		"version": "0.0.2",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,10 +9,13 @@
 		},
 		"materialize": true,
         	"news": {
-            		"0.0.1": {
+            		"0.0.2": {
                 		"en": "Basic Readonly Features",
                 		"de": "Grundlegende, nur lesende, Fnktionen"
-	    		}
+	    		},
+			"0.0.1": {
+				"en": "Initial commit on github, not realy working",
+				"de": "Erster commit auf github, nicht wirklich funktionstuechtig"
         	},
 		"platform": "Javascript/Node.js",
 	        "main": "main.js",

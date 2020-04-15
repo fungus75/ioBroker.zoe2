@@ -30,10 +30,9 @@ After that the adapter should show up in the ioBroker-Admin-View.
    - remaining range in kilometer
    - remaining time of charging
    - calculated endPoint of charing (charging_finished_at)
-   - Status of last precon (date, type and result)
-- Write to Zoe:
-   - Precon Now
-   - Charge Now
+   - battery temperature
+   - external temperature (not that accurate)
+
 
 ### Please Note!!
 
@@ -51,6 +50,10 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 
 ## Changelog
+
+### 0.0.2 (2020-04-15)
+- first working version for github
+- reads out some values (as shown in the Features list)
 
 ### 0.0.1 (2020-04-06)
 - nonworking version, just to create initial repo on github

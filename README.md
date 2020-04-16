@@ -51,6 +51,9 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 ## Changelog
 
+### 0.0.3 (2020-04-16)
+- added: totalMileage
+
 ### 0.0.2 (2020-04-15)
 - first working version for github
 - reads out some values (as shown in the Features list)

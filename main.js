@@ -475,6 +475,9 @@ function getCockpit(globalParams) {
 			if (typeof body == "string") data=JSON.parse(body); 
 			adapter.log.info("getCockpit:"+JSON.stringify(data));
 
+			var totalMileage=data.data.attributes.totalMileage;
+			if (totalMileage !== undefined) setValue(globalParams.zoe_vin,"totalMileage","float",totalMileage,"data");
+
 			getHVACStatus(globalParams);
 		}
 	});

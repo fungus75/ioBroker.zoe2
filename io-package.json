@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.0.3",
+		"version": "0.0.4",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+			"0.0.4": {
+				"en": "Added preconNow",
+				"de": "preconNow - Standheizung aktivieren - hinzugefuegt"
+			},
 			"0.0.3": {
 				"en": "Added total Mileage",
 				"de": "totalMileage - Totale KM - hinzugefuegt"

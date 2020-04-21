@@ -526,9 +526,7 @@ function getHVACStatus(globalParams) {
 			setValue(globalParams.zoe_vin,"externalTemperature","float",attributes.externalTemperature,"data");
                         setValue(globalParams.zoe_vin,"hvacOn","boolean",hvacOn,"data");
 
-                        setTimeout(function() {
-                                process.exit(0);
-                        }, 10000);
+			checkPrecon(globalParams);
 		}
 	});
 
@@ -539,6 +537,80 @@ function getHVACStatus(globalParams) {
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
+
+function checkPrecon(globalParams) {
+	var methodName = "checkPrecon";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	adapter.setObjectNotExists(globalParams.zoe_vin+".preconNow", {
+		type : 'state',
+		common: {
+			name : 'preconNow',
+			type : 'boolean',
+			role : 'button',
+			ack : true
+		},
+		native : {}
+	});
+
+
+	// read status of button precon and charge
+	adapter.getState(globalParams.zoe_vin+".preconNow", function (err, state) {
+		if (state!=null && state.val) {
+			adapter.log.info("preconNow pressed!!!");
+			adapter.setState(globalParams.zoe_vin+".preconNow",false,true); // set back to false
+			startStopPrecon(globalParams,true,21);
+		}
+
+                setTimeout(function() {
+                        process.exit(0);
+                }, 10000);
+	});
+}
+
+function startStopPrecon(globalParams,startIt,temperature) {
+	var methodName = "startStopPrecon";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/hvac-start'+
+			'?country='+ encodeURIComponent('FR'),
+		method:"post",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
+			'Content-Type':'application/vnd.api+json'
+		},
+		json: {
+			data: {
+				'type': 'HvacStart',
+                		'attributes': {
+					'action': startIt?'start':'stop',
+					'targetTemperature': temperature
+				}
+			}
+		}
+	};
+	adapter.log.info("startStopPrecon-url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from startStopPrecon service');
+			adapter.log.info('error:'+error);
+			adapter.log.info('response:'+JSON.stringify(response));
+  		} else {
+			adapter.log.debug('Data received from startStopPrecon service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("startStopPrecon:"+JSON.stringify(data));
+		}
+	});
+}
+
+
 
 function fetchPrecon(token,zoe_vin) {
         var url="https://www.services.renault-ze.com/api/vehicle/"+zoe_vin+"/air-conditioning/last";

@@ -32,6 +32,8 @@ After that the adapter should show up in the ioBroker-Admin-View.
    - calculated endPoint of charing (charging_finished_at)
    - battery temperature
    - external temperature (not that accurate)
+- Write this parameters:
+   - preconNow: starts precon/hvac (write true to that node, or press the button)
 
 
 ### Please Note!!
@@ -39,6 +41,11 @@ After that the adapter should show up in the ioBroker-Admin-View.
 Communication with ZOE or Renault-Services is done only during the interval-times with is 10 Minutes.
 So if you press preconNow or chargeNow, it will take up to the next interval to send it to ZOE and it will take up to the
 very next interval to get the status back.
+
+The new ZOE API from Renault seems to be very lacy. That means that it only shows new values when there is something important.
+As far as I found out, the most important thing is battery-level. That means i.E. the external temperature is not updated,
+if the car stands at home. Only if i.E. the ZOE charges, the external temperature will be updated. If charging is finished,
+still no new update. When driving, the battery level gets lower and lower and therefore it should update very regulary.
 
 ### Thanks  
 
@@ -50,6 +57,9 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 
 ## Changelog
+
+### 0.0.4 (2020-04-21)
+- added: preconNow => starts precon (hvac)
 
 ### 0.0.3 (2020-04-16)
 - added: totalMileage

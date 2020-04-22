@@ -76,11 +76,16 @@ function main() {
 	var zoe_locale   = adapter.config.locale;
 	var zoe_vin      = adapter.config.vin;
 
+	var localeParts=zoe_locale.split("_");
+	var country="FR";
+	if (localeParts.length>=2) country=localeParts[1];
+
 
 	adapter.log.info("Username:"+zoe_username);
 	//adapter.log.info("Password:"+zoe_password);
 	adapter.log.info("Locale:"  +zoe_locale  );
 	adapter.log.info("VIN:"     +zoe_vin     );
+	adapter.log.info("Country:" +country     );
 
 	var params={
 		url:"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_"+zoe_locale+".json",
@@ -115,7 +120,8 @@ function main() {
 				gigyarooturl:gigyarooturl,
 				gigyaapikey:gigyaapikey,
 				kamereonrooturl:kamereonrooturl,
-				kamereonapikey:kamereonapikey
+				kamereonapikey:kamereonapikey,
+				country:country
 			};
 
 			// create root config element
@@ -259,7 +265,7 @@ function getKamereonAccount(globalParams) {
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/persons/' + globalParams.kamereonpersonid+
-			'?country='+ encodeURIComponent('FR'),
+			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
@@ -301,7 +307,7 @@ function getKamereonAccessToken(globalParams) {
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/' + globalParams.kamereonaccountid+'/kamereon/token'+
-			'?country='+ encodeURIComponent('FR'),
+			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
@@ -341,7 +347,7 @@ function getKamereonCars(globalParams) {
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/' + globalParams.kamereonaccountid+'/vehicles'+
-			'?country='+ encodeURIComponent('FR'),
+			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
@@ -392,7 +398,7 @@ function getBatteryStatus(globalParams) {
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
 			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/battery-status'+
-			'?country='+ encodeURIComponent('FR'),
+			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
@@ -453,7 +459,7 @@ function getCockpit(globalParams) {
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
 			'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/cockpit'+
-			'?country='+ encodeURIComponent('FR'),
+			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
@@ -498,7 +504,7 @@ function getHVACStatus(globalParams) {
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
 			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/hvac-status'+
-			'?country='+ encodeURIComponent('FR'),
+			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
@@ -576,7 +582,7 @@ function startStopPrecon(globalParams,startIt,temperature) {
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
 			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/hvac-start'+
-			'?country='+ encodeURIComponent('FR'),
+			'?country='+ encodeURIComponent(globalParams.country),
 		method:"post",
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,

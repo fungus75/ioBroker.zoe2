@@ -58,6 +58,9 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 ## Changelog
 
+### 0.0.5 (2020-04-29)
+- added: config-paramter ignore API error (when set, the Adapter tries to ignore some API-Errors)
+
 ### 0.0.4 (2020-04-21)
 - added: preconNow => starts precon (hvac)
 

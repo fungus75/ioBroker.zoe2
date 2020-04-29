@@ -66,7 +66,8 @@
 		$('#save').button("enable");
 	}).keyup(onChange);
 
-	$('#ignoreApiError').val(settings.ignoreApiError).change(function() {
+	$('#ignoreApiError').prop('checked',settings.ignoreApiError).click(function() {
+		$('#ignoreApiError').prop('checked', !$('#ignoreApiError').prop('checked'));
 		changed = true;
 		$('#save').button("enable");
 	}).keyup(onChange);
@@ -84,7 +85,7 @@
 	    password : $('#password').val(),
 	    vin : $('#vin').val(),
             locale : $('#locale').val(),
-	    ignoreApiError : $('#ignoreApiError').val()
+	    ignoreApiError : $('#ignoreApiError').prop('checked')
 	  });
   }
 </script>

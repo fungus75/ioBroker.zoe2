@@ -87,7 +87,7 @@ function main() {
 	adapter.log.info("Locale:"  +zoe_locale  );
 	adapter.log.info("VIN:"     +zoe_vin     );
 	adapter.log.info("Country:" +country     );
-	adapter.log.info("ignoreApiError:"+ignoreApiError);
+	adapter.log.info("ignoreApiError:"+(ignoreApiError?'true':'false'));
 
 	var params={
 		url:"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_"+zoe_locale+".json",

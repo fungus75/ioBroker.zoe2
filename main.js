@@ -400,7 +400,7 @@ function getBatteryStatus(globalParams) {
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/battery-status'+
+			'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/battery-status'+
 			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {
@@ -428,10 +428,15 @@ function getBatteryStatus(globalParams) {
 
 			var charge_level   =attributes.batteryLevel;
 			var plugged        =attributes.plugStatus==1;
-			var charging       =attributes.chargeStatus==1;
-			var remaining_range=attributes.rangeHvacOff;
-			var remaining_time =attributes.timeRequiredToFullSlow;
+			var charging       =attributes.chargingStatus==1;
+			var remaining_range=attributes.batteryAutonomy;
+			var remaining_time =attributes.chargingRemainingTime;
 			var batteryTemperature=attributes.batteryTemperature;
+			var chargingPower  =attributes.chargingInstantaneousPower;
+			var batteryCapacity=attributes.batteryCapacity;
+			var batteryAvailableEnergy=attributes.batteryAvailableEnergy
+
+
 			if (remaining_time === undefined) remaining_time = 0;
 			var chargingFinishedAt=new Date(Date.now() + remaining_time * 60000);
 			if (remaining_time == 0) chargingFinishedAt=null;
@@ -443,6 +448,10 @@ function getBatteryStatus(globalParams) {
                         setValue(globalParams.zoe_vin,"plugged","boolean",plugged,"data");
                         setValue(globalParams.zoe_vin,"charging","boolean",charging,"data");
                         setValue(globalParams.zoe_vin,"batteryTemperature","float",batteryTemperature,"data");
+                        setValue(globalParams.zoe_vin,"chargingPower","float",chargingPower,"data");
+                        setValue(globalParams.zoe_vin,"batteryCapacity","float",batteryCapacity,"data");
+                        setValue(globalParams.zoe_vin,"batteryAvailableEnergy","float",batteryAvailableEnergy,"data");
+			
 
 			getCockpit(globalParams);			
 		}

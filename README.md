@@ -12,6 +12,13 @@ If this adapter is not available on the ioBroker-Admin-View, please use the foll
 
 ```npm install https://github.com/fungus75/ioBroker.zoe2/tarball/master/```
 
+Or you can use the GitHub-Button (labeled: install from own URL) in the Adapter-View and enter this URL on the "other"-Tab. This can also be used to update to the current adapter-version:
+
+```https://github.com/fungus75/ioBroker.zoe2/tarball/master/```
+
+
+
+
 After that the adapter should show up in the ioBroker-Admin-View.
 
 ### Configuration

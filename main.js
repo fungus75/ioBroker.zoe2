@@ -75,6 +75,7 @@ function main() {
 	var zoe_password = adapter.config.password;
 	var zoe_locale   = adapter.config.locale;
 	var zoe_vin      = adapter.config.vin;
+        var ignoreApiError = adapter.config.ignoreApiError;
 
 	var localeParts=zoe_locale.split("_");
 	var country="FR";
@@ -86,6 +87,7 @@ function main() {
 	adapter.log.info("Locale:"  +zoe_locale  );
 	adapter.log.info("VIN:"     +zoe_vin     );
 	adapter.log.info("Country:" +country     );
+	adapter.log.info("ignoreApiError:"+ignoreApiError);
 
 	var params={
 		url:"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_"+zoe_locale+".json",
@@ -121,7 +123,8 @@ function main() {
 				gigyaapikey:gigyaapikey,
 				kamereonrooturl:kamereonrooturl,
 				kamereonapikey:kamereonapikey,
-				country:country
+				country:country,
+				ignoreApiError:ignoreApiError
 			};
 
 			// create root config element

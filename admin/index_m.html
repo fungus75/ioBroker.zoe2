@@ -38,7 +38,8 @@
     "Username" : { "de" : "Benutzername"},
     "Password" : { "de" : "Kennwort"},
     "Locale"   : { "de" : "Laenderversion, z.B. de_DE"},
-    "VIN" : { "de" : "Fahrgestellnummer"}
+    "VIN" : { "de" : "Fahrgestellnummer"},
+    "ignoreApiError" : { "de" : "Ignoriere API Fehler" }
   };
 
   // the function loadSettings has to exist ...
@@ -64,6 +65,13 @@
 		changed = true;
 		$('#save').button("enable");
 	}).keyup(onChange);
+
+	$('#ignoreApiError').val(settings.ignoreApiError).change(function() {
+		changed = true;
+		$('#save').button("enable");
+	}).keyup(onChange);
+
+
     onChange(false);
   }
 
@@ -76,6 +84,7 @@
 	    password : $('#password').val(),
 	    vin : $('#vin').val(),
             locale : $('#locale').val(),
+	    ignoreApiError : $('#ignoreApiError').val()
 	  });
   }
 </script>
@@ -109,6 +118,11 @@
     <tr>
       <td><label for="vin" class="translate">VIN</label></td>
       <td><input class="value" type="text" id="vin" size="30" /></td>
+    </tr>
+
+    <tr>
+      <td><label for="ignoreApiError" class="translate">IgnoreApiError</label></td>
+      <td><input class="value" type="checkbox" id="ignoreApiError" /></td>
     </tr>
 
   </table>

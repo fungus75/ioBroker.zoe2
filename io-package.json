@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.0.5",
+		"version": "0.0.6",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+			"0.0.6": {
+				"en": "Added: chargingPower, batteryCapacity, batteryAvailableEnergy; using battery_status V2 API",
+				"de": "Neue Paramter: chargingPower, batteryCapacity, batteryAvailableEnergy; verwendung von battery_status V2 API"
+			},
 			"0.0.5": {
 				"en": "Added config parameter ignoreApiError",
 				"de": "Konfigurations-Parameter ignoreApiError hinzugefuegt"

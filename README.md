@@ -39,9 +39,18 @@ After that the adapter should show up in the ioBroker-Admin-View.
    - calculated endPoint of charing (charging_finished_at)
    - battery temperature
    - external temperature (not that accurate)
+   - chargingPower
+   - batteryCapacity
+   - batteryAvailableEnergy
 - Write this parameters:
    - preconNow: starts precon/hvac (write true to that node, or press the button)
 
+
+Some parameters only work on newer ZOEs.
+
+### Testet with the folowing ZOEs:
+- Zoe Phase 2 (Thanks Jack-RK-24)
+- Zoe R210 (1st Generation, tested by fungus75)
 
 ### Please Note!!
 
@@ -64,6 +73,12 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 
 ## Changelog
+
+### 0.0.6 (2020-04-30)
+- added: chargingPower
+- added: batteryCapacity
+- added: batteryAvailableEnergy
+- changed: Using battery-status v2 API (supplies better values for newer ZOEs, thanks Jack-RK-24 for testing)
 
 ### 0.0.5 (2020-04-29)
 - added: config-paramter ignore API error (when set, the Adapter tries to ignore some API-Errors)

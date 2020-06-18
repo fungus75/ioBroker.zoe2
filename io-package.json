@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.0.7",
+		"version": "0.0.8",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+			"0.0.8": {
+				"en": "Bugfixes remaining_Time, gps-coordinates",
+				"de": "Bugfixes bei remaining_Time und GPS-Koordinaten"
+			},
 			"0.0.7": {
 				"en": "Added: gpsLatitude, gpsLongitude (works only on newer ZOEs), small BugFix",
 				"de": "Neue Paramter: gpsLatitude, gpsLongitude (funktionieren nur auf neueren ZOEs); kleiner Bugfix"

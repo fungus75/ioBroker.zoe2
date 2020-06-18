@@ -42,6 +42,7 @@ After that the adapter should show up in the ioBroker-Admin-View.
    - chargingPower
    - batteryCapacity
    - batteryAvailableEnergy
+   - gpsLatitude and gpsLongitude, works only on newer ZOEs
 - Write this parameters:
    - preconNow: starts precon/hvac (write true to that node, or press the button)
 
@@ -76,6 +77,8 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 ### 0.0.7
 - bugfix: #2
+- added: gpsLatitude
+- added: gpsLongitude 
 
 ### 0.0.6 (2020-04-30)
 - added: chargingPower

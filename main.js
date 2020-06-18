@@ -491,7 +491,7 @@ function getCockpit(globalParams) {
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
 
-			if (globalParams.ignoreApiError) getHVACStatus(globalParams);
+			if (globalParams.ignoreApiError) getLocation(globalParams);
   		} else {
 			adapter.log.debug('Data received from getCockpit service');
 			var data = body;
@@ -500,6 +500,55 @@ function getCockpit(globalParams) {
 
 			var totalMileage=data.data.attributes.totalMileage;
 			if (totalMileage !== undefined) setValue(globalParams.zoe_vin,"totalMileage","float",totalMileage,"data");
+
+			getLocation(globalParams);
+		}
+	});
+
+	// Force terminate
+	setTimeout(function() {
+		adapter.log.error('Termination forced due to timeout !');
+		process.exit(1);
+	}, 3 * 60 * 1000);
+	adapter.log.debug("out: " + methodName);
+}
+
+function getLocation(globalParams) {
+	var methodName = "getLocation";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+			'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/location'+
+			'?country='+ encodeURIComponent(globalParams.country),
+		method:"get",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
+			'Content-Type':'application/vnd.api+json'
+		}
+	};
+	adapter.log.info("getLocation-url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from getLocation service');
+			adapter.log.info('error:'+error);
+			adapter.log.info('response:'+JSON.stringify(response));
+
+			if (globalParams.ignoreApiError) getHVACStatus(globalParams);
+  		} else {
+			adapter.log.debug('Data received from getLocation service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("getLocation:"+JSON.stringify(data));
+			
+			var gpsLatitude=data.data.attributes.gpsLatitude;
+			if (gpsLatitude !== undefined) setValue(globalParams.zoe_vin,"gpsLatitude","float",gpsLatitude,"data");
+			var gpsLongitude=data.data.attributes.gpsLongitude;
+			if (gpsLongitude !== undefined) setValue(globalParams.zoe_vin,"gpsLongitude","float",gpsLongitude,"data");
 
 			getHVACStatus(globalParams);
 		}
@@ -512,6 +561,7 @@ function getCockpit(globalParams) {
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
+
 
 function getHVACStatus(globalParams) {
 	var methodName = "getHVACStatus";

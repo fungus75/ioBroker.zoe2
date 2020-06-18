@@ -520,7 +520,7 @@ function getLocation(globalParams) {
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-			'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/location'+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/location'+
 			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {

@@ -75,7 +75,7 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 ## Changelog
 
-### 0.0.7
+### 0.0.7 (2020-06-18)
 - bugfix: #2
 - added: gpsLatitude
 - added: gpsLongitude 

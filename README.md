@@ -74,6 +74,9 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 ## Changelog
 
+### 0.0.7
+- bugfix: #2
+
 ### 0.0.6 (2020-04-30)
 - added: chargingPower
 - added: batteryCapacity

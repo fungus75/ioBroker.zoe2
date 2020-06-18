@@ -436,10 +436,11 @@ function getBatteryStatus(globalParams) {
 			var batteryCapacity=attributes.batteryCapacity;
 			var batteryAvailableEnergy=attributes.batteryAvailableEnergy
 
-
 			if (remaining_time === undefined) remaining_time = 0;
 			var chargingFinishedAt=new Date(Date.now() + remaining_time * 60000);
 			if (remaining_time == 0) chargingFinishedAt=null;
+
+			if (!charging) chargingPower = 0;
 
                         setValue(globalParams.zoe_vin,"charge_level","float",charge_level,"data");
                         setValue(globalParams.zoe_vin,"remaining_range","float",remaining_range,"data");

@@ -52,6 +52,7 @@ Some parameters only work on newer ZOEs.
 ### Testet with the folowing ZOEs:
 - Zoe Phase 2 (Thanks Jack-RK-24)
 - Zoe R210 (1st Generation, tested by fungus75)
+- Zoe R90 (Thanks arturwolf)
 
 ### Please Note!!
 

@@ -552,8 +552,11 @@ function getLocation(globalParams) {
 			adapter.log.info("getLocation:"+JSON.stringify(data));
 			
 			var gpsLatitude=data.data.attributes.gpsLatitude;
+			adapter.log.info('gpsLatitude:'+gpsLatitude);
 			if (gpsLatitude !== undefined) setValue(globalParams.zoe_vin,"gpsLatitude","float",gpsLatitude,"data");
+
 			var gpsLongitude=data.data.attributes.gpsLongitude;
+			adapter.log.info('gpsLongitude:'+gpsLongitude);
 			if (gpsLongitude !== undefined) setValue(globalParams.zoe_vin,"gpsLongitude","float",gpsLongitude,"data");
 
 			getHVACStatus(globalParams);

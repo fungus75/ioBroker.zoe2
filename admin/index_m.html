@@ -39,7 +39,8 @@
     "Password" : { "de" : "Kennwort"},
     "Locale"   : { "de" : "Laenderversion, z.B. de_DE"},
     "VIN" : { "de" : "Fahrgestellnummer"},
-    "ignoreApiError" : { "de" : "Ignoriere API Fehler" }
+    "ignoreApiError" : { "de" : "Ignoriere API Fehler" },
+    "useLocationApi" : { "de" : "Die LocationAPI verwenden" }
   };
 
   // the function loadSettings has to exist ...
@@ -71,6 +72,14 @@
 		changed = true;
 		$('#save').button("enable");
 	}).keyup(onChange);
+	
+	$('#useLocationApi').prop('checked',settings.useLocationApi).click(function() {
+		//$('#ignoreApiError').prop('checked', !$('#ignoreApiError').prop('checked'));
+		changed = true;
+		$('#save').button("enable");
+	}).keyup(onChange);
+	
+	
 
 
     onChange(false);
@@ -85,7 +94,8 @@
 	    password : $('#password').val(),
 	    vin : $('#vin').val(),
             locale : $('#locale').val(),
-	    ignoreApiError : $('#ignoreApiError').prop('checked')
+	    ignoreApiError : $('#ignoreApiError').prop('checked'),
+	    useLocationApi : $('#useLocationApi').prop('checked')
 	  });
   }
 </script>
@@ -124,6 +134,11 @@
     <tr>
       <td><label for="ignoreApiError" class="translate">IgnoreApiError</label></td>
       <td><input class="value" type="checkbox" id="ignoreApiError" /></td>
+    </tr>
+
+    <tr>
+      <td><label for="useLocationApi" class="translate">UseLocationApi</label></td>
+      <td><input class="value" type="checkbox" id="useLocationApi" /></td>
     </tr>
 
   </table>

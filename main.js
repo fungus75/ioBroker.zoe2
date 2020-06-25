@@ -124,7 +124,8 @@ function main() {
 				kamereonrooturl:kamereonrooturl,
 				kamereonapikey:kamereonapikey,
 				country:country,
-				ignoreApiError:ignoreApiError
+				ignoreApiError:ignoreApiError,
+				useLocationApi:adapter.config.useLocationApi
 			};
 
 			// create root config element
@@ -522,6 +523,7 @@ function getCockpit(globalParams) {
 function getLocation(globalParams) {
 	var methodName = "getLocation";
 	adapter.log.debug("in:  " + methodName + " v0.01");
+	if (!globalParams.useLocationApi) return getHVACStatus(globalParams);
 
 	var params={
 		url:globalParams.kamereonrooturl + 

@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.0.8",
+		"version": "0.0.9",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+			"0.0.9: {
+				"en": "getLocation can be turned off on older ZOEs ",
+				"de": "getLocation kann in der Konfiguration ein oder ausgeschalten werden (für ältere ZOEs)"
+			},
 			"0.0.8": {
 				"en": "Bugfixes remaining_Time, gps-coordinates",
 				"de": "Bugfixes bei remaining_Time und GPS-Koordinaten"

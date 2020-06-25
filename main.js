@@ -523,7 +523,10 @@ function getCockpit(globalParams) {
 function getLocation(globalParams) {
 	var methodName = "getLocation";
 	adapter.log.debug("in:  " + methodName + " v0.01");
-	if (!globalParams.useLocationApi) return getHVACStatus(globalParams);
+	if (!globalParams.useLocationApi) {
+		adapter.log.info(methodName+" not enabled in config");
+		return getHVACStatus(globalParams);
+	}
 
 	var params={
 		url:globalParams.kamereonrooturl + 

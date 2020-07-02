@@ -291,48 +291,7 @@ function getKamereonAccount(globalParams) {
 			globalParams.kamereonaccountid=accounts[0].accountId;
 			adapter.log.info("kamereonaccountid:"+globalParams.kamereonaccountid);
 
-			getKamereonAccessToken(globalParams);
-
-		}
-	});
-
-	// Force terminate
-	setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
-	}, 3 * 60 * 1000);
-	adapter.log.debug("out: " + methodName);
-}
-
-function getKamereonAccessToken(globalParams) {
-	var methodName = "getKamereonAccessToken";
-	adapter.log.debug("in:  " + methodName + " v0.01");
-
-	var params={
-		url:globalParams.kamereonrooturl + 
-			'/commerce/v1/accounts/' + globalParams.kamereonaccountid+'/kamereon/token'+
-			'?country='+ encodeURIComponent(globalParams.country),
-		method:"get",
-		headers: {
-    			'x-gigya-id_token': globalParams.gigya_jwttoken,
-    			'apikey': globalParams.kamereonapikey
-		}
-	};
-	//adapter.log.info("url:"+params.url);
-
-	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
-  			adapter.log.error('No valid response from getKamereonAccessToken service');
-  		} else {
-			adapter.log.debug('Data received from getKamereonAccessToken service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
-			adapter.log.info("getKamereonAccessToken:"+JSON.stringify(data));
-			globalParams.kamereonaccesstoken=data.accessToken;
-			adapter.log.info("kamereonaccesstoken:"+globalParams.kamereonaccesstoken);
-
 			getKamereonCars(globalParams);
-
 		}
 	});
 
@@ -356,7 +315,6 @@ function getKamereonCars(globalParams) {
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
     			'apikey': globalParams.kamereonapikey,
-			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken
 		}
 	};
 	//adapter.log.info("url:"+params.url);
@@ -392,8 +350,6 @@ function getKamereonCars(globalParams) {
 	adapter.log.debug("out: " + methodName);
 }
 
-
-
 function getBatteryStatus(globalParams) {
 	var methodName = "getBatteryStatus";
 	adapter.log.debug("in:  " + methodName + " v0.01");
@@ -407,7 +363,6 @@ function getBatteryStatus(globalParams) {
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
     			'apikey': globalParams.kamereonapikey,
-			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
 			'Content-Type':'application/vnd.api+json'
 		}
 	};
@@ -486,7 +441,6 @@ function getCockpit(globalParams) {
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
     			'apikey': globalParams.kamereonapikey,
-			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
 			'Content-Type':'application/vnd.api+json'
 		}
 	};
@@ -537,7 +491,6 @@ function getLocation(globalParams) {
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
     			'apikey': globalParams.kamereonapikey,
-			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
 			'Content-Type':'application/vnd.api+json'
 		}
 	};
@@ -590,7 +543,6 @@ function getHVACStatus(globalParams) {
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
     			'apikey': globalParams.kamereonapikey,
-			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
 			'Content-Type':'application/vnd.api+json'
 		}
 	};
@@ -670,7 +622,6 @@ function startStopPrecon(globalParams,startIt,temperature) {
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
     			'apikey': globalParams.kamereonapikey,
-			'x-kamereon-authorization' : 'Bearer ' + globalParams.kamereonaccesstoken,
 			'Content-Type':'application/vnd.api+json'
 		},
 		json: {
@@ -916,4 +867,3 @@ function getHrefParamValue(href, paramName) {
 	}
 	return paramValue;
 }
-

@@ -1,6 +1,7 @@
 ![Logo](admin/zoe.png)
 # iobroker.zoe2
 =================
+[![Build Status](https://travis-ci.org/fungus75/ioBroker.zoe2.svg?branch=master)](https://travis-ci.org/fungus75/ioBroker.zoe2)
 
 Simple ioBroker-Adapter to get some basic values from Renault ZOE and use it in ioBroker. 
 

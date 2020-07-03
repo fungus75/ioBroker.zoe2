@@ -76,6 +76,9 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 ## Changelog
 
+### 0.1.0 (2020-07-03)
+- bugfix: https://github.com/fungus75/ioBroker.zoe2/issues/6, thanks to https://github.com/damack
+
 ### 0.0.9 (2020-06-25)
 - added: getLocation can be turned on/off in config (useful for older ZOEs which do not allow getLocation)
 

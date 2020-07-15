@@ -554,7 +554,7 @@ function getHVACStatus(globalParams) {
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
 
-			if (globalParams.ignoreApiError) checkPrecon(globalParams);
+			if (globalParams.ignoreApiError) checkPreconAndCharge(globalParams);
   		} else {
 			adapter.log.debug('Data received from getHVACStatus service');
 			var data = body;
@@ -567,7 +567,7 @@ function getHVACStatus(globalParams) {
 			setValue(globalParams.zoe_vin,"externalTemperature","float",attributes.externalTemperature,"data");
                         setValue(globalParams.zoe_vin,"hvacOn","boolean",hvacOn,"data");
 
-			checkPrecon(globalParams);
+			checkPreconAndCharge(globalParams);
 		}
 	});
 
@@ -579,8 +579,8 @@ function getHVACStatus(globalParams) {
 	adapter.log.debug("out: " + methodName);
 }
 
-function checkPrecon(globalParams) {
-	var methodName = "checkPrecon";
+function checkPreconAndCharge(globalParams) {
+	var methodName = "checkPreconAndCharge";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
 	adapter.setObjectNotExists(globalParams.zoe_vin+".preconNow", {
@@ -593,6 +593,28 @@ function checkPrecon(globalParams) {
 		},
 		native : {}
 	});
+        adapter.setObjectNotExists(globalParams.zoe_vin+".chargeCancel", {
+                type : 'state',
+                common: {
+                        name : 'chargeCancel',
+                        type : 'boolean',
+                        role : 'button',
+                        ack : true
+                },
+                native : {}
+        });
+        adapter.setObjectNotExists(globalParams.zoe_vin+".chargeEnable", {
+                type : 'state',
+                common: {
+                        name : 'chargeEnable',
+                        type : 'boolean',
+                        role : 'button',
+                        ack : true
+                },
+                native : {}
+        });
+
+
 
 
 	// read status of button precon and charge
@@ -607,6 +629,33 @@ function checkPrecon(globalParams) {
                         process.exit(0);
                 }, 10000);
 	});
+
+	adapter.getState(globalParams.zoe_vin+".chargeCancel", function (err, state) {
+                if (state!=null && state.val) {
+                        adapter.log.info("chargeCancel pressed!!!");
+                        adapter.setState(globalParams.zoe_vin+".chargeCancel",false,true); // set back to false
+                        //chargeStartOrCancel(globalParams,false);
+                }
+
+                setTimeout(function() {
+                        process.exit(0);
+                }, 10000);
+        });
+        adapter.getState(globalParams.zoe_vin+".chargeEnable", function (err, state) {
+                if (state!=null && state.val) {
+                        adapter.log.info("chargeEnable pressed!!!");
+                        adapter.setState(globalParams.zoe_vin+".chargeEnable",false,true); // set back to false
+                        //chargeStartOrCancel(globalParams,true);
+                }
+
+                setTimeout(function() {
+                        process.exit(0);
+                }, 10000);
+        });
+
+
+
+
 }
 
 function startStopPrecon(globalParams,startIt,temperature) {

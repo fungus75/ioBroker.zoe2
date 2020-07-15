@@ -634,7 +634,7 @@ function checkPreconAndCharge(globalParams) {
                 if (state!=null && state.val) {
                         adapter.log.info("chargeCancel pressed!!!");
                         adapter.setState(globalParams.zoe_vin+".chargeCancel",false,true); // set back to false
-                        //chargeStartOrCancel(globalParams,false);
+                        chargeStartOrCancel(globalParams,false);
                 }
 
                 setTimeout(function() {
@@ -645,7 +645,7 @@ function checkPreconAndCharge(globalParams) {
                 if (state!=null && state.val) {
                         adapter.log.info("chargeEnable pressed!!!");
                         adapter.setState(globalParams.zoe_vin+".chargeEnable",false,true); // set back to false
-                        //chargeStartOrCancel(globalParams,true);
+                        chargeStartOrCancel(globalParams,true);
                 }
 
                 setTimeout(function() {
@@ -697,6 +697,9 @@ function startStopPrecon(globalParams,startIt,temperature) {
 			adapter.log.info("startStopPrecon:"+JSON.stringify(data));
 		}
 	});
+}
+
+function chargeStartOrCancel(globalParams,startIt) {
 }
 
 function setValue(baseId,name,type,value,role) {

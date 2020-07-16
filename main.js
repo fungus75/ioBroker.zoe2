@@ -748,7 +748,15 @@ function chargeStartOrCancel(globalParams,startIt) {
 					data: {
 						'type': 'ChargeMode',
                 				'attributes': {
-							'schedules': startIt?'always_charging':'schedule_mode'
+							'schedules': [{'id':1,'activated':true,
+								'monday':{'startTime':'T23:45Z','duration':15},
+								'tuesday':{'startTime':'T23:45Z','duration':15},
+								'wednesday':{'startTime':'T23:45Z','duration':15},
+								'thursday':{'startTime':'T23:45Z','duration':15},
+								'friday':{'startTime':'T23:45Z','duration':15},
+								'saturday':{'startTime':'T23:45Z','duration':15},
+								'sunday':{'startTime':'T23:45Z','duration':15}
+								}]
 						}
 					}		
 				};

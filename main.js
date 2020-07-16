@@ -634,6 +634,7 @@ function checkPreconAndCharge(globalParams) {
                 if (state!=null && state.val) {
                         adapter.log.info("chargeCancel pressed!!!");
                         adapter.setState(globalParams.zoe_vin+".chargeCancel",false,true); // set back to false
+                        adapter.setState(globalParams.zoe_vin+".chargeEnable",false,true); // set Enable also to false (cancel wins!)
                         chargeStartOrCancel(globalParams,false);
                 }
 
@@ -700,6 +701,73 @@ function startStopPrecon(globalParams,startIt,temperature) {
 }
 
 function chargeStartOrCancel(globalParams,startIt) {
+	var methodName = "chargeStartOrCancel";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	var params={
+		url:globalParams.kamereonrooturl + 
+			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/charge-mode'+
+			'?country='+ encodeURIComponent(globalParams.country),
+		method:"post",
+		headers: {
+    			'x-gigya-id_token': globalParams.gigya_jwttoken,
+    			'apikey': globalParams.kamereonapikey,
+			'Content-Type':'application/vnd.api+json'
+		},
+		json: {
+			data: {
+				'type': 'ChargeMode',
+                		'attributes': {
+					'action': startIt?'always_charging':'schedule_mode'
+				}
+			}
+		}
+	};
+	adapter.log.info("chargeStartOrCancel-url:"+params.url);
+
+	request(params, function (error, response, body) {
+	  	if (error || response.statusCode != 200) {
+  			adapter.log.error('No valid response from chargeStartOrCancel service');
+			adapter.log.info('error:'+error);
+			adapter.log.info('response:'+JSON.stringify(response));
+  		} else {
+			adapter.log.debug('Data received from chargeStartOrCancel service');
+			var data = body;
+			if (typeof body == "string") data=JSON.parse(body); 
+			adapter.log.info("chargeStartOrCancel:"+JSON.stringify(data));
+			
+			if (!startIt) {
+				// Set start time to 23:45
+				params.url=globalParams.kamereonrooturl + 
+				'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+				'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/charge-schedule'+
+				'?country='+ encodeURIComponent(globalParams.country);
+				
+				params.json={
+					data: {
+						'type': 'ChargeMode',
+                				'attributes': {
+							'schedules': startIt?'always_charging':'schedule_mode'
+						}
+					}		
+				};
+				
+				request(params, function (error, response, body) {
+		  			if (error || response.statusCode != 200) {
+	  					adapter.log.error('No valid response from chargeStartOrCancel2 service');
+						adapter.log.info('error:'+error);
+						adapter.log.info('response:'+JSON.stringify(response));
+	  				} else {
+						adapter.log.debug('Data received from chargeStartOrCancel2 service');
+						data = body;
+						if (typeof body == "string") data=JSON.parse(body); 
+						adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
+					}
+				});
+			} // if (!startIt)
+		}
+	});
 }
 
 function setValue(baseId,name,type,value,role) {

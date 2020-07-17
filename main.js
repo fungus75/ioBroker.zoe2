@@ -633,9 +633,7 @@ function checkPreconAndCharge(globalParams) {
 	adapter.getState(globalParams.zoe_vin+".chargeCancel", function (err, state) {
                 if (state!=null && state.val) {
                         adapter.log.info("chargeCancel pressed!!!");
-                        adapter.setState(globalParams.zoe_vin+".chargeCancel",false,true); // set back to false
-                        adapter.setState(globalParams.zoe_vin+".chargeEnable",false,true); // set Enable also to false (cancel wins!)
-                        chargeStartOrCancel(globalParams,false);
+                        chargeStartOrCancel(globalParams,false,resetChargeButtons);
                 }
 
                 setTimeout(function() {
@@ -645,19 +643,20 @@ function checkPreconAndCharge(globalParams) {
         adapter.getState(globalParams.zoe_vin+".chargeEnable", function (err, state) {
                 if (state!=null && state.val) {
                         adapter.log.info("chargeEnable pressed!!!");
-                        adapter.setState(globalParams.zoe_vin+".chargeEnable",false,true); // set back to false
-                        chargeStartOrCancel(globalParams,true);
+                        chargeStartOrCancel(globalParams,true,resetChargeButtons);
                 }
 
                 setTimeout(function() {
                         process.exit(0);
                 }, 10000);
         });
-
-
-
-
 }
+
+function resetChargeButtons(globalParams) {
+	adapter.setState(globalParams.zoe_vin+".chargeEnable",false,true);
+	adapter.setState(globalParams.zoe_vin+".chargeCancel",false,true); 
+}
+
 
 function startStopPrecon(globalParams,startIt,temperature) {
 	var methodName = "startStopPrecon";
@@ -700,7 +699,7 @@ function startStopPrecon(globalParams,startIt,temperature) {
 	});
 }
 
-function chargeStartOrCancel(globalParams,startIt) {
+function chargeStartOrCancel(globalParams,startIt,onSuccess) {
 	var methodName = "chargeStartOrCancel";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -736,17 +735,19 @@ function chargeStartOrCancel(globalParams,startIt) {
 			var data = body;
 			if (typeof body == "string") data=JSON.parse(body); 
 			adapter.log.info("chargeStartOrCancel:"+JSON.stringify(data));
-			
-			if (!startIt) {
+
+			if (startIt) {
+				onSuccess(globalParams);
+			} else {
 				// Set start time to 23:45
 				params.url=globalParams.kamereonrooturl + 
 				'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-				'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/charge-schedule'+
+				'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/actions/charge-schedule'+
 				'?country='+ encodeURIComponent(globalParams.country);
 				
 				params.json={
 					data: {
-						'type': 'ChargeMode',
+						'type': 'ChargeSchedule',
                 				'attributes': {
 							'schedules': [{'id':1,'activated':true,
 								'monday':{'startTime':'T23:45Z','duration':15},
@@ -771,6 +772,7 @@ function chargeStartOrCancel(globalParams,startIt) {
 						data = body;
 						if (typeof body == "string") data=JSON.parse(body); 
 						adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
+						onSuccess(globalParams);
 					}
 				});
 			} // if (!startIt)

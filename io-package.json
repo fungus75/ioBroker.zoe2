@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.1.0",
+		"version": "0.1.1",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+        		"0.1.1": {
+        			"en": "added chargeCancel and chargeEnable to controll charging-function if connected",
+        			"de": "chargeCancel und chargeEnable eingebaut um die Ladefunktion wenn verbunden zu kontrolieren"
+        		},
         		"0.1.0": {
         			"en": "fixed the Kamereon token issue",
         			"de": "Bugfix: Kamereon token ausgebaut"

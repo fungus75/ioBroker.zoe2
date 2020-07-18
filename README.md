@@ -51,6 +51,21 @@ After that the adapter should show up in the ioBroker-Admin-View.
    - gpsLatitude and gpsLongitude, works only on newer ZOEs
 - Write this parameters:
    - preconNow: starts precon/hvac (write true to that node, or press the button)
+   - chargeCancel: stops charging
+   - chargeEnable: enables charging
+   
+
+Control Charging:
+
+With the two buttons chargeCancel and chargeEnable charging functionality can be controlled. If chargeCancel is pressed
+(or true is written to this parameter), the charging function is disabled. ZOE should not charge if the power cord is
+connected. On my 1st Gen ZOE this has no effect, so maybe it works on newer ZOEs?
+
+As soon as chargeEnable is pressed (or true is written to this parameter), the charging function should work again.
+
+How is this done: chargeEnable creates a charging-schedule that starts at 23:45 every day and lasts for 15 minutes. That
+looks as it is the shortest amount to be set. Turning charging off complete is not possible with the current API
+(or that parts of the current API that are known).
 
 
 Some parameters only work on newer ZOEs.
@@ -81,6 +96,9 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 
 ## Changelog
+
+### 0.1.1 (2020-07-18)
+- added chargeCancel and chargeEnable. See "controll charging"
 
 ### 0.1.0 (2020-07-03)
 - bugfix: https://github.com/fungus75/ioBroker.zoe2/issues/6, thanks to https://github.com/damack

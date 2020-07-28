@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.1.1",
+		"version": "0.1.2",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+        		"0.1.2": {
+        			"en": "added charge-start API-call on chargeEnable",
+        			"de": "Aufruf von charge-start API-call bei chargeEnable"
+        		},
         		"0.1.1": {
         			"en": "added chargeCancel and chargeEnable to controll charging-function if connected",
         			"de": "chargeCancel und chargeEnable eingebaut um die Ladefunktion wenn verbunden zu kontrolieren"

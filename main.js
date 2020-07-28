@@ -737,7 +737,35 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess) {
 			adapter.log.info("chargeStartOrCancel:"+JSON.stringify(data));
 
 			if (startIt) {
-				onSuccess(globalParams);
+				// trigger charge-start
+				params.url=globalParams.kamereonrooturl + 
+				'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+				'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/charging-start'+
+				'?country='+ encodeURIComponent(globalParams.country);
+				
+				params.json={
+					data: {
+						'type': 'ChargingStart',
+                				'attributes': {
+                    					'action': 'start'
+                				}
+					}		
+				};
+				
+				request(params, function (error, response, body) {
+		  			if (error || response.statusCode != 200) {
+	  					adapter.log.error('No valid response from chargeStartOrCancel2 service');
+						adapter.log.info('error:'+error);
+						adapter.log.info('response:'+JSON.stringify(response));
+	  				} else {
+						adapter.log.debug('Data received from chargeStartOrCancel2 service');
+						data = body;
+						if (typeof body == "string") data=JSON.parse(body); 
+						adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
+						onSuccess(globalParams);
+					}
+				});
+				
 			} else {
 				// Set start time to 23:45
 				params.url=globalParams.kamereonrooturl + 

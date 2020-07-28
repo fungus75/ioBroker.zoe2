@@ -97,6 +97,9 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 ## Changelog
 
+### 0.1.2 (2020-07-28)
+- changed: call charge-start API when "pressed" chargeEnable. Hopefully it helps on older ZOEs
+
 ### 0.1.1 (2020-07-18)
 - added chargeCancel and chargeEnable. See "controll charging"
 

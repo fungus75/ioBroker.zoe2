@@ -390,7 +390,15 @@ function getBatteryStatus(globalParams) {
 			var batteryTemperature=attributes.batteryTemperature;
 			var chargingPower  =attributes.chargingInstantaneousPower;
 			var batteryCapacity=attributes.batteryCapacity;
-			var batteryAvailableEnergy=attributes.batteryAvailableEnergy
+			var batteryAvailableEnergy=attributes.batteryAvailableEnergy;
+
+			var batteryTS=attributes.timestamp;
+			if (batteryTS) {
+				setValue(globalParams.zoe_vin,"batteryTS","string",new Date(batteryTS),"date");
+			} else {
+				setValue(globalParams.zoe_vin,"batteryTS","string",null,"date");
+			}
+			
 
 			if (!charging) {
 				chargingPower = 0;

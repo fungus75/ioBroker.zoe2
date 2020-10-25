@@ -6,9 +6,10 @@
 [![Build Status](https://travis-ci.org/fungus75/ioBroker.zoe2.svg?branch=master)](https://travis-ci.org/fungus75/ioBroker.zoe2)
 [![Known Vulnerabilities](https://snyk.io/test/github/fungus75/ioBroker.zoe2/badge.svg)](https://snyk.io/test/github/fungus75/ioBroker.zoe2)
 
+**License:**
 [![License](https://img.shields.io/github/license/fungus75/ioBroker.zoe2)](https://github.com/fungus75/ioBroker.zoe2/blob/master/LICENSE)
 
-
+**Features:**
 [![Feature Requests](https://feathub.com/fungus75/ioBroker.zoe2?format=svg)](https://feathub.com/fungus75/ioBroker.zoe2)
 
 Simple ioBroker-Adapter to get some basic values from Renault ZOE and use it in ioBroker. 

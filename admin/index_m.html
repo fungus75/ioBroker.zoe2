@@ -39,9 +39,9 @@
     "Password" : { "de" : "Kennwort"},
     "Locale"   : { "de" : "Laenderversion, z.B. de_DE"},
     "VIN" : { "de" : "Fahrgestellnummer"},
-    "ignoreApiError" : { "de" : "Ignoriere API Fehler" },
-    "useLocationApi" : { "de" : "Die LocationAPI verwenden" },
-    "useHVACApi" : { "de" : "Die Vorheizen-API (HVAC) verwenden" }
+    "IgnoreApiError" : { "de" : "Ignoriere API Fehler" },
+    "UseLocationApi" : { "de" : "Die LocationAPI verwenden" },
+    "UseHVACApi" : { "de" : "Die Vorheizen-API (HVAC) verwenden" }
   };
 
   // the function loadSettings has to exist ...
@@ -101,7 +101,7 @@
             locale : $('#locale').val(),
 	    ignoreApiError : $('#ignoreApiError').prop('checked'),
 	    useLocationApi : $('#useLocationApi').prop('checked'),
-	    useHVACApi : $('useHVACApi').prop('checked')
+	    useHVACApi : $('#useHVACApi').prop('checked')
 	  });
   }
 </script>

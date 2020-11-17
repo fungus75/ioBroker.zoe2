@@ -40,7 +40,8 @@
     "Locale"   : { "de" : "Laenderversion, z.B. de_DE"},
     "VIN" : { "de" : "Fahrgestellnummer"},
     "ignoreApiError" : { "de" : "Ignoriere API Fehler" },
-    "useLocationApi" : { "de" : "Die LocationAPI verwenden" }
+    "useLocationApi" : { "de" : "Die LocationAPI verwenden" },
+    "useHVACApi" : { "de" : "Die Vorheizen-API (HVAC) verwenden" }
   };
 
   // the function loadSettings has to exist ...
@@ -74,7 +75,11 @@
 	}).keyup(onChange);
 	
 	$('#useLocationApi').prop('checked',settings.useLocationApi).click(function() {
-		//$('#ignoreApiError').prop('checked', !$('#ignoreApiError').prop('checked'));
+		changed = true;
+		$('#save').button("enable");
+	}).keyup(onChange);
+	
+	$('#useHVACApi').prop('checked',settings.useHVACApi).click(function() {
 		changed = true;
 		$('#save').button("enable");
 	}).keyup(onChange);
@@ -95,7 +100,8 @@
 	    vin : $('#vin').val(),
             locale : $('#locale').val(),
 	    ignoreApiError : $('#ignoreApiError').prop('checked'),
-	    useLocationApi : $('#useLocationApi').prop('checked')
+	    useLocationApi : $('#useLocationApi').prop('checked'),
+	    useHVACApi : $('useHVACApi').prop('checked')
 	  });
   }
 </script>
@@ -139,6 +145,11 @@
     <tr>
       <td><label for="useLocationApi" class="translate">UseLocationApi</label></td>
       <td><input class="value" type="checkbox" id="useLocationApi" /></td>
+    </tr>
+
+    <tr>
+      <td><label for="useHVACApi" class="translate">UseHVACApi</label></td>
+      <td><input class="value" type="checkbox" id="useHVACApi" /></td>
     </tr>
 
   </table>

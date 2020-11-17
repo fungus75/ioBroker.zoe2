@@ -101,6 +101,9 @@ and https://github.com/edent/Renault-Zoe-API for your great documentation.
 
 ## Changelog
 
+### 0.1.3 (2020-11-17)
+- added: setup-value useHVACApi, see https://github.com/fungus75/ioBroker.zoe2/issues/10
+
 ### 0.1.2 (2020-07-28)
 - changed: call charge-start API when "pressed" chargeEnable. Hopefully it helps on older ZOEs
 

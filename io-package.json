@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.1.2",
+		"version": "0.1.3",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+        		"0.1.3": {
+        			"en": "added setup-value useHVACApi",
+        			"de": "Setup-Parameter useHVACApi eingebaut"
+        		},
         		"0.1.2": {
         			"en": "added charge-start API-call on chargeEnable",
         			"de": "Aufruf von charge-start API-call bei chargeEnable"

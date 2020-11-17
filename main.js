@@ -125,7 +125,7 @@ function main() {
 				kamereonapikey:kamereonapikey,
 				country:country,
 				ignoreApiError:ignoreApiError,
-				useLocationApi:adapter.config.useLocationApi
+				useLocationApi:adapter.config.useLocationApi,
 				useHVACApi:adapter.config.useHVACApi
 			};
 

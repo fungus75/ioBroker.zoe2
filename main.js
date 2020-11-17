@@ -126,6 +126,7 @@ function main() {
 				country:country,
 				ignoreApiError:ignoreApiError,
 				useLocationApi:adapter.config.useLocationApi
+				useHVACApi:adapter.config.useHVACApi
 			};
 
 			// create root config element
@@ -541,6 +542,12 @@ function getLocation(globalParams) {
 function getHVACStatus(globalParams) {
 	var methodName = "getHVACStatus";
 	adapter.log.debug("in:  " + methodName + " v0.01");
+
+	if (!globalParams.useHVACApi) {
+		adapter.log.info(methodName+" not enabled in config");
+		return checkPreconAndCharge(globalParams);
+	}
+
 
 	var params={
 		url:globalParams.kamereonrooturl + 

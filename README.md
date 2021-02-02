@@ -94,8 +94,12 @@ still no new update. When driving, the battery level gets lower and lower and th
 
 https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-ins-smarthome-integrieren, 
 https://michael-heck.net/index.php/elektromobilitaet/renault-zoe-im-smarthome-neue-api-2020,
-https://muscatoxblog.blogspot.com/2019/07/delving-into-renaults-new-api.html
-and https://github.com/edent/Renault-Zoe-API for your great documentation.
+https://muscatoxblog.blogspot.com/2019/07/delving-into-renaults-new-api.html,
+https://github.com/edent/Renault-Zoe-API,
+https://github.com/jamesremuscat/pyze and 
+https://github.com/hacf-fr/renault-api
+for your great documentation and work.
+
 
 
 

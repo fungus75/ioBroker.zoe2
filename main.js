@@ -108,6 +108,7 @@ function main() {
 			var gigyaapikey  = data.servers.gigyaProd.apikey;
 			var kamereonrooturl = data.servers.wiredProd.target;
 			var kamereonapikey  = data.servers.wiredProd.apikey;
+			var kamereonapikey = "Ae9FDWugRxZQAGm3Sxgk7uJn6Q4CGEA2"; // workaround according to https://github.com/fungus75/ioBroker.zoe2/issues/14
 
 			adapter.log.info("gigyarooturl:"+gigyarooturl);
 			adapter.log.info("gigyaapikey:"+gigyaapikey);

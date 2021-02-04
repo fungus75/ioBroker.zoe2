@@ -41,12 +41,17 @@
     "VIN" : { "de" : "Fahrgestellnummer"},
     "IgnoreApiError" : { "de" : "Ignoriere API Fehler" },
     "UseLocationApi" : { "de" : "Die LocationAPI verwenden" },
-    "UseHVACApi" : { "de" : "Die Vorheizen-API (HVAC) verwenden" }
+    "UseHVACApi" : { "de" : "Die Vorheizen-API (HVAC) verwenden" },
+    "KamereonApiKey" : { "de" : "Kamereon API Key" }
   };
 
   // the function loadSettings has to exist ...
   function load(settings, onChange) {
     console.log("***** load");
+    
+    	// default vallues
+    	if (!settings.kamereonApiKey) settings.kamereonApiKey="Ae9FDWugRxZQAGm3Sxgk7uJn6Q4CGEA2";
+    
 	$('#username').val(settings.username).change(function() {
 		changed = true;
 		$('#save').button("enable");
@@ -84,8 +89,12 @@
 		$('#save').button("enable");
 	}).keyup(onChange);
 	
-	
 
+	$('#kamereonApiKey').val(settings.kamereonApiKey).change(function() {
+		changed = true;
+		$('#save').button("enable");
+	}).keyup(onChange);
+	
 
     onChange(false);
   }
@@ -101,7 +110,8 @@
             locale : $('#locale').val(),
 	    ignoreApiError : $('#ignoreApiError').prop('checked'),
 	    useLocationApi : $('#useLocationApi').prop('checked'),
-	    useHVACApi : $('#useHVACApi').prop('checked')
+	    useHVACApi : $('#useHVACApi').prop('checked'),
+	    kamereonApiKey: $('#kamereonApiKey').val()
 	  });
   }
 </script>
@@ -150,6 +160,11 @@
     <tr>
       <td><label for="useHVACApi" class="translate">UseHVACApi</label></td>
       <td><input class="value" type="checkbox" id="useHVACApi" /></td>
+    </tr>
+
+    <tr>
+      <td><label for="kamereonApiKey" class="translate">KamereonApiKey</label></td>
+      <td><input class="value" type="text" id="kamereonApiKey" size="50" /></td>
     </tr>
 
   </table>

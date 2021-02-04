@@ -76,6 +76,7 @@ function main() {
 	var zoe_locale   = adapter.config.locale;
 	var zoe_vin      = adapter.config.vin;
         var ignoreApiError = adapter.config.ignoreApiError;
+        var kamereonapikey = adapter.config.kamereonApiKey;
 
 	var localeParts=zoe_locale.split("_");
 	var country="FR";
@@ -107,8 +108,7 @@ function main() {
 			var gigyarooturl = data.servers.gigyaProd.target;
 			var gigyaapikey  = data.servers.gigyaProd.apikey;
 			var kamereonrooturl = data.servers.wiredProd.target;
-			var kamereonapikey  = data.servers.wiredProd.apikey;
-			var kamereonapikey = "Ae9FDWugRxZQAGm3Sxgk7uJn6Q4CGEA2"; // workaround according to https://github.com/fungus75/ioBroker.zoe2/issues/14
+			// var kamereonapikey  = data.servers.wiredProd.apikey;
 
 			adapter.log.info("gigyarooturl:"+gigyarooturl);
 			adapter.log.info("gigyaapikey:"+gigyaapikey);

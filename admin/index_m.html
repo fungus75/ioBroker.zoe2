@@ -110,6 +110,9 @@
   // you have to make sure the callback is called with the settings object as first param!
   function save(callback) {
     console.log("***** save");
+    	var stopChargeWorkaroundHour=parseInt($('#stopChargeWorkaroundHour').val);
+    	if (stopChargeWorkaroundHour<0 || stopChargeWorkaroundHour>23) stopChargeWorkaroundHour=0;
+    	  
 	  callback({
 	    username : $('#username').val(),
 	    password : $('#password').val(),
@@ -118,7 +121,8 @@
 	    ignoreApiError : $('#ignoreApiError').prop('checked'),
 	    useLocationApi : $('#useLocationApi').prop('checked'),
 	    useHVACApi : $('#useHVACApi').prop('checked'),
-	    kamereonApiKey: $('#kamereonApiKey').val()
+	    kamereonApiKey: $('#kamereonApiKey').val(),
+	    stopChargeWorkaroundHour: stopChargeWorkaroundHour
 	  });
   }
 </script>

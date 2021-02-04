@@ -127,7 +127,8 @@ function main() {
 				country:country,
 				ignoreApiError:ignoreApiError,
 				useLocationApi:adapter.config.useLocationApi,
-				useHVACApi:adapter.config.useHVACApi
+				useHVACApi:adapter.config.useHVACApi,
+				stopChargeWorkaroundHour:adapter.config.stopChargeWorkaroundHour
 			};
 
 			// create root config element
@@ -783,24 +784,29 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess) {
 				});
 				
 			} else {
-				// Set start time to 23:45
+				// Set start time to configured parameter
 				params.url=globalParams.kamereonrooturl + 
 				'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
 				'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/actions/charge-schedule'+
 				'?country='+ encodeURIComponent(globalParams.country);
+				
+				var startTimeString='T';
+				if (globalParams.stopChargeWorkaroundHour<10) startTimeString+='0';
+				startTimeString+=globalParams.stopChargeWorkaroundHour+':00Z';
+				adapter.log.info('startTimeString:'+startTimeString);
 				
 				params.json={
 					data: {
 						'type': 'ChargeSchedule',
                 				'attributes': {
 							'schedules': [{'id':1,'activated':true,
-								'monday':{'startTime':'T23:45Z','duration':15},
-								'tuesday':{'startTime':'T23:45Z','duration':15},
-								'wednesday':{'startTime':'T23:45Z','duration':15},
-								'thursday':{'startTime':'T23:45Z','duration':15},
-								'friday':{'startTime':'T23:45Z','duration':15},
-								'saturday':{'startTime':'T23:45Z','duration':15},
-								'sunday':{'startTime':'T23:45Z','duration':15}
+								'monday':{'startTime':startTimeString,'duration':15},
+								'tuesday':{'startTime':startTimeString,'duration':15},
+								'wednesday':{'startTime':startTimeString,'duration':15},
+								'thursday':{'startTime':startTimeString,'duration':15},
+								'friday':{'startTime':startTimeString,'duration':15},
+								'saturday':{'startTime':startTimeString,'duration':15},
+								'sunday':{'startTime':startTimeString,'duration':15}
 								}]
 						}
 					}		

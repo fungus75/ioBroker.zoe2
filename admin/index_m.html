@@ -42,7 +42,8 @@
     "IgnoreApiError" : { "de" : "Ignoriere API Fehler" },
     "UseLocationApi" : { "de" : "Die LocationAPI verwenden" },
     "UseHVACApi" : { "de" : "Die Vorheizen-API (HVAC) verwenden" },
-    "KamereonApiKey" : { "de" : "Kamereon API Key" }
+    "KamereonApiKey" : { "de" : "Kamereon API Key" },
+    "StopChargeWorkaroundHour": { "de" : "StopCharge: Stunde für Woraround" }
   };
 
   // the function loadSettings has to exist ...
@@ -51,6 +52,7 @@
     
     	// default vallues
     	if (!settings.kamereonApiKey) settings.kamereonApiKey="Ae9FDWugRxZQAGm3Sxgk7uJn6Q4CGEA2";
+    	if (!settings.stopChargeWorkaroundHour) settings.stopChargeWorkaroundHour=0;
     
 	$('#username').val(settings.username).change(function() {
 		changed = true;
@@ -91,6 +93,11 @@
 	
 
 	$('#kamereonApiKey').val(settings.kamereonApiKey).change(function() {
+		changed = true;
+		$('#save').button("enable");
+	}).keyup(onChange);
+	
+	$('#stopChargeWorkaroundHour').val(settings.stopChargeWorkaroundHour).change(function() {
 		changed = true;
 		$('#save').button("enable");
 	}).keyup(onChange);
@@ -165,6 +172,11 @@
     <tr>
       <td><label for="kamereonApiKey" class="translate">KamereonApiKey</label></td>
       <td><input class="value" type="text" id="kamereonApiKey" size="50" /></td>
+    </tr>
+
+    <tr>
+      <td><label for="stopChargeWorkaroundHour" class="translate">StopChargeWorkaroundHour</label></td>
+      <td><input class="value" type="text" id="stopChargeWorkaroundHour" size="2" /></td>
     </tr>
 
   </table>

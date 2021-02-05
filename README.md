@@ -18,6 +18,8 @@ PLEASE NOTE: THIS ADAPTER USES THE SAME API AS THE MY RENAULT APP. BUT YOU MUST 
 
 PLEASE NOTE: THIS IS A VERY EARLY STATE OF DEVELOPMENT, USE OF YOUR OWN RISK
 
+PLEASE NOTE: AFTER ANY UPDATE OF THE ADAPTER GO TO SETUP-SCREEN, CHANGE SOMETHING SO THAT SAVE IS ENABLED, CHANGE IT BACK AND HIT SAVE!
+
 If this adapter is not available on the ioBroker-Admin-View, please use the following command to install it (from command-line on your ioBroker-Server):
 
 ```npm install https://github.com/fungus75/ioBroker.zoe2/tarball/master/```
@@ -25,6 +27,9 @@ If this adapter is not available on the ioBroker-Admin-View, please use the foll
 Or you can use the GitHub-Button (labeled: install from own URL) in the Adapter-View and enter this URL on the "other"-Tab. This can also be used to update to the current adapter-version:
 
 ```https://github.com/fungus75/ioBroker.zoe2/tarball/master/```
+
+
+You can use the method to update the adapter to the most recent version.
 
 
 
@@ -67,9 +72,9 @@ connected. On my 1st Gen ZOE this has no effect, so maybe it works on newer ZOEs
 
 As soon as chargeEnable is pressed (or true is written to this parameter), the charging function should work again.
 
-How is this done: chargeEnable creates a charging-schedule that starts at 23:45 every day and lasts for 15 minutes. That
-looks as it is the shortest amount to be set. Turning charging off complete is not possible with the current API
-(or that parts of the current API that are known).
+How is this done: chargeEnable creates a charging-schedule that starts at the given hour you defined in the setup screen 
+every day and lasts for 15 minutes. That looks as it is the shortest amount to be set. Turning charging off complete is 
+not possible with the current API (or that parts of the current API that are known).
 
 
 Some parameters only work on newer ZOEs.
@@ -104,6 +109,13 @@ for your great documentation and work.
 
 
 ## Changelog
+
+### 0.1.4 (2020-02-05)
+- added: kamereonapikey as setup parameter because it changed by Feb. 1st
+- added: stopChargeWorkaroundHour: Because the API has no feature to stop charging, the stop-charging button starts scheduled charging to a very uncommon time. Configure the hour with that parameter
+- bugfix https://github.com/fungus75/ioBroker.zoe2/issues/15
+- bugfix https://github.com/fungus75/ioBroker.zoe2/issues/16
+- bugfix https://github.com/fungus75/ioBroker.zoe2/issues/14
 
 ### 0.1.3 (2020-11-17)
 - added: setup-value useHVACApi, see https://github.com/fungus75/ioBroker.zoe2/issues/10

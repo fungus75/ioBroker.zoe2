@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.1.3",
+		"version": "0.1.4",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,7 +9,11 @@
 		},
 		"materialize": true,
         	"news": {
-        		"0.1.3": {
+ 	      		"0.1.4": {
+        			"en": "bugfixes and adding kamereonapikey, stopChargeWorkaroundHour in config screen",
+        			"de": "Bugfixe und kamereonapikey, stopChargeWorkaroundHour als Config-Parameter"
+        		},
+         		"0.1.3": {
         			"en": "added setup-value useHVACApi",
         			"de": "Setup-Parameter useHVACApi eingebaut"
         		},

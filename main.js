@@ -202,7 +202,8 @@ function gigyaGetJWT(globalParams) {
 
 	var params={
 		url:globalParams.gigyarooturl + 
-			'/accounts.getJWT?oauth_token=' + encodeURIComponent(globalParams.gigyatoken) + 
+			'/accounts.getJWT?login_token=' + encodeURIComponent(globalParams.gigyatoken) + 
+			'&ApiKey=' + encodeURIComponent(globalParams.gigyaapikey) +
 			'&fields=' + encodeURIComponent('data.personId,data.gigyaDataCenter') + 
 			'&expiration=' + encodeURIComponent('900'),
 		method:"get"
@@ -237,7 +238,8 @@ function gigyaGetAccount(globalParams) {
 
 	var params={
 		url:globalParams.gigyarooturl + 
-			'/accounts.getAccountInfo?oauth_token=' + encodeURIComponent(globalParams.gigyatoken),
+			'/accounts.getAccountInfo?login_token=' + encodeURIComponent(globalParams.gigyatoken) + 
+			'&ApiKey=' + encodeURIComponent(globalParams.gigyaapikey),
 		method:"get"
 	};
 	//adapter.log.info("url:"+params.url);

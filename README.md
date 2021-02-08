@@ -168,7 +168,7 @@ for your great documentation and work.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 RenePilz <rene@pilz.cc>
+Copyright (c) 2021 RenePilz <rene@pilz.cc>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

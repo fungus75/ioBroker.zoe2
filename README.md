@@ -110,7 +110,10 @@ for your great documentation and work.
 
 ## Changelog
 
-### 0.1.4 (2020-02-05)
+### 0.1.5 (2021-02-09)
+- bugfix gigya parameter changed https://github.com/fungus75/ioBroker.zoe2/issues/17
+
+### 0.1.4 (2021-02-05)
 - added: kamereonapikey as setup parameter because it changed by Feb. 1st
 - added: stopChargeWorkaroundHour: Because the API has no feature to stop charging, the stop-charging button starts scheduled charging to a very uncommon time. Configure the hour with that parameter
 - bugfix https://github.com/fungus75/ioBroker.zoe2/issues/15

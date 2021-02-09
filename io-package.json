@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.1.4",
+		"version": "0.1.5",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -9,6 +9,10 @@
 		},
 		"materialize": true,
         	"news": {
+ 	      		"0.1.5": {
+        			"en": "bugfixes because gigya api parameter changed",
+        			"de": "Bugfixe da die Parameter bei gigya api geändert wurden"
+        		},
  	      		"0.1.4": {
         			"en": "bugfixes and adding kamereonapikey, stopChargeWorkaroundHour in config screen",
         			"de": "Bugfixe und kamereonapikey, stopChargeWorkaroundHour als Config-Parameter"

@@ -165,7 +165,8 @@ function loginToGigya(globalParams) {
 		url:globalParams.gigyarooturl + 
 			'/accounts.login?apiKey=' + encodeURIComponent(globalParams.gigyaapikey) + 
 			'&loginID=' + encodeURIComponent(globalParams.zoe_username) + 
-			'&password=' + encodeURIComponent(globalParams.zoe_password),
+			'&password=' + encodeURIComponent(globalParams.zoe_password) + 
+			'&include=data',
 		method:"get"
 	};
 	//adapter.log.info("url:"+params.url);

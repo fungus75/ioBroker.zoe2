@@ -99,6 +99,7 @@ function main() {
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from Renault server');
+			process.exit(1);
   		} else {
 			adapter.log.debug('Data received from Renault server');
 			var data = body;
@@ -147,12 +148,6 @@ function main() {
 		}
 	});
 
-	// Force terminate
-	setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
-	}, 3 * 60 * 1000);
-
 	adapter.log.debug("out: " + methodName);
 }
 
@@ -190,7 +185,7 @@ function loginToGigya(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -226,7 +221,7 @@ function gigyaGetJWT(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -261,7 +256,7 @@ function gigyaGetAccount(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -302,7 +297,7 @@ function getKamereonAccount(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -349,7 +344,7 @@ function getKamereonCars(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -435,7 +430,7 @@ function getBatteryStatus(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -481,7 +476,7 @@ function getCockpit(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -536,7 +531,7 @@ function getLocation(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -592,7 +587,7 @@ function getHVACStatus(globalParams) {
 	});
 
 	// Force terminate
-	setTimeout(function() {
+	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
 		process.exit(1);
 	}, 3 * 60 * 1000);
@@ -645,8 +640,9 @@ function checkPreconAndCharge(globalParams) {
 			startStopPrecon(globalParams,true,21);
 		}
 
-                setTimeout(function() {
+                globalParams.timeout=setTimeout(function() {
                         process.exit(0);
+                        if (globalParams.timeout) clearTimeout(globalParams.timeout);
                 }, 10000);
 	});
 
@@ -656,8 +652,9 @@ function checkPreconAndCharge(globalParams) {
                         chargeStartOrCancel(globalParams,false,resetChargeButtons);
                 }
 
-                setTimeout(function() {
+                globalParams.timeout=setTimeout(function() {
                         process.exit(0);
+                        if (globalParams.timeout) clearTimeout(globalParams.timeout);
                 }, 10000);
         });
         adapter.getState(globalParams.zoe_vin+".chargeEnable", function (err, state) {
@@ -666,8 +663,9 @@ function checkPreconAndCharge(globalParams) {
                         chargeStartOrCancel(globalParams,true,resetChargeButtons);
                 }
 
-                setTimeout(function() {
+                globalParams.timeout=setTimeout(function() {
                         process.exit(0);
+                        if (globalParams.timeout) clearTimeout(globalParams.timeout);
                 }, 10000);
         });
 }
@@ -854,54 +852,6 @@ function setValue(baseId,name,type,value,role) {
 }
 
 
-function parseData(xml) {
-	var methodName = "parseData";
-	adapter.log.debug("in:  " + methodName);
-	adapter.log.debug("parameter: xml: " + xml);
-
-	if (!xml) {
-		setTimeout(function() {
-			process.exit(0);
-		}, 5000);
-		return;
-	}
-
-	var options = {
-	  explicitArray : false,
-	  mergeAttrs : true
-	};
-
-	var parser = new xml2js.Parser(options);
-	parser.parseString(xml, function(err, result) {
-
-		if (err || result == undefined || (result.a == undefined || result.h4 == undefined || result.h5 == undefined)) {
-			var msg;
-			if (err) {
-				msg = err;
-			} else {
-				adapter.log.debug("result: " + JSON.stringify(result));
-				msg = "Matching HTML tags not found";
-			}
-			adapter.log.error("parseString error: " + msg);
-
-		} else {
-
-			adapter.log.debug("result: " + JSON.stringify(result));
-
-			setDevices(result);
-			setObjects(result);
-			setStates(result);
-		}
-
-	});
-
-	setTimeout(function() {
-		process.exit(0);
-	}, 10000);
-
-	adapter.log.debug("out: " + methodName);
-
-}
 
 function setDevices(result) {
 	var methodName = "setDevices";

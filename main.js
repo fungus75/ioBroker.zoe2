@@ -10,7 +10,19 @@ var request = require('request');
 // name excluding extension
 // adapter will be restarted automatically every time as the configuration
 // changed, e.g system.adapter.mobile-alerts.0
-var adapter = utils.adapter('zoe2');
+//var adapter = utils.adapter('zoe2');
+let adapter;
+function startAdapter(options) {
+  options = options || {};
+  Object.assign(options, {
+       name: 'zoe2'
+  });
+
+  adapter = new utils.Adapter(options);
+  return adapter;
+});
+
+ 
 
 // is called when adapter shuts down - callback has to be called under any
 // circumstances!
@@ -99,7 +111,7 @@ function main() {
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from Renault server');
-			process.exit(1);
+			 adapter.terminate ? adapter.terminate(1) :process.exit(1);
   		} else {
 			adapter.log.debug('Data received from Renault server');
 			var data = body;
@@ -187,7 +199,7 @@ function loginToGigya(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -223,7 +235,7 @@ function gigyaGetJWT(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -258,7 +270,7 @@ function gigyaGetAccount(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -299,7 +311,7 @@ function getKamereonAccount(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -346,7 +358,7 @@ function getKamereonCars(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -432,7 +444,7 @@ function getBatteryStatus(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -478,7 +490,7 @@ function getCockpit(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -533,7 +545,7 @@ function getLocation(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -589,7 +601,7 @@ function getHVACStatus(globalParams) {
 	// Force terminate
 	globalParams.timeout=setTimeout(function() {
 		adapter.log.error('Termination forced due to timeout !');
-		process.exit(1);
+		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
 	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
@@ -641,7 +653,7 @@ function checkPreconAndCharge(globalParams) {
 		}
 
                 globalParams.timeout=setTimeout(function() {
-                        process.exit(0);
+                         adapter.terminate ? adapter.terminate() :process.exit(0);
                         if (globalParams.timeout) clearTimeout(globalParams.timeout);
                 }, 10000);
 	});
@@ -653,7 +665,7 @@ function checkPreconAndCharge(globalParams) {
                 }
 
                 globalParams.timeout=setTimeout(function() {
-                        process.exit(0);
+                         adapter.terminate ? adapter.terminate() :process.exit(0);
                         if (globalParams.timeout) clearTimeout(globalParams.timeout);
                 }, 10000);
         });
@@ -664,7 +676,7 @@ function checkPreconAndCharge(globalParams) {
                 }
 
                 globalParams.timeout=setTimeout(function() {
-                        process.exit(0);
+                         adapter.terminate ? adapter.terminate() :process.exit(0);
                         if (globalParams.timeout) clearTimeout(globalParams.timeout);
                 }, 10000);
         });
@@ -1000,3 +1012,13 @@ function getHrefParamValue(href, paramName) {
 	}
 	return paramValue;
 }
+
+// If started as allInOne/compact mode => return function to create instance
+if (module && module.parent) {
+    module.exports = startAdapter;
+} else {
+    // or start the instance directly
+    startAdapter();
+}
+
+

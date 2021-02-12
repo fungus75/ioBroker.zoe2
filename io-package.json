@@ -8,6 +8,7 @@
 			"de": "Renault ZOE für ioBroker"
 		},
 		"materialize": true,
+		"compact": true,
         	"news": {
  	      		"0.1.5": {
         			"en": "bugfixes because gigya api parameter changed",

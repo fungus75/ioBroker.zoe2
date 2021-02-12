@@ -2,7 +2,8 @@
 /* jslint node: true */
 "use strict";
 
-var utils = require(__dirname + '/lib/utils'); // Get common adapter utils
+//var utils = require(__dirname + '/lib/utils'); // Get common adapter utils
+const utils = require('@iobroker/adapter-core');
 var request = require('request');
 
 // you have to call the adapter function and pass a options object
@@ -32,7 +33,7 @@ function startAdapter(options) {
   return adapter;
 }
 
-function main() {
+async function main() {
 	var methodName = "main";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 

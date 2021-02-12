@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.1.5",
+		"version": "0.2.0",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -10,6 +10,10 @@
 		"materialize": true,
 		"compact": true,
         	"news": {
+ 	      		"0.2.0": {
+        			"en": "adapter now supports compact mode",
+        			"de": "Adapter unterstützt nun den compact mode"
+        		},
  	      		"0.1.5": {
         			"en": "bugfixes because gigya api parameter changed",
         			"de": "Bugfixe da die Parameter bei gigya api geändert wurden"

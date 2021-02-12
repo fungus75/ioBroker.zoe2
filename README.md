@@ -110,6 +110,9 @@ for your great documentation and work.
 
 ## Changelog
 
+### 0.2.0 (2021-02-12)
+- Adapter supports compact mode (required if adapter should be listed in official repo)
+
 ### 0.1.5 (2021-02-09)
 - bugfix gigya parameter changed https://github.com/fungus75/ioBroker.zoe2/issues/17
 

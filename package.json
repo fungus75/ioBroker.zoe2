@@ -1,6 +1,6 @@
 {
   "name": "iobroker.zoe2",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Renault ZOE for ioBroker using API v2",
   "author": {
     "name": "Rene Pilz",

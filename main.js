@@ -6,6 +6,11 @@
 const utils = require('@iobroker/adapter-core');
 var request = require('request');
 
+// error codes
+const ZOEERROR_NONEXTSTEP = 1;
+const ZOEERROR_UNCORRECT_RESPONSE = 2;
+
+
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file
 // name excluding extension
@@ -68,7 +73,7 @@ async function main() {
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from Renault server');
-			 adapter.terminate ? adapter.terminate(1) :process.exit(1);
+			return processingFailed(globalParams, 0, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from Renault server');
 			var data = body;
@@ -113,14 +118,63 @@ async function main() {
 				native : {}
 			});
 
-			loginToGigya(globalParams);
+			processNextStep(globalParams, 0);
 		}
 	});
 
 	adapter.log.debug("out: " + methodName);
 }
 
-function loginToGigya(globalParams) {
+// called on success, start next step
+function processNextStep(globalParams, curStep) {
+	adapter.log.debug("in: processNextStep, curStep: "+ curStep);
+    var nextStep = curStep + 1;
+    
+    switch(nextStep) {
+        case  1: return loginToGigya         (globalParams, nextStep);
+        case  2: return gigyaGetJWT          (globalParams, nextStep);
+        case  3: return gigyaGetAccount      (globalParams, nextStep);
+        case  4: return getKamereonAccount   (globalParams, nextStep);																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+        case  5: return getKamereonCars      (globalParams, nextStep);
+        case  6: return getBatteryStatus     (globalParams, nextStep);
+        case  7: return getCockpit           (globalParams, nextStep);
+        case  8: return getLocation          (globalParams, nextStep);
+        case  9: return getHVACStatus        (globalParams, nextStep);
+        case 10: return initCheckPreconAndCharge (globalParams, nextStep);
+        case 11: return checkPreconNow       (globalParams, nextStep);
+        case 12: return checkChargeCancel    (globalParams, nextStep);
+        case 13: return checkChargeEnable    (globalParams, nextStep);
+        
+        case 14: return processingFinished   (globalParams, nextStep);
+
+        default: return processingFailed(globalParams, curStep, ZOEERROR_NONEXTSTEP);
+    }
+}
+
+// called on error, exiting with error code
+function processingFailed(globalParams, curStep, errorCode) {
+    // check if failing in step is ok
+    if (errorCode==ZOEERROR_UNCORRECT_RESPONSE && globalParams.ignoreApiError) {
+        switch(curStep) {
+            case  6: return processNextStep(globalParams, curStep);
+            case  7: return processNextStep(globalParams, curStep);
+            case  8: return processNextStep(globalParams, curStep);
+            case  9: return processNextStep(globalParams, curStep);
+            default: break;
+        }
+    }
+	adapter.log.debug("in: processingFailed, curStep: "+ curStep);
+    adapter.log.error('Error in step '+curStep+', errorCode: '+errorCode);
+    adapter.terminate ? adapter.terminate(1) :process.exit(1);
+}
+
+// finished processing successfull
+function processingFinished(globalParams, curStep) {
+    adapter.terminate ? adapter.terminate() :process.exit(0);
+}
+
+
+function loginToGigya(globalParams, curStep) {
 	var methodName = "loginToGigya";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -133,11 +187,11 @@ function loginToGigya(globalParams) {
 			'&include=data',
 		method:"get"
 	};
-	//adapter.log.info("url:"+params.url);
 
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from gigyarooturl server');
+  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from gigyarooturl server');
 			var data = body;
@@ -148,20 +202,12 @@ function loginToGigya(globalParams) {
 			adapter.log.info("sessionInfo:"+JSON.stringify(sessionInfo));
 
 			globalParams.gigyatoken=sessionInfo.cookieValue;
-			
-			gigyaGetJWT(globalParams);
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
-	adapter.log.debug("out: " + methodName);
 }
 
-function gigyaGetJWT(globalParams) {
+function gigyaGetJWT(globalParams, curStep) {
 	var methodName = "gigyaGetJWT";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -173,11 +219,11 @@ function gigyaGetJWT(globalParams) {
 			'&expiration=' + encodeURIComponent('900'),
 		method:"get"
 	};
-	//adapter.log.info("url:"+params.url);
 
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from gigyaGetJWT service');
+  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from gigyaGetJWT service');
 			var data = body;
@@ -185,19 +231,13 @@ function gigyaGetJWT(globalParams) {
 			adapter.log.info("getJWTFullbody:"+JSON.stringify(data));
 			globalParams.gigya_jwttoken=data.id_token;
 			adapter.log.info("gigya_jwttoken:"+globalParams.gigya_jwttoken);
-			gigyaGetAccount(globalParams);
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
 
-function gigyaGetAccount(globalParams) {
+function gigyaGetAccount(globalParams, curStep) {
 	var methodName = "gigyaGetAccount";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -207,11 +247,11 @@ function gigyaGetAccount(globalParams) {
 			'&ApiKey=' + encodeURIComponent(globalParams.gigyaapikey),
 		method:"get"
 	};
-	//adapter.log.info("url:"+params.url);
 
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from gigyagetAccountInfo service');
+  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from gigyagetAccountInfo service');
 			var data = body;
@@ -219,20 +259,13 @@ function gigyaGetAccount(globalParams) {
 			adapter.log.info("getgetAccountInfo:"+JSON.stringify(data));
 			globalParams.kamereonpersonid=data.data.personId;
 			adapter.log.info("kamereonpersonid:"+globalParams.kamereonpersonid);
-
-			getKamereonAccount(globalParams);																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
 
-function getKamereonAccount(globalParams) {
+function getKamereonAccount(globalParams, curStep) {
 	var methodName = "getKamereonAccount";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -246,11 +279,11 @@ function getKamereonAccount(globalParams) {
     			'apikey': globalParams.kamereonapikey
 		}
 	};
-	//adapter.log.info("url:"+params.url);
 
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from getKamereonAccount service');
+  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getKamereonAccount service');
 			var data = body;
@@ -260,20 +293,13 @@ function getKamereonAccount(globalParams) {
 			adapter.log.info("accounts:"+JSON.stringify(accounts));
 			globalParams.kamereonaccountid=accounts[0].accountId;
 			adapter.log.info("kamereonaccountid:"+globalParams.kamereonaccountid);
-
-			getKamereonCars(globalParams);
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
 
-function getKamereonCars(globalParams) {
+function getKamereonCars(globalParams, curStep) {
 	var methodName = "getKamereonCars";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -287,40 +313,23 @@ function getKamereonCars(globalParams) {
     			'apikey': globalParams.kamereonapikey,
 		}
 	};
-	//adapter.log.info("url:"+params.url);
 
 	request(params, function (error, response, body) {
 	  	if (error || response.statusCode != 200) {
   			adapter.log.error('No valid response from getKamereonCars service');
+  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getKamereonCars service');
 			var data = body;
 			if (typeof body == "string") data=JSON.parse(body); 
 			adapter.log.info("getKamereonCars:"+JSON.stringify(data));
-
-		/*
-			var vehicleLinks=data.vehicleLinks;
-			for (var i=0;i<vehicleLinks.length;i++) {
-				if (vehicleLinks[i].vin==globalParams.zoe_vin) {
-					setValue(globalParams.zoe_vin,"mileage","float",vehicleLinks[i].mileage,"data");
-				}
-			}
-		*/
-
-			getBatteryStatus(globalParams);
-
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
 
-function getBatteryStatus(globalParams) {
+function getBatteryStatus(globalParams, curStep) {
 	var methodName = "getBatteryStatus";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -343,8 +352,7 @@ function getBatteryStatus(globalParams) {
   			adapter.log.error('No valid response from getBatteryStatus service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
-
-			if (globalParams.ignoreApiError) getCockpit(globalParams);
+            return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getBatteryStatus service');
 			var data = body;
@@ -382,31 +390,22 @@ function getBatteryStatus(globalParams) {
 
 			if (!charging) chargingPower = 0;
 
-                        setValue(globalParams.zoe_vin,"charge_level","float",charge_level,"data");
-                        setValue(globalParams.zoe_vin,"remaining_range","float",remaining_range,"data");
-                        setValue(globalParams.zoe_vin,"remaining_time","float",remaining_time),"data";
-                        setValue(globalParams.zoe_vin,"charging_finished_at","string",chargingFinishedAt,"date");
-                        setValue(globalParams.zoe_vin,"plugged","boolean",plugged,"data");
-                        setValue(globalParams.zoe_vin,"charging","boolean",charging,"data");
-                        setValue(globalParams.zoe_vin,"batteryTemperature","float",batteryTemperature,"data");
-                        setValue(globalParams.zoe_vin,"chargingPower","float",chargingPower,"data");
-                        setValue(globalParams.zoe_vin,"batteryCapacity","float",batteryCapacity,"data");
-                        setValue(globalParams.zoe_vin,"batteryAvailableEnergy","float",batteryAvailableEnergy,"data");
-			
-
-			getCockpit(globalParams);			
+            setValue(globalParams.zoe_vin,"charge_level","float",charge_level,"data");
+            setValue(globalParams.zoe_vin,"remaining_range","float",remaining_range,"data");
+            setValue(globalParams.zoe_vin,"remaining_time","float",remaining_time),"data";
+            setValue(globalParams.zoe_vin,"charging_finished_at","string",chargingFinishedAt,"date");
+            setValue(globalParams.zoe_vin,"plugged","boolean",plugged,"data");
+            setValue(globalParams.zoe_vin,"charging","boolean",charging,"data");
+            setValue(globalParams.zoe_vin,"batteryTemperature","float",batteryTemperature,"data");
+            setValue(globalParams.zoe_vin,"chargingPower","float",chargingPower,"data");
+            setValue(globalParams.zoe_vin,"batteryCapacity","float",batteryCapacity,"data");
+            setValue(globalParams.zoe_vin,"batteryAvailableEnergy","float",batteryAvailableEnergy,"data");
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
-	adapter.log.debug("out: " + methodName);
 }
 
-function getCockpit(globalParams) {
+function getCockpit(globalParams, curStep) {
 	var methodName = "getCockpit";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -429,8 +428,7 @@ function getCockpit(globalParams) {
   			adapter.log.error('No valid response from getCockpit service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
-
-			if (globalParams.ignoreApiError) getLocation(globalParams);
+            return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getCockpit service');
 			var data = body;
@@ -439,25 +437,18 @@ function getCockpit(globalParams) {
 
 			var totalMileage=data.data.attributes.totalMileage;
 			if (totalMileage !== undefined) setValue(globalParams.zoe_vin,"totalMileage","float",totalMileage,"data");
-
-			getLocation(globalParams);
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
 
-function getLocation(globalParams) {
+function getLocation(globalParams, curStep) {
 	var methodName = "getLocation";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 	if (!globalParams.useLocationApi) {
 		adapter.log.info(methodName+" not enabled in config");
-		return getHVACStatus(globalParams);
+		return processNextStep(globalParams, curStep);
 	}
 
 	var params={
@@ -479,8 +470,7 @@ function getLocation(globalParams) {
   			adapter.log.error('No valid response from getLocation service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
-
-			if (globalParams.ignoreApiError) getHVACStatus(globalParams);
+            return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getLocation service');
 			var data = body;
@@ -494,29 +484,20 @@ function getLocation(globalParams) {
 			var gpsLongitude=data.data.attributes.gpsLongitude;
 			adapter.log.info('gpsLongitude:'+gpsLongitude);
 			if (gpsLongitude !== undefined) setValue(globalParams.zoe_vin,"gpsLongitude","float",gpsLongitude,"data");
-
-			getHVACStatus(globalParams);
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
-	adapter.log.debug("out: " + methodName);
 }
 
 
-function getHVACStatus(globalParams) {
+function getHVACStatus(globalParams, curStep) {
 	var methodName = "getHVACStatus";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
 	if (!globalParams.useHVACApi) {
 		adapter.log.info(methodName+" not enabled in config");
-		return checkPreconAndCharge(globalParams);
+		return processNextStep(globalParams, curStep);
 	}
-
 
 	var params={
 		url:globalParams.kamereonrooturl + 
@@ -537,8 +518,7 @@ function getHVACStatus(globalParams) {
   			adapter.log.error('No valid response from getHVACStatus service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
-
-			if (globalParams.ignoreApiError) checkPreconAndCharge(globalParams);
+			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getHVACStatus service');
 			var data = body;
@@ -550,21 +530,14 @@ function getHVACStatus(globalParams) {
 
 			setValue(globalParams.zoe_vin,"externalTemperature","float",attributes.externalTemperature,"data");
                         setValue(globalParams.zoe_vin,"hvacOn","boolean",hvacOn,"data");
-
-			checkPreconAndCharge(globalParams);
+			processNextStep(globalParams, curStep);
 		}
 	});
-
-	// Force terminate
-	globalParams.timeout=setTimeout(function() {
-		adapter.log.error('Termination forced due to timeout !');
-		 adapter.terminate ? adapter.terminate(1) :process.exit(1);
-	}, 3 * 60 * 1000);
 	adapter.log.debug("out: " + methodName);
 }
 
-function checkPreconAndCharge(globalParams) {
-	var methodName = "checkPreconAndCharge";
+function initCheckPreconAndCharge(globalParams, curStep) {
+	var methodName = "initCheckPreconAndCharge";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
 	adapter.setObjectNotExists(globalParams.zoe_vin+".preconNow", {
@@ -577,66 +550,70 @@ function checkPreconAndCharge(globalParams) {
 		},
 		native : {}
 	});
-        adapter.setObjectNotExists(globalParams.zoe_vin+".chargeCancel", {
-                type : 'state',
-                common: {
-                        name : 'chargeCancel',
-                        type : 'boolean',
-                        role : 'button',
-                        ack : true
-                },
-                native : {}
-        });
-        adapter.setObjectNotExists(globalParams.zoe_vin+".chargeEnable", {
-                type : 'state',
-                common: {
-                        name : 'chargeEnable',
-                        type : 'boolean',
-                        role : 'button',
-                        ack : true
-                },
-                native : {}
-        });
+    adapter.setObjectNotExists(globalParams.zoe_vin+".chargeCancel", {
+            type : 'state',
+            common: {
+                    name : 'chargeCancel',
+                    type : 'boolean',
+                    role : 'button',
+                    ack : true
+            },
+            native : {}
+    });
+    adapter.setObjectNotExists(globalParams.zoe_vin+".chargeEnable", {
+            type : 'state',
+            common: {
+                    name : 'chargeEnable',
+                    type : 'boolean',
+                    role : 'button',
+                    ack : true
+            },
+            native : {}
+    });
+    processNextStep(globalParams, curStep);
+}
 
-
-
-
-	// read status of button precon and charge
+function checkPreconNow(globalParams, curStep) {
+	var methodName = "checkPreconNow";
+	adapter.log.debug("in:  " + methodName + " v0.01");
 	adapter.getState(globalParams.zoe_vin+".preconNow", function (err, state) {
 		if (state!=null && state.val) {
 			adapter.log.info("preconNow pressed!!!");
 			adapter.setState(globalParams.zoe_vin+".preconNow",false,true); // set back to false
-			startStopPrecon(globalParams,true,21);
-		}
-
-                globalParams.timeout=setTimeout(function() {
-                         adapter.terminate ? adapter.terminate() :process.exit(0);
-                        if (globalParams.timeout) clearTimeout(globalParams.timeout);
-                }, 10000);
+			startStopPrecon(globalParams,true,21, curStep);
+		    processNextStep(globalParams, curStep);
+		} else {
+		    processNextStep(globalParams, curStep);
+        }
 	});
+}
 
+function checkChargeCancel(globalParams, curStep) {
+	var methodName = "checkChargeCancel";
+	adapter.log.debug("in:  " + methodName + " v0.01");
 	adapter.getState(globalParams.zoe_vin+".chargeCancel", function (err, state) {
-                if (state!=null && state.val) {
-                        adapter.log.info("chargeCancel pressed!!!");
-                        chargeStartOrCancel(globalParams,false,resetChargeButtons);
-                }
+        if (state!=null && state.val) {
+            adapter.log.info("chargeCancel pressed!!!");
+            chargeStartOrCancel(globalParams,false,resetChargeButtons, curStep);
+		    processNextStep(globalParams, curStep);
+		} else {
+		    processNextStep(globalParams, curStep);
+        }
+    });
+}
 
-                globalParams.timeout=setTimeout(function() {
-                         adapter.terminate ? adapter.terminate() :process.exit(0);
-                        if (globalParams.timeout) clearTimeout(globalParams.timeout);
-                }, 10000);
-        });
-        adapter.getState(globalParams.zoe_vin+".chargeEnable", function (err, state) {
-                if (state!=null && state.val) {
-                        adapter.log.info("chargeEnable pressed!!!");
-                        chargeStartOrCancel(globalParams,true,resetChargeButtons);
-                }
-
-                globalParams.timeout=setTimeout(function() {
-                         adapter.terminate ? adapter.terminate() :process.exit(0);
-                        if (globalParams.timeout) clearTimeout(globalParams.timeout);
-                }, 10000);
-        });
+function checkChargeEnable(globalParams, curStep) {
+	var methodName = "checkChargeEnable";
+	adapter.log.debug("in:  " + methodName + " v0.01");
+    adapter.getState(globalParams.zoe_vin+".chargeEnable", function (err, state) {
+        if (state!=null && state.val) {
+            adapter.log.info("chargeEnable pressed!!!");
+            chargeStartOrCancel(globalParams,true,resetChargeButtons, curStep);
+		    processNextStep(globalParams, curStep);
+		} else {
+		    processNextStep(globalParams, curStep);
+        }
+    });
 }
 
 function resetChargeButtons(globalParams) {
@@ -645,7 +622,7 @@ function resetChargeButtons(globalParams) {
 }
 
 
-function startStopPrecon(globalParams,startIt,temperature) {
+function startStopPrecon(globalParams,startIt,temperature,curStep) {
 	var methodName = "startStopPrecon";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -677,6 +654,7 @@ function startStopPrecon(globalParams,startIt,temperature) {
   			adapter.log.error('No valid response from startStopPrecon service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
+  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from startStopPrecon service');
 			var data = body;
@@ -686,7 +664,7 @@ function startStopPrecon(globalParams,startIt,temperature) {
 	});
 }
 
-function chargeStartOrCancel(globalParams,startIt,onSuccess) {
+function chargeStartOrCancel(globalParams,startIt,onSuccess, curStep) {
 	var methodName = "chargeStartOrCancel";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -717,6 +695,7 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess) {
   			adapter.log.error('No valid response from chargeStartOrCancel service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
+  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from chargeStartOrCancel service');
 			var data = body;
@@ -744,6 +723,7 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess) {
 	  					adapter.log.error('No valid response from chargeStartOrCancel2 service');
 						adapter.log.info('error:'+error);
 						adapter.log.info('response:'+JSON.stringify(response));
+              			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
 	  				} else {
 						adapter.log.debug('Data received from chargeStartOrCancel2 service');
 						data = body;
@@ -787,6 +767,7 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess) {
 	  					adapter.log.error('No valid response from chargeStartOrCancel2 service');
 						adapter.log.info('error:'+error);
 						adapter.log.info('response:'+JSON.stringify(response));
+              			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
 	  				} else {
 						adapter.log.debug('Data received from chargeStartOrCancel2 service');
 						data = body;

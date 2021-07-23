@@ -110,6 +110,9 @@ for your great documentation and work.
 
 ## Changelog
 
+### 0.2.1 (2021-07-23)
+- Code optimisation 
+
 ### 0.2.0 (2021-02-12)
 - Adapter supports compact mode (required if adapter should be listed in official repo)
 

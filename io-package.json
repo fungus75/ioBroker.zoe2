@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.2.0",
+		"version": "0.2.1",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -10,6 +10,10 @@
 		"materialize": true,
 		"compact": true,
         	"news": {
+ 	      		"0.2.1": {
+        			"en": "code optimisation",
+        			"de": "code optimisation"
+        		},
  	      		"0.2.0": {
         			"en": "adapter now supports compact mode",
         			"de": "Adapter unterstützt nun den compact mode"

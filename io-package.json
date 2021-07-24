@@ -9,6 +9,17 @@
 		},
 		"materialize": true,
 		"compact": true,
+		"dependencies": [
+            {
+                "js-controller": ">=3.0.0"
+            },
+            {
+                "adapter-core":  ">=2.4.0"
+            },
+            {
+                "admin":  ">=4.0.10"
+            }
+        ],
         	"news": {
  	      		"0.2.1": {
         			"en": "code optimisation",

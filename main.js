@@ -39,6 +39,12 @@ function startAdapter(options) {
 }
 
 async function main() {
+    return processNextStep({}, 0);
+}
+
+// must be called first to initialize all parameters
+// curStep is typically set to 0    
+function globalInit(curStep) {
 	var methodName = "main";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
@@ -118,7 +124,7 @@ async function main() {
 				native : {}
 			});
 
-			processNextStep(globalParams, 0);
+			processNextStep(globalParams, curStep);
 		}
 	});
 
@@ -129,23 +135,27 @@ async function main() {
 function processNextStep(globalParams, curStep) {
 	adapter.log.debug("in: processNextStep, curStep: "+ curStep);
     var nextStep = curStep + 1;
+
+    // only one shot if curStep = -1 (for debugging or testing)
+    if (curStep==-1) return;
     
     switch(nextStep) {
-        case  1: return loginToGigya         (globalParams, nextStep);
-        case  2: return gigyaGetJWT          (globalParams, nextStep);
-        case  3: return gigyaGetAccount      (globalParams, nextStep);
-        case  4: return getKamereonAccount   (globalParams, nextStep);																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
-        case  5: return getKamereonCars      (globalParams, nextStep);
-        case  6: return getBatteryStatus     (globalParams, nextStep);
-        case  7: return getCockpit           (globalParams, nextStep);
-        case  8: return getLocation          (globalParams, nextStep);
-        case  9: return getHVACStatus        (globalParams, nextStep);
-        case 10: return initCheckPreconAndCharge (globalParams, nextStep);
-        case 11: return checkPreconNow       (globalParams, nextStep);
-        case 12: return checkChargeCancel    (globalParams, nextStep);
-        case 13: return checkChargeEnable    (globalParams, nextStep);
+        case  1: return globalInit           (nextStep);
+        case  2: return loginToGigya         (globalParams, nextStep);
+        case  3: return gigyaGetJWT          (globalParams, nextStep);
+        case  4: return gigyaGetAccount      (globalParams, nextStep);
+        case  5: return getKamereonAccount   (globalParams, nextStep);																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					
+        case  6: return getKamereonCars      (globalParams, nextStep);
+        case  7: return getBatteryStatus     (globalParams, nextStep);
+        case  8: return getCockpit           (globalParams, nextStep);
+        case  9: return getLocation          (globalParams, nextStep);
+        case 10: return getHVACStatus        (globalParams, nextStep);
+        case 11: return initCheckPreconAndCharge (globalParams, nextStep);
+        case 12: return checkPreconNow       (globalParams, nextStep);
+        case 13: return checkChargeCancel    (globalParams, nextStep);
+        case 14: return checkChargeEnable    (globalParams, nextStep);
         
-        case 14: return processingFinished   (globalParams, nextStep);
+        case 15: return processingFinished   (globalParams, nextStep);
 
         default: return processingFailed(globalParams, curStep, ZOEERROR_NONEXTSTEP);
     }
@@ -156,10 +166,10 @@ function processingFailed(globalParams, curStep, errorCode) {
     // check if failing in step is ok
     if (errorCode==ZOEERROR_UNCORRECT_RESPONSE && globalParams.ignoreApiError) {
         switch(curStep) {
-            case  6: return processNextStep(globalParams, curStep);
             case  7: return processNextStep(globalParams, curStep);
             case  8: return processNextStep(globalParams, curStep);
             case  9: return processNextStep(globalParams, curStep);
+            case 10: return processNextStep(globalParams, curStep);
             default: break;
         }
     }

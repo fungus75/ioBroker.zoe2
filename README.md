@@ -6,6 +6,9 @@
 [![Build Status](https://travis-ci.org/fungus75/ioBroker.zoe2.svg?branch=master)](https://travis-ci.org/fungus75/ioBroker.zoe2)
 [![Known Vulnerabilities](https://snyk.io/test/github/fungus75/ioBroker.zoe2/badge.svg)](https://snyk.io/test/github/fungus75/ioBroker.zoe2)
 
+**Downloads**
+[![Downloads](https://img.shields.io/npm/dm/iobroker.zoe2.svg)](https://www.npmjs.com/package/iobroker.zoe2)
+
 **License:**
 [![License](https://img.shields.io/github/license/fungus75/ioBroker.zoe2)](https://github.com/fungus75/ioBroker.zoe2/blob/master/LICENSE)
 

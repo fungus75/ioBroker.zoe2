@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.2.1",
+		"version": "0.2.2",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -18,6 +18,10 @@
             }
         ],
         	"news": {
+ 	      		"0.2.2": {
+        			"en": "store password encrypted",
+        			"de": "Passwort verschlüsselt abspeichern"
+        		},
  	      		"0.2.1": {
         			"en": "code optimisation",
         			"de": "code optimisation"

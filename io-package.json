@@ -108,8 +108,19 @@
 		"password": "",
 		"vin": "",
 		"locale": "de_DE",
-		"ignoreApiError":0
+		"ignoreApiError":0,
+		"vin":"",
+		"useLocationApi":1,
+		"useHVACApi":1,
+		"kamereonApiKey":"",
+		"stopChargeWorkaroundHour":23
 	},
+	"encryptedNative": [
+       "password"
+   ],
+   "protectedNative": [
+       "password"
+   ],
 	"objects": [],
 	"instanceObjects": []
 

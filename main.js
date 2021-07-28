@@ -7,8 +7,9 @@ const utils = require('@iobroker/adapter-core');
 var request = require('request');
 
 // error codes
-const ZOEERROR_NONEXTSTEP = 1;
+const ZOEERROR_NONEXTSTEP         = 1;
 const ZOEERROR_UNCORRECT_RESPONSE = 2;
+const ZOEERROR_UNPARSABLE_JSON    = 3;
 
 
 // you have to call the adapter function and pass a options object
@@ -40,6 +41,17 @@ function startAdapter(options) {
 
 async function main() {
     return processNextStep({}, 0);
+}
+
+// try to JSON-Parse the given variable if it is a string
+// return: object or false on error
+function safeJSONParse(variable) {
+    try {
+        if (typeof variable == "string") variable=JSON.parse(variable); 
+        return variable;
+    } catch {
+        return false;
+    }
 }
 
 // must be called first to initialize all parameters
@@ -77,14 +89,13 @@ function globalInit(curStep) {
 	adapter.log.info("URL: "+params.url);
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from Renault server');
 			return processingFailed(globalParams, 0, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from Renault server');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
-			//adapter.log.info("FullBody:"+body.toString());
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 
 			var gigyarooturl = data.servers.gigyaProd.target;
 			var gigyaapikey  = data.servers.gigyaProd.apikey;
@@ -199,13 +210,13 @@ function loginToGigya(globalParams, curStep) {
 	};
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from gigyarooturl server');
   			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from gigyarooturl server');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("FullBody:"+JSON.stringify(data));
 
 			var sessionInfo=data.sessionInfo;
@@ -231,13 +242,13 @@ function gigyaGetJWT(globalParams, curStep) {
 	};
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from gigyaGetJWT service');
   			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from gigyaGetJWT service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getJWTFullbody:"+JSON.stringify(data));
 			globalParams.gigya_jwttoken=data.id_token;
 			adapter.log.info("gigya_jwttoken:"+globalParams.gigya_jwttoken);
@@ -259,13 +270,13 @@ function gigyaGetAccount(globalParams, curStep) {
 	};
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from gigyagetAccountInfo service');
   			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from gigyagetAccountInfo service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getgetAccountInfo:"+JSON.stringify(data));
 			globalParams.kamereonpersonid=data.data.personId;
 			adapter.log.info("kamereonpersonid:"+globalParams.kamereonpersonid);
@@ -291,13 +302,13 @@ function getKamereonAccount(globalParams, curStep) {
 	};
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from getKamereonAccount service');
   			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getKamereonAccount service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getKamereonAccount:"+JSON.stringify(data));
 			var accounts=data.accounts;
 			adapter.log.info("accounts:"+JSON.stringify(accounts));
@@ -325,13 +336,13 @@ function getKamereonCars(globalParams, curStep) {
 	};
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from getKamereonCars service');
   			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getKamereonCars service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getKamereonCars:"+JSON.stringify(data));
 			processNextStep(globalParams, curStep);
 		}
@@ -358,15 +369,15 @@ function getBatteryStatus(globalParams, curStep) {
 	adapter.log.info("getBatteryStatus-url:"+params.url);
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from getBatteryStatus service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
             return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getBatteryStatus service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getBatteryStatus:"+JSON.stringify(data));
 			var attributes=data.data.attributes;
 
@@ -434,15 +445,15 @@ function getCockpit(globalParams, curStep) {
 	adapter.log.info("getCockpit-url:"+params.url);
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from getCockpit service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
             return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getCockpit service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getCockpit:"+JSON.stringify(data));
 
 			var totalMileage=data.data.attributes.totalMileage;
@@ -476,15 +487,15 @@ function getLocation(globalParams, curStep) {
 	adapter.log.info("getLocation-url:"+params.url);
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from getLocation service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
             return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getLocation service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getLocation:"+JSON.stringify(data));
 			
 			var gpsLatitude=data.data.attributes.gpsLatitude;
@@ -524,15 +535,15 @@ function getHVACStatus(globalParams, curStep) {
 	adapter.log.info("getHVACStatus-url:"+params.url);
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from getHVACStatus service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
 			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from getHVACStatus service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getHVACStatus:"+JSON.stringify(data));
 
 			var attributes=data.data.attributes;
@@ -660,15 +671,15 @@ function startStopPrecon(globalParams,startIt,temperature,curStep) {
 	adapter.log.info("startStopPrecon-url:"+params.url);
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from startStopPrecon service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
   			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from startStopPrecon service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("startStopPrecon:"+JSON.stringify(data));
 		}
 	});
@@ -701,15 +712,15 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess, curStep) {
 	adapter.log.info("chargeStartOrCancel-url:"+params.url);
 
 	request(params, function (error, response, body) {
-	  	if (error || response.statusCode != 200) {
+	  	if (error || !response || response.statusCode != 200) {
   			adapter.log.error('No valid response from chargeStartOrCancel service');
 			adapter.log.info('error:'+error);
 			adapter.log.info('response:'+JSON.stringify(response));
   			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from chargeStartOrCancel service');
-			var data = body;
-			if (typeof body == "string") data=JSON.parse(body); 
+			var data = safeJSONParse(body);
+			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("chargeStartOrCancel:"+JSON.stringify(data));
 
 			if (startIt) {
@@ -729,15 +740,15 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess, curStep) {
 				};
 				
 				request(params, function (error, response, body) {
-		  			if (error || response.statusCode != 200) {
+		  			if (error || !response || response.statusCode != 200) {
 	  					adapter.log.error('No valid response from chargeStartOrCancel2 service');
 						adapter.log.info('error:'+error);
 						adapter.log.info('response:'+JSON.stringify(response));
               			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
 	  				} else {
 						adapter.log.debug('Data received from chargeStartOrCancel2 service');
-						data = body;
-						if (typeof body == "string") data=JSON.parse(body); 
+			            var data = safeJSONParse(body);
+			            if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 						adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
 						onSuccess(globalParams);
 					}
@@ -773,15 +784,15 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess, curStep) {
 				};
 				
 				request(params, function (error, response, body) {
-		  			if (error || response.statusCode != 200) {
+		  			if (error || !response || response.statusCode != 200) {
 	  					adapter.log.error('No valid response from chargeStartOrCancel2 service');
 						adapter.log.info('error:'+error);
 						adapter.log.info('response:'+JSON.stringify(response));
               			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
 	  				} else {
 						adapter.log.debug('Data received from chargeStartOrCancel2 service');
-						data = body;
-						if (typeof body == "string") data=JSON.parse(body); 
+			            var data = safeJSONParse(body);
+			            if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 						adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
 						onSuccess(globalParams);
 					}

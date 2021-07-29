@@ -118,6 +118,10 @@ for your great documentation and work.
 
 ## Changelog
 
+### 0.2.3 (2021-07-29)
+- Code Adjustments, Error-Handling
+
+
 ### 0.2.2 (2021-07-26)
 - Store Password Encrypted (You have to reset it, if updating from older version)
 

@@ -411,16 +411,16 @@ function getBatteryStatus(globalParams, curStep) {
 
 			if (!charging) chargingPower = 0;
 
-            setValue(globalParams.zoe_vin,"charge_level","float",charge_level,"data");
-            setValue(globalParams.zoe_vin,"remaining_range","float",remaining_range,"data");
-            setValue(globalParams.zoe_vin,"remaining_time","float",remaining_time),"data";
+            setValue(globalParams.zoe_vin,"charge_level","number",charge_level,"data");
+            setValue(globalParams.zoe_vin,"remaining_range","number",remaining_range,"data");
+            setValue(globalParams.zoe_vin,"remaining_time","number",remaining_time),"data";
             setValue(globalParams.zoe_vin,"charging_finished_at","string",chargingFinishedAt,"date");
             setValue(globalParams.zoe_vin,"plugged","boolean",plugged,"data");
             setValue(globalParams.zoe_vin,"charging","boolean",charging,"data");
-            setValue(globalParams.zoe_vin,"batteryTemperature","float",batteryTemperature,"data");
-            setValue(globalParams.zoe_vin,"chargingPower","float",chargingPower,"data");
-            setValue(globalParams.zoe_vin,"batteryCapacity","float",batteryCapacity,"data");
-            setValue(globalParams.zoe_vin,"batteryAvailableEnergy","float",batteryAvailableEnergy,"data");
+            setValue(globalParams.zoe_vin,"batteryTemperature","number",batteryTemperature,"data");
+            setValue(globalParams.zoe_vin,"chargingPower","number",chargingPower,"data");
+            setValue(globalParams.zoe_vin,"batteryCapacity","number",batteryCapacity,"data");
+            setValue(globalParams.zoe_vin,"batteryAvailableEnergy","number",batteryAvailableEnergy,"data");
 			processNextStep(globalParams, curStep);
 		}
 	});
@@ -457,7 +457,7 @@ function getCockpit(globalParams, curStep) {
 			adapter.log.info("getCockpit:"+JSON.stringify(data));
 
 			var totalMileage=data.data.attributes.totalMileage;
-			if (totalMileage !== undefined) setValue(globalParams.zoe_vin,"totalMileage","float",totalMileage,"data");
+			if (totalMileage !== undefined) setValue(globalParams.zoe_vin,"totalMileage","number",totalMileage,"data");
 			processNextStep(globalParams, curStep);
 		}
 	});
@@ -500,11 +500,11 @@ function getLocation(globalParams, curStep) {
 			
 			var gpsLatitude=data.data.attributes.gpsLatitude;
 			adapter.log.info('gpsLatitude:'+gpsLatitude);
-			if (gpsLatitude !== undefined) setValue(globalParams.zoe_vin,"gpsLatitude","float",gpsLatitude,"data");
+			if (gpsLatitude !== undefined) setValue(globalParams.zoe_vin,"gpsLatitude","number",gpsLatitude,"data");
 
 			var gpsLongitude=data.data.attributes.gpsLongitude;
 			adapter.log.info('gpsLongitude:'+gpsLongitude);
-			if (gpsLongitude !== undefined) setValue(globalParams.zoe_vin,"gpsLongitude","float",gpsLongitude,"data");
+			if (gpsLongitude !== undefined) setValue(globalParams.zoe_vin,"gpsLongitude","number",gpsLongitude,"data");
 			processNextStep(globalParams, curStep);
 		}
 	});
@@ -549,7 +549,7 @@ function getHVACStatus(globalParams, curStep) {
 			var attributes=data.data.attributes;
 			var hvacOn=attributes.hvacStatus!="off";
 
-			setValue(globalParams.zoe_vin,"externalTemperature","float",attributes.externalTemperature,"data");
+			setValue(globalParams.zoe_vin,"externalTemperature","number",attributes.externalTemperature,"data");
                         setValue(globalParams.zoe_vin,"hvacOn","boolean",hvacOn,"data");
 			processNextStep(globalParams, curStep);
 		}

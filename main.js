@@ -393,7 +393,8 @@ function getBatteryStatus(globalParams, curStep) {
 
 			var batteryTS=attributes.timestamp;
 			if (batteryTS) {
-				setValue(globalParams.zoe_vin,"batteryTS","string",new Date(batteryTS),"date");
+			    var bts=new Date(batteryTS);
+				setValue(globalParams.zoe_vin,"batteryTS","string",bts.toString(),"date");
 			} else {
 				setValue(globalParams.zoe_vin,"batteryTS","string",null,"date");
 			}
@@ -408,13 +409,15 @@ function getBatteryStatus(globalParams, curStep) {
 			if (remaining_time === undefined) remaining_time = 0;
 			var chargingFinishedAt=new Date(Date.now() + remaining_time * 60000);
 			if (remaining_time == 0) chargingFinishedAt=null;
+			var cfa=null;
+			if (chargingFinishedAt) cfa=chargingFinishedAt.toString(); 
 
 			if (!charging) chargingPower = 0;
 
             setValue(globalParams.zoe_vin,"charge_level","number",charge_level,"data");
             setValue(globalParams.zoe_vin,"remaining_range","number",remaining_range,"data");
             setValue(globalParams.zoe_vin,"remaining_time","number",remaining_time),"data";
-            setValue(globalParams.zoe_vin,"charging_finished_at","string",chargingFinishedAt,"date");
+            setValue(globalParams.zoe_vin,"charging_finished_at","string",cfa,"date");
             setValue(globalParams.zoe_vin,"plugged","boolean",plugged,"data");
             setValue(globalParams.zoe_vin,"charging","boolean",charging,"data");
             setValue(globalParams.zoe_vin,"batteryTemperature","number",batteryTemperature,"data");

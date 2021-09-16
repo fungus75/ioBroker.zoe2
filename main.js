@@ -406,11 +406,13 @@ function getBatteryStatus(globalParams, curStep) {
 			}
 				
 
-			if (remaining_time === undefined) remaining_time = 0;
+			if (remaining_time === undefined || remaining_time === null) remaining_time = 0;
 			var chargingFinishedAt=new Date(Date.now() + remaining_time * 60000);
 			if (remaining_time == 0) chargingFinishedAt=null;
-			var cfa=null;
-			if (chargingFinishedAt) cfa=chargingFinishedAt.toString(); 
+			var cfa='9999-12-31';
+			if (remaining_time > 0) cfa=chargingFinishedAt.toString(); 
+			adapter.log.info('remaining_time:'+remaining_time);
+			adapter.log.info('cfa:'+cfa);
 
 			if (!charging) chargingPower = 0;
 

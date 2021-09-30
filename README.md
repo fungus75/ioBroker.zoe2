@@ -8,6 +8,7 @@
 
 **Downloads**
 [![Downloads](https://img.shields.io/npm/dm/iobroker.zoe2.svg)](https://www.npmjs.com/package/iobroker.zoe2)
+ ![Number of Installations](https://iobroker.live/badges/zoe2-installed.svg)
 
 **License:**
 [![License](https://img.shields.io/github/license/fungus75/ioBroker.zoe2)](https://github.com/fungus75/ioBroker.zoe2/blob/master/LICENSE)

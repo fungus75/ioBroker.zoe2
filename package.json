@@ -22,7 +22,7 @@
     "url": "https://github.com/fungus75/ioBroker.zoe2.git"
   },
   "dependencies": {
-    "request": "~2.88.2",
+    "axios": "^0.24.0",
     "@iobroker/adapter-core": ">=2.4.0"
   },
   "devDependencies": {

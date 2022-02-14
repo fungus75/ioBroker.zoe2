@@ -733,9 +733,9 @@ function startStopPrecon(globalParams,startIt,temperature,curStep) {
 		headers: {
     			'x-gigya-id_token': globalParams.gigya_jwttoken,
     			'apikey': globalParams.kamereonapikey,
-			'Content-Type':'application/vnd.api+json'
+			    'Content-Type':'application/vnd.api+json'
 		},
-		json: {
+		data: {
 			data: {
 				'type': 'HvacStart',
                 		'attributes': {
@@ -783,7 +783,7 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess, curStep) {
     			'apikey': globalParams.kamereonapikey,
 			'Content-Type':'application/vnd.api+json'
 		},
-		json: {
+		data: {
 			data: {
 				'type': 'ChargeMode',
                 		'attributes': {
@@ -819,7 +819,7 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess, curStep) {
 				'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/charging-start'+
 				'?country='+ encodeURIComponent(globalParams.country);
 				
-				params.json={
+				params.data={
 					data: {
 						'type': 'ChargingStart',
                 				'attributes': {
@@ -860,7 +860,7 @@ function chargeStartOrCancel(globalParams,startIt,onSuccess, curStep) {
 				startTimeString+=globalParams.stopChargeWorkaroundHour+':00Z';
 				adapter.log.info('startTimeString:'+startTimeString);
 				
-				params.json={
+				params.data={
 					data: {
 						'type': 'ChargeSchedule',
                 				'attributes': {

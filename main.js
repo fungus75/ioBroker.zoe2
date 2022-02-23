@@ -241,7 +241,12 @@ function loginToGigya(globalParams, curStep) {
 
 			var sessionInfo=data.sessionInfo;
 			adapter.log.info("sessionInfo:"+JSON.stringify(sessionInfo));
-
+			
+			if (typeof sessionInfo === 'undefined') {
+				adapter.log.error('Not receiving sessionInfo from gigya server, please make sure username/password is correct');
+				return;
+			}
+			
 			globalParams.gigyatoken=sessionInfo.cookieValue;
 			processNextStep(globalParams, curStep);
 		}

@@ -343,6 +343,7 @@ function getKamereonAccount(globalParams, curStep) {
 
 	globalParams.requestClient(params).catch(function (error) {
   			adapter.log.error('No valid response1 from getKamereonAccount service');
+			adapter.log.error('Maybe Kamereon-API Key has changed, please check https://github.com/fungus75/ioBroker.zoe2/wiki');
 			adapter.log.error(safeJSONParse(error));
   			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
 		}).then(function (response) {

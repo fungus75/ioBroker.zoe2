@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.2.4",
+		"version": "0.2.5",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -18,6 +18,10 @@
             }
         ],
         	"news": {
+				"0.2.5": {
+					"en": "adjusted errormessages, updated dependencies",
+					"de": "Fehlermeldungen verbessert, Projektabhaengigkeiten aktualisiert"
+				},
 				"0.2.4": {
 					"en": "replace request-libraray with axios",
 					"de": "die Request-Library durch axios ersetzt"

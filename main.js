@@ -100,56 +100,66 @@ function globalInit(curStep) {
 		}).then(function (response) {
 		var statusCode = response.status;
 		var body = response.data;
+		var gigyarooturl = null;
+		var gigyaapikey  = null;
+		var kamereonrooturl = null;
+
 	  	if (statusCode != 200) {
-  			adapter.log.error('No valid response2 from Renault server');
-			return processingFailed({}, 0, ZOEERROR_UNCORRECT_RESPONSE);
+  			adapter.log.error('No valid response2 from Renault server, using default values');
+			
+			// Working default values
+			gigyarooturl = 'https://accounts.eu1.gigya.com';
+			gigyaapikey  = '3_7PLksOyBRkHv126x5WhHb-5pqC1qFR8pQjxSeLB6nhAnPERTUlwnYoznHSxwX668';
+			kamereonrooturl = 'https://api-wired-prod-1-euw1.wrd-aws.com';
+			
+			// return processingFailed({}, 0, ZOEERROR_UNCORRECT_RESPONSE);
   		} else {
 			adapter.log.debug('Data received from Renault server');
 			var data = safeJSONParse(body);
 			if (data===false) return processingFailed({}, 0, ZOEERROR_UNPARSABLE_JSON);
 
-			var gigyarooturl = data.servers.gigyaProd.target;
-			var gigyaapikey  = data.servers.gigyaProd.apikey;
-			var kamereonrooturl = data.servers.wiredProd.target;
+			gigyarooturl = data.servers.gigyaProd.target;
+			gigyaapikey  = data.servers.gigyaProd.apikey;
+			kamereonrooturl = data.servers.wiredProd.target;
 			// var kamereonapikey  = data.servers.wiredProd.apikey;
-
-			adapter.log.info("gigyarooturl:"+gigyarooturl);
-			adapter.log.info("gigyaapikey:"+gigyaapikey);
-			adapter.log.info("kamereonrooturl:"+kamereonrooturl);
-			adapter.log.info("kamereonapikey:"+kamereonapikey);
-
-			var globalParams = {
-				zoe_username:zoe_username,
-				zoe_password:zoe_password,
-				zoe_locale:zoe_locale,
-				zoe_vin:zoe_vin,
-				gigyarooturl:gigyarooturl,
-				gigyaapikey:gigyaapikey,
-				kamereonrooturl:kamereonrooturl,
-				kamereonapikey:kamereonapikey,
-				country:country,
-				ignoreApiError:ignoreApiError,
-				useLocationApi:adapter.config.useLocationApi,
-				useHVACApi:adapter.config.useHVACApi,
-				stopChargeWorkaroundHour:adapter.config.stopChargeWorkaroundHour,
-				requestClient:requestClient,
-				defaultTimeout:defaultTimeout
-			};
-
-			// create root config element
-	                adapter.setObjectNotExists(zoe_vin, {
-				type : 'device',
-				common : {
-					name : zoe_vin,
-					type : 'string',
-					role : 'sensor',
-					ack : true
-				},
-				native : {}
-			});
-
-			processNextStep(globalParams, curStep);
 		}
+
+		adapter.log.info("gigyarooturl:"+gigyarooturl);
+		adapter.log.info("gigyaapikey:"+gigyaapikey);
+		adapter.log.info("kamereonrooturl:"+kamereonrooturl);
+		adapter.log.info("kamereonapikey:"+kamereonapikey);
+
+		var globalParams = {
+			zoe_username:zoe_username,
+			zoe_password:zoe_password,
+			zoe_locale:zoe_locale,
+			zoe_vin:zoe_vin,
+			gigyarooturl:gigyarooturl,
+			gigyaapikey:gigyaapikey,
+			kamereonrooturl:kamereonrooturl,
+			kamereonapikey:kamereonapikey,
+			country:country,
+			ignoreApiError:ignoreApiError,
+			useLocationApi:adapter.config.useLocationApi,
+			useHVACApi:adapter.config.useHVACApi,
+			stopChargeWorkaroundHour:adapter.config.stopChargeWorkaroundHour,
+			requestClient:requestClient,
+			defaultTimeout:defaultTimeout
+		};
+
+		// create root config element
+		adapter.setObjectNotExists(zoe_vin, {
+			type : 'device',
+			common : {
+				name : zoe_vin,
+				type : 'string',
+				role : 'sensor',
+				ack : true
+			},
+			native : {}
+		});
+
+		processNextStep(globalParams, curStep);
 	});
 
 	adapter.log.debug("out: " + methodName);

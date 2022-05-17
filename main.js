@@ -89,7 +89,10 @@ function globalInit(curStep) {
 	var params={
 		url:"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_"+zoe_locale+".json",
 		method:"get",
-		timeout: defaultTimeout
+		timeout: defaultTimeout,
+		validateStatus: function (status) {
+			return true;
+		}		
 	};
 	adapter.log.info("URL: "+params.url);
 

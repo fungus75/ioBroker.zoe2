@@ -20,7 +20,7 @@
         	"news": {
 				"0.2.6": {
 					"en": "API Timeout changeable, improved stability",
-					"de": "API Timeout konfigurierbar, Stabilitaet verbessert",
+					"de": "API Timeout konfigurierbar, Stabilitaet verbessert"
 				},
 				"0.2.5": {
 					"en": "adjusted errormessages, updated dependencies",
@@ -126,7 +126,6 @@
 	"native": {
 		"username": "",
 		"password": "",
-		"vin": "",
 		"locale": "de_DE",
 		"ignoreApiError":0,
 		"vin":"",

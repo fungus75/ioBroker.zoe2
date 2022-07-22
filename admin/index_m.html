@@ -43,7 +43,8 @@
     "UseLocationApi" : { "de" : "Die LocationAPI verwenden" },
     "UseHVACApi" : { "de" : "Die Vorheizen-API (HVAC) verwenden" },
     "KamereonApiKey" : { "de" : "Kamereon API Key" },
-    "StopChargeWorkaroundHour": { "de" : "StopCharge: Stunde für Workaround" }
+    "StopChargeWorkaroundHour": { "de" : "StopCharge: Stunde für Workaround" },
+    "Timeout": { "de" : "Timeout in ms" }
   };
 
   // the function loadSettings has to exist ...
@@ -101,6 +102,11 @@
 		changed = true;
 		$('#save').button("enable");
 	}).keyup(onChange);
+
+	$('#timeout').val(settings.timeout).change(function() {
+		changed = true;
+		$('#save').button("enable");
+	}).keyup(onChange);
 	
 
     onChange(false);
@@ -122,7 +128,8 @@
 	    useLocationApi : $('#useLocationApi').prop('checked'),
 	    useHVACApi : $('#useHVACApi').prop('checked'),
 	    kamereonApiKey: $('#kamereonApiKey').val(),
-	    stopChargeWorkaroundHour: stopChargeWorkaroundHour
+	    stopChargeWorkaroundHour: stopChargeWorkaroundHour,
+	    timeout: $('#timeout').val()
 	  });
   }
 </script>
@@ -182,6 +189,12 @@
       <td><label for="stopChargeWorkaroundHour" class="translate">StopChargeWorkaroundHour</label></td>
       <td><input class="value" type="text" id="stopChargeWorkaroundHour" size="2" /></td>
     </tr>
+
+    <tr>
+      <td><label for="timeout" class="translate">Timeout in ms</label></td>
+      <td><input class="value" type="text" id="timeout" size="6" /></td>
+    </tr>
+
 
   </table>
   <br/><br/>

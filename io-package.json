@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.2.5",
+		"version": "0.2.6",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -18,6 +18,10 @@
             }
         ],
         	"news": {
+				"0.2.6": {
+					"en": "API Timeout changeable, improved stability",
+					"de": "API Timeout konfigurierbar, Stabilitaet verbessert",
+				},
 				"0.2.5": {
 					"en": "adjusted errormessages, updated dependencies",
 					"de": "Fehlermeldungen verbessert, Projektabhaengigkeiten aktualisiert"
@@ -129,7 +133,8 @@
 		"useLocationApi":1,
 		"useHVACApi":1,
 		"kamereonApiKey":"",
-		"stopChargeWorkaroundHour":23
+		"stopChargeWorkaroundHour":23,
+		"timeout":3000
 	},
 	"encryptedNative": [
        "password"

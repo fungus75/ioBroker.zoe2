@@ -121,6 +121,10 @@ for your great documentation and work.
 
 ## Changelog
 
+### 0.2.6 (2022-07-22)
+- API Timeout configurable via config-screen
+- Improved stability
+
 ### 0.2.5 (2022-03-30)
 - Better error messages if kameronapikey changed
 - Link to github-wiki added to admin-screen

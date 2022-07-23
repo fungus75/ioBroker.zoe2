@@ -84,6 +84,7 @@ function globalInit(curStep) {
 	adapter.log.info("ignoreApiError:"+(ignoreApiError?'true':'false'));
 	
 	var requestClient = axios.create();
+        var defaultTimeout = adapter.config.timeout;
 
 	var params={
 		url:"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_"+zoe_locale+".json",
@@ -146,7 +147,7 @@ function globalInit(curStep) {
 			useHVACApi:adapter.config.useHVACApi,
 			stopChargeWorkaroundHour:adapter.config.stopChargeWorkaroundHour,
 			requestClient:requestClient,
-			defaultTimeout:adapter.config.timeout
+			defaultTimeout:defaultTimeout
 		};
 
 		// create root config element

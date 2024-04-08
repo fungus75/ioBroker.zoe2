@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.2.6",
+		"version": "0.2.7",
 		"title": "Renault ZOE API v2",
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
@@ -18,6 +18,10 @@
             }
         ],
         	"news": {
+				"0.2.7": {
+					"en": "BugFix gps Location (thanks to @MCP-KC)",
+					"de": "BugFix gps Location (thanks to @MCP-KC)"
+				},
 				"0.2.6": {
 					"en": "API Timeout changeable, improved stability",
 					"de": "API Timeout konfigurierbar, Stabilitaet verbessert"

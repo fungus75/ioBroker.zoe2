@@ -589,11 +589,11 @@ function getLocation(globalParams, curStep) {
 			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getLocation:"+JSON.stringify(data));
 			
-			var gpsLatitude=data.gpsLatitude;
+			var gpsLatitude=data.data.attributes.gpsLatitude;
 			adapter.log.info('gpsLatitude:'+gpsLatitude);
 			if (gpsLatitude !== undefined) setValue(globalParams.zoe_vin,"gpsLatitude","number",gpsLatitude,"data");
 
-			var gpsLongitude=data.gpsLongitude;
+			var gpsLongitude=data.data.attributes.gpsLongitude;
 			adapter.log.info('gpsLongitude:'+gpsLongitude);
 			if (gpsLongitude !== undefined) setValue(globalParams.zoe_vin,"gpsLongitude","number",gpsLongitude,"data");
 			processNextStep(globalParams, curStep);

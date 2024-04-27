@@ -455,15 +455,19 @@ function getBatteryStatus(globalParams, curStep) {
 			adapter.log.info("getBatteryStatus:"+JSON.stringify(data));
 			var attributes=data;
 
-			var charge_level   =attributes.batteryLevel;
-			var plugged        =attributes.plugStatus==1;
-			var charging       =attributes.chargingStatus==1;
-			var remaining_range=attributes.batteryAutonomy;
-			var remaining_time =attributes.chargingRemainingTime;
-			var batteryTemperature=attributes.batteryTemperature;
-			var chargingPower  =attributes.chargingInstantaneousPower;
-			var batteryCapacity=attributes.batteryCapacity;
-			var batteryAvailableEnergy=attributes.batteryAvailableEnergy;
+			var charge_level =attributes.data.attributes.batteryLevel;
+			var plugged =attributes.data.attributes.plugStatus==1;
+			var charging =attributes.data.attributes.chargingStatus==1;
+			var remaining_range=attributes.data.attributes.batteryAutonomy;
+			var remaining_time =attributes.data.attributes.chargingRemainingTime;
+			//var batteryTemperature=attributes.batteryTemperature;
+			//var chargingPower  =attributes.chargingInstantaneousPower;
+			//var batteryCapacity=attributes.batteryCapacity;
+			//var batteryAvailableEnergy=attributes.batteryAvailableEnergy;
+			var batteryTemperature=null;
+			var chargingPower  = null;
+			var batteryCapacity= null;
+			var batteryAvailableEnergy=null;
 
 			var batteryTS=attributes.timestamp;
 			if (batteryTS) {
@@ -512,7 +516,7 @@ function getCockpit(globalParams, curStep) {
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-			'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/cockpit'+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/cockpit'+
 			'?country='+ encodeURIComponent(globalParams.country),
 		method:"get",
 		headers: {

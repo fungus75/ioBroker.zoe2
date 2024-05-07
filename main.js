@@ -454,20 +454,33 @@ function getBatteryStatus(globalParams, curStep) {
 			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getBatteryStatus:"+JSON.stringify(data));
 			var attributes=data;
-
-			var charge_level =attributes.data.attributes.batteryLevel;
-			var plugged =attributes.data.attributes.plugStatus==1;
-			var charging =attributes.data.attributes.chargingStatus==1;
-			var remaining_range=attributes.data.attributes.batteryAutonomy;
-			var remaining_time =attributes.data.attributes.chargingRemainingTime;
-			//var batteryTemperature=attributes.batteryTemperature;
-			//var chargingPower  =attributes.chargingInstantaneousPower;
-			//var batteryCapacity=attributes.batteryCapacity;
-			//var batteryAvailableEnergy=attributes.batteryAvailableEnergy;
+			var charge_level=null;
+			var plugged=null;
+			var charging=null;
+			var remaining_range=null;
+			var remaining_time=null;
 			var batteryTemperature=null;
-			var chargingPower  = null;
-			var batteryCapacity= null;
+			var chargingPower=null;
+			var batteryCapacity=null;
 			var batteryAvailableEnergy=null;
+		
+			if (attributes.data && attributes.data.attributes) {
+				charge_level =attributes.data.attributes.batteryLevel;
+				plugged =attributes.data.attributes.plugStatus==1;
+				charging =attributes.data.attributes.chargingStatus==1;
+				remaining_range=attributes.data.attributes.batteryAutonomy;
+				remaining_time =attributes.data.attributes.chargingRemainingTime;
+			} else {
+				charge_level   =attributes.batteryLevel;
+				plugged        =attributes.plugStatus==1;
+				charging       =attributes.chargingStatus==1;
+				remaining_range=attributes.batteryAutonomy;
+				remaining_time =attributes.chargingRemainingTime;
+				batteryTemperature=attributes.batteryTemperature;
+				chargingPower  =attributes.chargingInstantaneousPower;
+				batteryCapacity=attributes.batteryCapacity;
+				batteryAvailableEnergy=attributes.batteryAvailableEnergy;				
+			}
 
 			var batteryTS=attributes.timestamp;
 			if (batteryTS) {

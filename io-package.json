@@ -3,6 +3,10 @@
 		"name": "zoe2",
 		"version": "0.2.9",
 		"title": "Renault ZOE API v2",
+		"titleLang": {
+            	   "en": "Renault ZOE for ioBroker",
+                   "de": "Renault ZOE for ioBroker"
+                },
 		"desc": {
 			"en": "Renault ZOE for ioBroker",
 			"de": "Renault ZOE für ioBroker"
@@ -11,14 +15,15 @@
 		"compact": true,
 		"dependencies": [
             {
-                "js-controller": ">=3.0.0"
-            },
-            {
-                "admin":  ">=4.0.10"
+                "js-controller": ">=5.0.19"
             }
         ],
         	"news": {
-				"0.2.9": {
+				"0.2.10": {
+					"en": "considering notification from ioBroker-Bot",
+					"de": "considering notification from ioBroker-Bot"
+				},
+			        "0.2.9": {
 					"en": "BugFix Battery (thanks to @MCP-KC, @gik007)",
 					"de": "BugFix Battery (thanks to @MCP-KC, @gik007)"
 				},
@@ -85,38 +90,6 @@
 			"0.0.9": {
 				"en": "getLocation can be turned off on older ZOEs ",
 				"de": "getLocation kann in der Konfiguration ein oder ausgeschalten werden (fuer aeltere ZOEs)"
-			},
-			"0.0.8": {
-				"en": "Bugfixes remaining_Time, gps-coordinates",
-				"de": "Bugfixes bei remaining_Time und GPS-Koordinaten"
-			},
-			"0.0.7": {
-				"en": "Added: gpsLatitude, gpsLongitude (works only on newer ZOEs), small BugFix",
-				"de": "Neue Paramter: gpsLatitude, gpsLongitude (funktionieren nur auf neueren ZOEs); kleiner Bugfix"
-			},
-			"0.0.6": {
-				"en": "Added: chargingPower, batteryCapacity, batteryAvailableEnergy; using battery_status V2 API",
-				"de": "Neue Paramter: chargingPower, batteryCapacity, batteryAvailableEnergy; verwendung von battery_status V2 API"
-			},
-			"0.0.5": {
-				"en": "Added config parameter ignoreApiError",
-				"de": "Konfigurations-Parameter ignoreApiError hinzugefuegt"
-			},
-			"0.0.4": {
-				"en": "Added preconNow",
-				"de": "preconNow - Standheizung aktivieren - hinzugefuegt"
-			},
-			"0.0.3": {
-				"en": "Added total Mileage",
-				"de": "totalMileage - Totale KM - hinzugefuegt"
-			},
-            		"0.0.2": {
-                		"en": "Basic Readonly Features",
-                		"de": "Grundlegende, nur lesende, Fnktionen"
-	    		},
-			"0.0.1": {
-				"en": "Initial commit on github, not realy working",
-				"de": "Erster commit auf github, nicht wirklich funktionstuechtig"
 			}
         	},
 		"platform": "Javascript/Node.js",

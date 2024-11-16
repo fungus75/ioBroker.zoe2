@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.2.9",
+		"version": "0.2.10",
 		"title": "Renault ZOE API v2",
 		"titleLang": {
             	   "en": "Renault ZOE for ioBroker",
@@ -23,23 +23,7 @@
 					"en": "considering notification from ioBroker-Bot",
 					"de": "considering notification from ioBroker-Bot"
 				},
-			        "0.2.9": {
-					"en": "BugFix Battery (thanks to @MCP-KC, @gik007)",
-					"de": "BugFix Battery (thanks to @MCP-KC, @gik007)"
-				},
-				"0.2.8": {
-					"en": "BugFix Cockpit und Batterie (thanks to @MCP-KC, @gik007)",
-					"de": "BugFix Cockpit und Batterie (thanks to @MCP-KC, @gik007)"
-				},
-				"0.2.7": {
-					"en": "BugFix gps Location (thanks to @MCP-KC)",
-					"de": "BugFix gps Location (thanks to @MCP-KC)"
-				},
-				"0.2.6": {
-					"en": "API Timeout changeable, improved stability",
-					"de": "API Timeout konfigurierbar, Stabilitaet verbessert"
-				},
-				"0.2.5": {
+			       "0.2.5": {
 					"en": "adjusted errormessages, updated dependencies",
 					"de": "Fehlermeldungen verbessert, Projektabhaengigkeiten aktualisiert"
 				},
@@ -55,10 +39,6 @@
         			"en": "store password encrypted",
         			"de": "Passwort verschlüsselt abspeichern"
         		},
- 	      		"0.2.1": {
-        			"en": "code optimisation",
-        			"de": "code optimisation"
-        		},
  	      		"0.2.0": {
         			"en": "adapter now supports compact mode",
         			"de": "Adapter unterstützt nun den compact mode"
@@ -70,28 +50,8 @@
  	      		"0.1.4": {
         			"en": "bugfixes and adding kamereonapikey, stopChargeWorkaroundHour in config screen",
         			"de": "Bugfixe und kamereonapikey, stopChargeWorkaroundHour als Config-Parameter"
-        		},
-         		"0.1.3": {
-        			"en": "added setup-value useHVACApi",
-        			"de": "Setup-Parameter useHVACApi eingebaut"
-        		},
-        		"0.1.2": {
-        			"en": "added charge-start API-call on chargeEnable",
-        			"de": "Aufruf von charge-start API-call bei chargeEnable"
-        		},
-        		"0.1.1": {
-        			"en": "added chargeCancel and chargeEnable to controll charging-function if connected",
-        			"de": "chargeCancel und chargeEnable eingebaut um die Ladefunktion wenn verbunden zu kontrolieren"
-        		},
-        		"0.1.0": {
-        			"en": "fixed the Kamereon token issue",
-        			"de": "Bugfix: Kamereon token ausgebaut"
-        		},
-			"0.0.9": {
-				"en": "getLocation can be turned off on older ZOEs ",
-				"de": "getLocation kann in der Konfiguration ein oder ausgeschalten werden (fuer aeltere ZOEs)"
-			}
-        	},
+        		}
+		},
 		"platform": "Javascript/Node.js",
 	        "main": "main.js",
 		"mode": "schedule",

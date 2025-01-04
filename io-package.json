@@ -4,12 +4,12 @@
 		"version": "0.2.10",
 		"title": "Renault ZOE API v2",
 		"titleLang": {
-            	   "en": "Renault ZOE for ioBroker",
-                   "de": "Renault ZOE for ioBroker"
+            	   "en": "Renault ZOE",
+                   "de": "Renault ZOE"
                 },
 		"desc": {
-			"en": "Renault ZOE for ioBroker",
-			"de": "Renault ZOE für ioBroker"
+			"en": "Renault ZOE Adapter for ioBroker",
+			"de": "Renault ZOE Adapter für ioBroker"
 		},
 		"materialize": true,
 		"compact": true,

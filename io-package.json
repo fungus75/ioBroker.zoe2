@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "zoe2",
-		"version": "0.2.10",
+		"version": "0.2.11",
 		"title": "Renault ZOE API v2",
 		"titleLang": {
             	   "en": "Renault ZOE",
@@ -19,6 +19,10 @@
             }
         ],
         	"news": {
+			"0.2.11": {
+					"en": "BugFix totalMileage",
+					"de": "Fehler bei Total-Kilometer (totalMileage) behoben"
+				},
 				"0.2.10": {
 					"en": "considering notification from ioBroker-Bot",
 					"de": "considering notification from ioBroker-Bot"

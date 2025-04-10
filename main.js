@@ -558,7 +558,7 @@ function getCockpit(globalParams, curStep) {
 			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
 			adapter.log.info("getCockpit:"+JSON.stringify(data));
 
-			var totalMileage=data.totalMileage;
+			var totalMileage=data.data.attributes.totalMileage;
 			if (totalMileage !== undefined) setValue(globalParams.zoe_vin,"totalMileage","number",totalMileage,"data");
 			processNextStep(globalParams, curStep);
 		}

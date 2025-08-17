@@ -812,7 +812,7 @@ function chargeStartOrCancel(globalParams,startIt,onSuccessFunction, curStep) {
 	var params={
 		url:globalParams.kamereonrooturl + 
 			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/charge-mode'+
+			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/charge/pause-resume'+
 			'?country='+ encodeURIComponent(globalParams.country),
 		method:"post",
 		headers: {
@@ -822,9 +822,9 @@ function chargeStartOrCancel(globalParams,startIt,onSuccessFunction, curStep) {
 		},
 		data: {
 			data: {
-				'type': 'ChargeMode',
+				'type': 'ChargePauseResume',
                 		'attributes': {
-					'action': startIt?'always_charging':'schedule_mode'
+					'action': startIt?'start':'stop'
 				}
 			}
 		},

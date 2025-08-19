@@ -809,156 +809,113 @@ function chargeStartOrCancel(globalParams,startIt,onSuccessFunction, curStep) {
 	var methodName = "chargeStartOrCancel";
 	adapter.log.debug("in:  " + methodName + " v0.01");
 
-	var params={
-		url:globalParams.kamereonrooturl + 
-			'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-			'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/charge/pause-resume'+
-			'?country='+ encodeURIComponent(globalParams.country),
-		method:"post",
-		headers: {
-    			'x-gigya-id_token': globalParams.gigya_jwttoken,
-    			'apikey': globalParams.kamereonapikey,
-			'Content-Type':'application/vnd.api+json'
-		},
-		data: {
+	if (startIt) {
+		// trigger charge-start
+		var params2={
+			url:globalParams.kamereonrooturl + 
+				'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+				'/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/charging-start'+
+				'?country='+ encodeURIComponent(globalParams.country),
+			method:"post",
+			headers: {
+					'x-gigya-id_token': globalParams.gigya_jwttoken,
+					'apikey': globalParams.kamereonapikey,
+				'Content-Type':'application/vnd.api+json'
+			},
 			data: {
-				'type': 'ChargePauseResume',
-                		'attributes': {
-					'action': startIt?'start':'stop'
-				}
-			}
-		},
-		timeout: globalParams.defaultTimeout
-	};
-	adapter.log.info("chargeStartOrCancel-url:"+params.url);
+				data: {
+					'type': 'ChargingStart',
+							'attributes': {
+									'action': 'start'
+							}
+				}		
+			},
+			timeout: globalParams.defaultTimeout
+		};
 
-	globalParams.requestClient(params).catch(function (error) {
-  			adapter.log.error('No valid response1 from chargeStartOrCancel service');
+		adapter.log.debug("Url:"+params2.url);
+		adapter.log.debug("Method:"+params2.method);
+		
+		globalParams.requestClient(params2).catch(function (error) {
+			adapter.log.error('No valid response1 from chargeStartOrCancel2 service');
 			adapter.log.error(safeJSONParse(error));
-  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
+			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
 		}).then(function (response) {
-		var statusCode = response.status;
-		var body = response.data;
-	  	if (statusCode != 200) {
-  			adapter.log.error('No valid response2 from chargeStartOrCancel service');
-			adapter.log.info('response:'+JSON.stringify(response));
-  			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
-  		} else {
-			adapter.log.debug('Data received from chargeStartOrCancel service');
-			var data = safeJSONParse(body);
-			if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
-			adapter.log.info("chargeStartOrCancel:"+JSON.stringify(data));
-            adapter.log.debug("startIt?:"+(startIt?"true":"false"));
-            
-			if (startIt) {
-				// trigger charge-start
-	            var params2={
-		            url:globalParams.kamereonrooturl + 
-				        '/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-				        '/kamereon/kca/car-adapter/v1/cars/' + globalParams.zoe_vin + '/actions/charging-start'+
-				        '?country='+ encodeURIComponent(globalParams.country),
-		            method:"post",
-		            headers: {
-                			'x-gigya-id_token': globalParams.gigya_jwttoken,
-                			'apikey': globalParams.kamereonapikey,
-			            'Content-Type':'application/vnd.api+json'
-		            },
-		            data: {
-					    data: {
-						    'type': 'ChargingStart',
-                    				'attributes': {
-                        					'action': 'start'
-                    				}
-					    }		
-		            },
-		            timeout: globalParams.defaultTimeout
-	            };
-
-				adapter.log.debug("Url:"+params2.url);
-				adapter.log.debug("Method:"+params2.method);
-				
-				globalParams.requestClient(params2).catch(function (error) {
-					adapter.log.error('No valid response1 from chargeStartOrCancel2 service');
-					adapter.log.error(safeJSONParse(error));
-					return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
-				}).then(function (response) {
-					var statusCode = response.status;
-					var body = response.data;
-					if (statusCode != 200) {
-	  					adapter.log.error('No valid response2 from chargeStartOrCancel2 service');
-						adapter.log.info('response:'+JSON.stringify(response));
-              			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
-	  				} else {
-						adapter.log.debug('Data received from chargeStartOrCancel2 service');
-			            var data = safeJSONParse(body);
-			            if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
-						adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
-						onSuccessFunction(globalParams,curStep);
-					}
-				});
-				
+			var statusCode = response.status;
+			var body = response.data;
+			if (statusCode != 200) {
+				adapter.log.error('No valid response2 from chargeStartOrCancel2 service');
+				adapter.log.info('response:'+JSON.stringify(response));
+				return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
 			} else {
-				// Set start time to configured parameter
+				adapter.log.debug('Data received from chargeStartOrCancel2 service');
+				var data = safeJSONParse(body);
+				if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
+				adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
+				onSuccessFunction(globalParams,curStep);
+			}
+		});
+		
+	} else {
+		// Set start time to configured parameter
 
-	            var params2={
-		            url:globalParams.kamereonrooturl + 
-				        '/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
-				        '/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/actions/charge-schedule'+
-				        '?country='+ encodeURIComponent(globalParams.country),
-		            method:"post",
-		            headers: {
-                			'x-gigya-id_token': globalParams.gigya_jwttoken,
-                			'apikey': globalParams.kamereonapikey,
-			            'Content-Type':'application/vnd.api+json'
-		            },
-		            timeout: globalParams.defaultTimeout
-	            };
+		var params2={
+			url:globalParams.kamereonrooturl + 
+				'/commerce/v1/accounts/'+ globalParams.kamereonaccountid+
+				'/kamereon/kca/car-adapter/v2/cars/' + globalParams.zoe_vin + '/actions/charge-schedule'+
+				'?country='+ encodeURIComponent(globalParams.country),
+			method:"post",
+			headers: {
+					'x-gigya-id_token': globalParams.gigya_jwttoken,
+					'apikey': globalParams.kamereonapikey,
+				'Content-Type':'application/vnd.api+json'
+			},
+			timeout: globalParams.defaultTimeout
+		};
 
-				
-				var startTimeString='T';
-				if (globalParams.stopChargeWorkaroundHour<10) startTimeString+='0';
-				startTimeString+=globalParams.stopChargeWorkaroundHour+':00Z';
-				adapter.log.info('startTimeString:'+startTimeString);
-				
-				params2.data={
-					data: {
-						'type': 'ChargeSchedule',
-                				'attributes': {
-							'schedules': [{'id':1,'activated':true,
-								'monday':{'startTime':startTimeString,'duration':15},
-								'tuesday':{'startTime':startTimeString,'duration':15},
-								'wednesday':{'startTime':startTimeString,'duration':15},
-								'thursday':{'startTime':startTimeString,'duration':15},
-								'friday':{'startTime':startTimeString,'duration':15},
-								'saturday':{'startTime':startTimeString,'duration':15},
-								'sunday':{'startTime':startTimeString,'duration':15}
-								}]
-						}
-					}		
-				};
-				
-				globalParams.requestClient(params2).catch(function (error) {
-					adapter.log.error('No valid response1 from chargeStartOrCancel2 service');
-					adapter.log.error(safeJSONParse(error));
-					return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
-				}).then(function (response) {
-					var statusCode = response.status;
-					var body = response.data;
-					if (statusCode != 200) {
-	  					adapter.log.error('No valid response2 from chargeStartOrCancel2 service');
-						adapter.log.info('response:'+JSON.stringify(response));
-              			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
-	  				} else {
-						adapter.log.debug('Data received from chargeStartOrCancel2 service');
-			            var data = safeJSONParse(body);
-			            if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
-						adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
-						onSuccessFunction(globalParams,curStep);
-					}
-				});
-			} // if (!startIt)
-		}
-	});
+		
+		var startTimeString='T';
+		if (globalParams.stopChargeWorkaroundHour<10) startTimeString+='0';
+		startTimeString+=globalParams.stopChargeWorkaroundHour+':00Z';
+		adapter.log.info('startTimeString:'+startTimeString);
+		
+		params2.data={
+			data: {
+				'type': 'ChargeSchedule',
+						'attributes': {
+					'schedules': [{'id':1,'activated':true,
+						'monday':{'startTime':startTimeString,'duration':15},
+						'tuesday':{'startTime':startTimeString,'duration':15},
+						'wednesday':{'startTime':startTimeString,'duration':15},
+						'thursday':{'startTime':startTimeString,'duration':15},
+						'friday':{'startTime':startTimeString,'duration':15},
+						'saturday':{'startTime':startTimeString,'duration':15},
+						'sunday':{'startTime':startTimeString,'duration':15}
+						}]
+				}
+			}		
+		};
+		
+		globalParams.requestClient(params2).catch(function (error) {
+			adapter.log.error('No valid response1 from chargeStartOrCancel2 service');
+			adapter.log.error(safeJSONParse(error));
+			return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
+		}).then(function (response) {
+			var statusCode = response.status;
+			var body = response.data;
+			if (statusCode != 200) {
+				adapter.log.error('No valid response2 from chargeStartOrCancel2 service');
+				adapter.log.info('response:'+JSON.stringify(response));
+				return processingFailed(globalParams, curStep, ZOEERROR_UNCORRECT_RESPONSE);
+			} else {
+				adapter.log.debug('Data received from chargeStartOrCancel2 service');
+				var data = safeJSONParse(body);
+				if (data===false) return processingFailed(globalParams, 0, ZOEERROR_UNPARSABLE_JSON);
+				adapter.log.info("chargeStartOrCancel2:"+JSON.stringify(data));
+				onSuccessFunction(globalParams,curStep);
+			}
+		});
+	} // if (!startIt)
 }
 
 function setValue(baseId,name,type,value,role) {

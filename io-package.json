@@ -61,7 +61,6 @@
         		}
 		},
 		"platform": "Javascript/Node.js",
-	        "main": "main.js",
 		"mode": "schedule",
 		"schedule": "*/10 * * * *",
 		"enabled": true,

@@ -2,7 +2,6 @@
 	"common": {
 		"name": "zoe2",
 		"version": "0.2.12",
-		"title": "Renault ZOE API v2",
 		"titleLang": {
             	   "en": "Renault ZOE",
                    "de": "Renault ZOE"

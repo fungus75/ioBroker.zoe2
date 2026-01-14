@@ -67,6 +67,7 @@
 		"enabled": true,
 		"license": "MIT",
 		"loglevel": "info",
+		"tier": 2,
 		"readme": "https://github.com/fungus75/ioBroker.zoe2/blob/master/README.md",
 		"icon": "zoe.png",
 		"extIcon": "https://raw.githubusercontent.com/fungus75/ioBroker.zoe2/master/admin/zoe.png",

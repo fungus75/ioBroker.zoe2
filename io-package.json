@@ -65,7 +65,10 @@
 		"mode": "schedule",
 		"schedule": "*/10 * * * *",
 		"enabled": true,
-		"license": "MIT",
+		"licenseInformation": {
+			"type": "free",
+			"license": "MIT"
+		},
 		"loglevel": "info",
 		"readme": "https://github.com/fungus75/ioBroker.zoe2/blob/master/README.md",
 		"icon": "zoe.png",

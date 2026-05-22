@@ -112,7 +112,7 @@ function globalInit(curStep) {
 			
 			// Working default values
 			gigyarooturl = 'https://accounts.eu1.gigya.com';
-			gigyaapikey  = '3_7PLksOyBRkHv126x5WhHb-5pqC1qFR8pQjxSeLB6nhAnPERTUlwnYoznHSxwX668';
+			gigyaapikey  = '3_VgdkgtIRH3AdHvJm-cjV2ug2EFE0lxt0IJzMC4MFqZjFpn_GYFXVdNZ19L7wZX0N';
 			kamereonrooturl = 'https://api-wired-prod-1-euw1.wrd-aws.com';
 			
 			// return processingFailed({}, 0, ZOEERROR_UNCORRECT_RESPONSE);

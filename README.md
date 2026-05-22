@@ -121,6 +121,10 @@ for your great documentation and work.
 
 ## Changelog
 
+
+### **WORK IN PROGRESS**
+- (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+
 ### 0.2.12 (2025-08-17)
 - Fixes bug ChargeStartOrCancel
 

@@ -1,100 +1,109 @@
 {
-	"common": {
-		"name": "zoe2",
-		"version": "0.2.12",
-		"title": "Renault ZOE API v2",
-		"titleLang": {
-            	   "en": "Renault ZOE",
-                   "de": "Renault ZOE"
-                },
-		"desc": {
-			"en": "Renault ZOE Adapter for ioBroker",
-			"de": "Renault ZOE Adapter für ioBroker"
-		},
-		"materialize": true,
-		"compact": true,
-		"dependencies": [
-            {
-                "js-controller": ">=5.0.19"
-            }
-        ],
-        	"news": {
-			"0.2.12": {
-					"en": "BugFix ChargeStartOrCancel",
-					"de": "Fehler bei ChargeStartOrCancel behoben"
-				},
-			"0.2.11": {
-					"en": "BugFix totalMileage",
-					"de": "Fehler bei Total-Kilometer (totalMileage) behoben"
-				},
-				"0.2.10": {
-					"en": "considering notification from ioBroker-Bot",
-					"de": "considering notification from ioBroker-Bot"
-				},
-			       "0.2.5": {
-					"en": "adjusted errormessages, updated dependencies",
-					"de": "Fehlermeldungen verbessert, Projektabhaengigkeiten aktualisiert"
-				},
-				"0.2.4": {
-					"en": "replace request-libraray with axios",
-					"de": "die Request-Library durch axios ersetzt"
-				},
- 	      		"0.2.3": {
-        			"en": "code adjustments and error handling",
-        			"de": "Codeanpassungen und Fehlerbehandlungen"
-        		},
- 	      		"0.2.2": {
-        			"en": "store password encrypted",
-        			"de": "Passwort verschlüsselt abspeichern"
-        		},
- 	      		"0.2.0": {
-        			"en": "adapter now supports compact mode",
-        			"de": "Adapter unterstützt nun den compact mode"
-        		},
- 	      		"0.1.5": {
-        			"en": "bugfixes because gigya api parameter changed",
-        			"de": "Bugfixe da die Parameter bei gigya api geändert wurden"
-        		},
- 	      		"0.1.4": {
-        			"en": "bugfixes and adding kamereonapikey, stopChargeWorkaroundHour in config screen",
-        			"de": "Bugfixe und kamereonapikey, stopChargeWorkaroundHour als Config-Parameter"
-        		}
-		},
-		"platform": "Javascript/Node.js",
-	        "main": "main.js",
-		"mode": "schedule",
-		"schedule": "*/10 * * * *",
-		"enabled": true,
-		"license": "MIT",
-		"loglevel": "info",
-		"readme": "https://github.com/fungus75/ioBroker.zoe2/blob/master/README.md",
-		"icon": "zoe.png",
-		"extIcon": "https://raw.githubusercontent.com/fungus75/ioBroker.zoe2/master/admin/zoe.png",
-       		"authors": ["Rene Pilz <rene@pilz.cc>"],
-		"keywords": ["ioBroker", "Renault ZOE", "Smart Home", "home automation", "mobility", "eCar", "electicity"],
-		"type": "vehicle",
-		"connectionType":"cloud",
-		"dataSource":"poll"
-	},
-	"native": {
-		"username": "",
-		"password": "",
-		"locale": "de_DE",
-		"ignoreApiError":0,
-		"vin":"",
-		"useLocationApi":1,
-		"useHVACApi":1,
-		"kamereonApiKey":"",
-		"stopChargeWorkaroundHour":23,
-		"timeout":3000
-	},
-	"encryptedNative": [
-       "password"
-   ],
-   "protectedNative": [
-       "password"
-   ],
-	"objects": [],
-	"instanceObjects": []
-
+  "common": {
+    "name": "zoe2",
+    "version": "0.2.12",
+    "title": "Renault ZOE API v2",
+    "titleLang": {
+      "en": "Renault ZOE",
+      "de": "Renault ZOE"
+    },
+    "desc": {
+      "en": "Renault ZOE Adapter for ioBroker",
+      "de": "Renault ZOE Adapter für ioBroker"
+    },
+    "materialize": true,
+    "compact": true,
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "news": {
+      "0.2.12": {
+        "en": "BugFix ChargeStartOrCancel",
+        "de": "Fehler bei ChargeStartOrCancel behoben"
+      },
+      "0.2.11": {
+        "en": "BugFix totalMileage",
+        "de": "Fehler bei Total-Kilometer (totalMileage) behoben"
+      },
+      "0.2.10": {
+        "en": "considering notification from ioBroker-Bot",
+        "de": "considering notification from ioBroker-Bot"
+      },
+      "0.2.5": {
+        "en": "adjusted errormessages, updated dependencies",
+        "de": "Fehlermeldungen verbessert, Projektabhaengigkeiten aktualisiert"
+      },
+      "0.2.4": {
+        "en": "replace request-libraray with axios",
+        "de": "die Request-Library durch axios ersetzt"
+      },
+      "0.2.3": {
+        "en": "code adjustments and error handling",
+        "de": "Codeanpassungen und Fehlerbehandlungen"
+      },
+      "0.2.2": {
+        "en": "store password encrypted",
+        "de": "Passwort verschlüsselt abspeichern"
+      },
+      "0.2.0": {
+        "en": "adapter now supports compact mode",
+        "de": "Adapter unterstützt nun den compact mode"
+      },
+      "0.1.5": {
+        "en": "bugfixes because gigya api parameter changed",
+        "de": "Bugfixe da die Parameter bei gigya api geändert wurden"
+      },
+      "0.1.4": {
+        "en": "bugfixes and adding kamereonapikey, stopChargeWorkaroundHour in config screen",
+        "de": "Bugfixe und kamereonapikey, stopChargeWorkaroundHour als Config-Parameter"
+      }
+    },
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "mode": "schedule",
+    "schedule": "*/10 * * * *",
+    "enabled": true,
+    "license": "MIT",
+    "loglevel": "info",
+    "readme": "https://github.com/fungus75/ioBroker.zoe2/blob/master/README.md",
+    "icon": "zoe.png",
+    "extIcon": "https://raw.githubusercontent.com/fungus75/ioBroker.zoe2/master/admin/zoe.png",
+    "authors": [
+      "Rene Pilz <rene@pilz.cc>"
+    ],
+    "keywords": [
+      "ioBroker",
+      "Renault ZOE",
+      "Smart Home",
+      "home automation",
+      "mobility",
+      "eCar",
+      "electicity"
+    ],
+    "type": "vehicle",
+    "connectionType": "cloud",
+    "dataSource": "poll"
+  },
+  "native": {
+    "username": "",
+    "password": "",
+    "locale": "de_DE",
+    "ignoreApiError": 0,
+    "vin": "",
+    "useLocationApi": 1,
+    "useHVACApi": 1,
+    "kamereonApiKey": "",
+    "stopChargeWorkaroundHour": 23,
+    "timeout": 3000
+  },
+  "encryptedNative": [
+    "password"
+  ],
+  "protectedNative": [
+    "password"
+  ],
+  "objects": [],
+  "instanceObjects": []
 }

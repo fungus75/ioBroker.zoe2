@@ -11,7 +11,6 @@
       "en": "Renault ZOE Adapter for ioBroker",
       "de": "Renault ZOE Adapter für ioBroker"
     },
-    "materialize": true,
     "compact": true,
     "dependencies": [
       {
@@ -84,7 +83,10 @@
     ],
     "type": "vehicle",
     "connectionType": "cloud",
-    "dataSource": "poll"
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "materialize"
+    }
   },
   "native": {
     "username": "",

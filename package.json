@@ -22,14 +22,15 @@
     "url": "https://github.com/fungus75/ioBroker.zoe2.git"
   },
   "dependencies": {
-    "axios": "^1.6.3",
-    "@iobroker/adapter-core": ">=3.1.6"
+    "@iobroker/adapter-core": ">=3.1.6",
+    "axios": "^1.6.3"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "mocha": "^4.1.0",
+    "@iobroker/testing": "^4.1.3",
+    "@tsconfig/node22": "^22.0.5",
     "chai": "^4.1.2",
-    "@iobroker/testing":"^4.1.3"
+    "gulp": "^3.9.1",
+    "mocha": "^4.1.0"
   },
   "main": "main.js",
   "bugs": {
@@ -37,6 +38,6 @@
   },
   "engines": {
     "node": ">=22"
-  }, 
+  },
   "readmeFilename": "README.md"
 }
